@@ -8,9 +8,6 @@ namespace RayTracer.Engine.Math
     /// </summary>
     public readonly struct Vector3 : IEquatable<Vector3>
     {
-        public static Vector3 Zero = Vector(0f, 0f, 0f);
-        public static Vector3 PZero = Point(0f, 0f, 0f);
-        public static Vector3 One = Vector(1f, 1f, 1f);
         public static Vector3 Point(float x, float y, float z) => new Vector3(x, y, z, 1.0f);
         public static Vector3 Vector(float x, float y, float z) => new Vector3(x, y, z);
 
