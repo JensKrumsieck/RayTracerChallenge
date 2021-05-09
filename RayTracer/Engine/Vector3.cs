@@ -40,6 +40,7 @@ namespace RayTracer.Engine
             new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 
         public Vector3 Translate(float x, float y, float z) => Matrix.Translation(x, y, z) * this;
+        public Vector3 Scale(float x, float y, float z) => Matrix.Scale(x, y, z) * this;
 
         public static bool operator ==(Vector3 left, Vector3 right) => left.Equals(right);
         public static bool operator !=(Vector3 left, Vector3 right) => !left.Equals(right);

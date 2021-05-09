@@ -30,5 +30,13 @@ namespace RayTracer.Tests
             var res = Vector3.Point(-8, 7, 3);
             Assert.AreEqual(inv * p, res);
         }
+
+        [TestMethod]
+        public void ScaleTest()
+        {
+            var p = Vector3.Point(-4, 6, 8);
+            var res = Vector3.Point(-8, 18, 32);
+            Assert.AreEqual(p.Scale(2,3,4), res);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SkiaSharp;
 using static RayTracer.Constants;
 
 namespace RayTracer.Engine
@@ -20,10 +21,7 @@ namespace RayTracer.Engine
             var storage = new float[rows, cols];
             for (var i = 0; i < rows; i++)
             {
-                for (var j = 0; j < cols; j++)
-                {
-                    storage[i, j] = i == j ? 1f : 0f;
-                }
+                for (var j = 0; j < cols; j++) storage[i, j] = i == j ? 1f : 0f;
             }
             return new Matrix(storage);
         }
@@ -146,7 +144,32 @@ namespace RayTracer.Engine
             return new Matrix(storage);
         }
 
+        /// <summary>
+        /// Builds Translation Matrix
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <returns></returns>
         public static Matrix Translation(float x, float y, float z) => Identity(3, 3).AppendRow(new[] {0f, 0f, 0f}).AppendCol(new []{x, y, z, 1});
+
+        /// <summary>
+        /// Builds Scaling Matrix
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <returns></returns>
+        public static Matrix Scale(float x, float y, float z)
+        {
+            var storage = new float[4, 4];
+            storage[0, 0] = x;
+            storage[1, 1] = y;
+            storage[2, 2] = z;
+            storage[3, 3] = 1;
+            return new Matrix(storage);
+        }
+
 
         #region IEquatable
         public bool Equals(Matrix other) => Equals(other, Epsilon);
@@ -184,6 +207,16 @@ namespace RayTracer.Engine
                     for (var k = 0; k < left.Cols; k++)
                         newStorage[i, j] += left[i, k] * right[k, j];
                 }
+            }
+            return new Matrix(newStorage);
+        }
+
+        public static Matrix operator *(Matrix m, float scalar)
+        {
+            var newStorage = new float[m.Rows, m.Cols];
+            for (var i = 0; i < m.Rows; i++)
+            {
+                for (var j = 0; j < m.Cols; j++) newStorage[i, j] = m[i, j] * scalar;
             }
             return new Matrix(newStorage);
         }
