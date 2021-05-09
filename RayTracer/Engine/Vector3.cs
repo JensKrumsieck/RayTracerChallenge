@@ -11,6 +11,7 @@ namespace RayTracer.Engine
     {
         public static Vector3 Point(float x, float y, float z) => new(x, y, z, 1.0f);
         public static Vector3 Vector(float x, float y, float z) => new(x, y, z);
+        public static Vector3 OfArray(float[] f) => new(f[0], f[1], f[2], f[3]);
 
         public float X { get; }
         public float Y { get; }
