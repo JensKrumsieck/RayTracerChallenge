@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using RayTracer.Extension;
+using static RayTracer.Constants;
 
 namespace RayTracer.Engine
 {
     /// <summary>
-    /// Will probably use System.Numerics instead...
+    /// Will probably use System.Numerics or MathNet.Numerics instead...
     /// </summary>
     public struct Matrix : IEquatable<Matrix>
     {
@@ -28,6 +30,8 @@ namespace RayTracer.Engine
         public int Rows => _storage.GetLength(0);
         public int Cols => _storage.GetLength(1);
 
+        public bool Invertible => Determinant() != 0;
+
         /// <summary>
         /// Calculates transpose matrix
         /// </summary>
@@ -40,6 +44,39 @@ namespace RayTracer.Engine
                 for (var j = 0; j < Cols; j++) storage[j, i] = this[i, j];
             }
             return new Matrix(storage);
+        }
+
+        /// <summary>
+        /// Returns Determinant for a matrix
+        /// </summary>
+        /// <returns></returns>
+        public float Determinant()
+        {
+            if (Rows != Cols) throw new NotSupportedException("Determinant only exists in square matrices");
+            if (Rows == 2 && Cols == 2) return this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0];
+            var det = 0f;
+            for (var i = 0; i < Cols; i++) det += this[0, i] * Cofactor(0, i);
+            return det;
+        }
+
+        /// <summary>
+        /// Returns Inverse Matrix
+        /// </summary>
+        /// <returns></returns>
+        public Matrix Inverse()
+        {
+            if (!Invertible) throw new InvalidOperationException("Matrix is not invertible!");
+            var det = Determinant();
+            var newStorage = new float[Rows, Cols];
+            for (var i = 0; i < Rows; i++)
+            {
+                for (var j = 0; j < Cols; j++)
+                {
+                    var c = Cofactor(i, j);
+                    newStorage[j, i] = c / det;
+                }
+            }
+            return new Matrix(newStorage);
         }
 
         /// <summary>
@@ -60,19 +97,6 @@ namespace RayTracer.Engine
         }
 
         /// <summary>
-        /// Returns Determinant for a matrix
-        /// </summary>
-        /// <returns></returns>
-        public float Determinant()
-        {
-            if (Rows != Cols) throw new NotSupportedException("Determinant only exists in square matrices");
-            if (Rows == 2 && Cols == 2) return this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0];
-            var det = 0f;
-            for (var i = 0; i < Cols; i++) det += this[0, i] * Cofactor(0, i);
-            return det;
-        }
-
-        /// <summary>
         /// Calculates submatrix determinant
         /// </summary>
         /// <param name="row"></param>
@@ -89,12 +113,28 @@ namespace RayTracer.Engine
         public float Cofactor(int row, int col) => Minor(row, col) * ((row + col) % 2 == 1 ? -1 : 1);
 
         #region IEquatable
-        public bool Equals(Matrix other) => _storage.Cast<float>().SequenceEqual(other._storage.Cast<float>());
+        public bool Equals(Matrix other) => Equals(other, Epsilon);
+        public bool Equals(Matrix other, float floatThreshold)
+        {
+            if (Cols != other.Cols || Rows != other.Rows) return false;
+            for (var i = 0; i < Rows; i++)
+            {
+                for (var j = 0; j < Cols; j++)
+                {
+                    if (!this[i, j].Equal(other[i, j], floatThreshold)) return false;
+                }
+            }
+            return true;
+        }
         public override bool Equals(object obj) => obj is Matrix other && Equals(other);
-        public override readonly int GetHashCode() => _storage != null ? _storage.GetHashCode() : 0;
+        public override readonly int GetHashCode()
+        {
+            return (_storage != null ? _storage.GetHashCode() : 0);
+        }
+
         #endregion
 
-        #region operators
+        #region Operators
         public static Matrix operator *(Matrix left, Matrix right)
         {
             if (left.Cols != right.Rows)
@@ -114,7 +154,7 @@ namespace RayTracer.Engine
 
         public static Vector3 operator *(Matrix m, Vector3 v)
         {
-            if (m.Rows != 4 || m.Cols != 4) throw new NotSupportedException();
+            if (m.Rows != 4 || m.Cols != 4) throw new NotSupportedException("Only 4x4 Matrices are supported");
             var vec = new Matrix(new[,]
             {
                 {v.X},

@@ -176,9 +176,9 @@ namespace RayTracer.Tests
             });
             var subM1 = new Matrix(new[,]
             {
-                {-6f,1f,6f},
-                {-8f,8f,6f},
-                {-7f,-1f,1f}
+                {-6f, 1f, 6f},
+                {-8f, 8f, 6f},
+                {-7f, -1f, 1f}
             });
             Assert.AreEqual(m1.Submatrix(2, 1), subM1);
         }
@@ -243,7 +243,34 @@ namespace RayTracer.Tests
                 {1f, 2f, -9f, 6f},
                 {-6f, 7f, 7f, -9f}
             });
+            Assert.IsTrue(m1.Invertible);
             Assert.AreEqual(m1.Determinant(), -4071);
+        }
+
+        [TestMethod]
+        public void MatrixInverse()
+        {
+            var m1 = new Matrix(new[,]
+            {
+                {-5f, 2f, 6f, -8f},
+                {1f, -5f, 1f, 8f},
+                {7f, 7f, -6f, -7f},
+                {1f, -3f, 7f, 4f}
+            });
+            var m2 = m1.Inverse();
+            Assert.AreEqual(m1.Determinant(), 532);
+            Assert.AreEqual(m1.Cofactor(2, 3), -160);
+            Assert.AreEqual(m2[3, 2], -160f / 532f);
+            Assert.AreEqual(m1.Cofactor(3, 2), 105);
+            Assert.AreEqual(m2[2, 3], 105f / 532f);
+            var m3 = new Matrix(new[,]
+            {
+                {0.21805f, 0.45113f, 0.24060f, -0.04511f},
+                {-0.80827f, -1.45677f, -0.44361f, 0.52068f},
+                {-0.07895f, -0.22368f, -0.05263f, 0.19737f},
+                {-0.52256f, -0.81391f, -0.30075f, 0.30639f}
+            });
+            Assert.IsTrue(m2.Equals(m3, 1e5f));
         }
     }
 }
