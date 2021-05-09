@@ -1,7 +1,7 @@
+using RayTracer.Extension;
 using System;
-using static RayTracer.Constants;
 
-namespace RayTracer.Engine.Math
+namespace RayTracer.Engine
 {
     /// <summary>
     /// The Books Tuple implementation called Vector3 and by default assumes w = 0
@@ -50,7 +50,8 @@ namespace RayTracer.Engine.Math
         public static Vector3 operator /(Vector3 v, float s) => new(v.X / s, v.Y / s, v.Z / s, v.W / s);
 
         /// <inheritdoc/>
-        public bool Equals(Vector3 other) => MathF.Abs(X- other.X) <= Epsilon && MathF.Abs(Y - other.Y) <= Epsilon && MathF.Abs(Z - other.Z) <= Epsilon && MathF.Abs(W - other.W) <= Epsilon;
+        public bool Equals(Vector3 other) =>
+            X.Equal(other.X) && Y.Equal(other.Y) && Z.Equal(other.Z) && W.Equal(other.W);
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is Vector3 other && Equals(other);

@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RayTracer.Engine.Math;
+using RayTracer.Engine;
 using System;
 
 namespace RayTracer.Tests

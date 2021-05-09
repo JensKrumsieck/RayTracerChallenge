@@ -31,5 +31,14 @@ namespace RayTracer.Tests
             var res = new Color(.4f, .6f, .8f);
             Assert.That.ColorsAreEqual(c1 * 2, res);
         }
+
+        [TestMethod]
+        public void MultiplyColors()
+        {
+            var c1 = new Color(1f, .2f, .4f);
+            var c2 = new Color(.9f, 1f, .1f);
+            var res = new Color(.9f, .2f, .04f);
+            Assert.That.ColorsAreEqual(c1 * c2, res);
+        }
     }
 }
