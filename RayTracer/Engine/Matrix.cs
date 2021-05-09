@@ -1,6 +1,7 @@
-﻿using System;
+﻿using RayTracer.Extension;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using RayTracer.Extension;
 using static RayTracer.Constants;
 
 namespace RayTracer.Engine
@@ -111,6 +112,41 @@ namespace RayTracer.Engine
         /// <param name="col"></param>
         /// <returns></returns>
         public float Cofactor(int row, int col) => Minor(row, col) * ((row + col) % 2 == 1 ? -1 : 1);
+
+        /// <summary>
+        /// Appends a row to a matrix
+        /// </summary>
+        /// <param name="rowValues"></param>
+        /// <returns></returns>
+        private Matrix AppendRow(IReadOnlyList<float> rowValues)
+        {
+            var storage = new float[Rows + 1, Cols];
+            for (var i = 0; i < Rows + 1; i++)
+            {
+                for (var j = 0; j < Cols; j++)
+                    storage[i, j] = i == Rows ? rowValues[j] : this[i, j];
+            }
+            return new Matrix(storage);
+        }
+
+        /// <summary>
+        /// Appends a column to a matrix
+        /// </summary>
+        /// <param name="colValues"></param>
+        /// <returns></returns>
+        private Matrix AppendCol(IReadOnlyList<float> colValues)
+        {
+            var storage = new float[Rows , Cols + 1];
+            for (var i = 0; i < Rows; i++)
+            {
+                for (var j = 0; j < Cols + 1; j++)
+                    storage[i, j] = j == Cols ? colValues[i] : this[i, j];
+            }
+
+            return new Matrix(storage);
+        }
+
+        public static Matrix Translation(float x, float y, float z) => Identity(3, 3).AppendRow(new[] {0f, 0f, 0f}).AppendCol(new []{x, y, z, 1});
 
         #region IEquatable
         public bool Equals(Matrix other) => Equals(other, Epsilon);

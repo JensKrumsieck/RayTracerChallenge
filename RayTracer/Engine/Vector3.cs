@@ -39,6 +39,8 @@ namespace RayTracer.Engine
         public static Vector3 Cross(Vector3 a, Vector3 b) =>
             new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 
+        public Vector3 Translate(float x, float y, float z) => Matrix.Translation(x, y, z) * this;
+
         public static bool operator ==(Vector3 left, Vector3 right) => left.Equals(right);
         public static bool operator !=(Vector3 left, Vector3 right) => !left.Equals(right);
         public static Vector3 operator +(Vector3 left, Vector3 right) =>
