@@ -272,5 +272,18 @@ namespace RayTracer.Tests
             });
             Assert.IsTrue(m2.Equals(m3, 1e5f));
         }
+
+        [TestMethod]
+        public void MultiplyByInverse()
+        {
+            var m1 = new Matrix(new[,]
+            {
+                {-5f, 2f, 6f, -8f},
+                {1f, -5f, 1f, 8f},
+                {7f, 7f, -6f, -7f},
+                {1f, -3f, 7f, 4f}
+            });
+            Assert.AreEqual(m1 * m1.Inverse(), Matrix.Identity(4, 4));
+        }
     }
 }
