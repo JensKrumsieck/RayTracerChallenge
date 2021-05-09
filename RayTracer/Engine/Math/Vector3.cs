@@ -1,4 +1,5 @@
 using System;
+using static RayTracer.Constants;
 
 namespace RayTracer.Engine.Math
 {
@@ -8,8 +9,8 @@ namespace RayTracer.Engine.Math
     /// </summary>
     public readonly struct Vector3 : IEquatable<Vector3>
     {
-        public static Vector3 Point(float x, float y, float z) => new Vector3(x, y, z, 1.0f);
-        public static Vector3 Vector(float x, float y, float z) => new Vector3(x, y, z);
+        public static Vector3 Point(float x, float y, float z) => new(x, y, z, 1.0f);
+        public static Vector3 Vector(float x, float y, float z) => new(x, y, z);
 
         public float X { get; }
         public float Y { get; }
@@ -35,21 +36,21 @@ namespace RayTracer.Engine.Math
         public static float Dot(Vector3 a, Vector3 b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;
 
         public static Vector3 Cross(Vector3 a, Vector3 b) =>
-            new Vector3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
+            new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 
         public static bool operator ==(Vector3 left, Vector3 right) => left.Equals(right);
         public static bool operator !=(Vector3 left, Vector3 right) => !left.Equals(right);
         public static Vector3 operator +(Vector3 left, Vector3 right) =>
-            new Vector3(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
+            new(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
         public static Vector3 operator -(Vector3 left, Vector3 right) =>
-            new Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
-        public static Vector3 operator -(Vector3 v) => new Vector3(-v.X, -v.Y, -v.Z, -v.W);
-        public static Vector3 operator *(Vector3 v, float s) => new Vector3(v.X * s, v.Y * s, v.Z * s, v.W * s);
+            new(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
+        public static Vector3 operator -(Vector3 v) => new(-v.X, -v.Y, -v.Z, -v.W);
+        public static Vector3 operator *(Vector3 v, float s) => new(v.X * s, v.Y * s, v.Z * s, v.W * s);
         public static Vector3 operator *(float s, Vector3 v) => v * s;
-        public static Vector3 operator /(Vector3 v, float s) => new Vector3(v.X / s, v.Y / s, v.Z / s, v.W / s);
+        public static Vector3 operator /(Vector3 v, float s) => new(v.X / s, v.Y / s, v.Z / s, v.W / s);
 
         /// <inheritdoc/>
-        public bool Equals(Vector3 other) => X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z) && W.Equals(other.W);
+        public bool Equals(Vector3 other) => MathF.Abs(X- other.X) <= Epsilon && MathF.Abs(Y - other.Y) <= Epsilon && MathF.Abs(Z - other.Z) <= Epsilon && MathF.Abs(W - other.W) <= Epsilon;
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is Vector3 other && Equals(other);
