@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SkiaSharp;
 using static RayTracer.Constants;
 
 namespace RayTracer.Engine
@@ -134,7 +133,7 @@ namespace RayTracer.Engine
         /// <returns></returns>
         private Matrix AppendCol(IReadOnlyList<float> colValues)
         {
-            var storage = new float[Rows , Cols + 1];
+            var storage = new float[Rows, Cols + 1];
             for (var i = 0; i < Rows; i++)
             {
                 for (var j = 0; j < Cols + 1; j++)
@@ -151,7 +150,7 @@ namespace RayTracer.Engine
         /// <param name="y"></param>
         /// <param name="z"></param>
         /// <returns></returns>
-        public static Matrix Translation(float x, float y, float z) => Identity(3, 3).AppendRow(new[] {0f, 0f, 0f}).AppendCol(new []{x, y, z, 1});
+        public static Matrix Translation(float x, float y, float z) => Identity(3, 3).AppendRow(new[] { 0f, 0f, 0f }).AppendCol(new[] { x, y, z, 1f });
 
         /// <summary>
         /// Builds Scaling Matrix
@@ -166,11 +165,61 @@ namespace RayTracer.Engine
             storage[0, 0] = x;
             storage[1, 1] = y;
             storage[2, 2] = z;
-            storage[3, 3] = 1;
+            storage[3, 3] = 1f;
             return new Matrix(storage);
         }
 
+        /// <summary>
+        /// Build 4x4 Rotation matrix for X
+        /// </summary>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        public static Matrix RotationX(float r)
+        {
+            var storage = new float[4, 4];
+            storage[0, 0] = 1f;
+            storage[1, 1] = MathF.Cos(r);
+            storage[1, 2] = -MathF.Sin(r);
+            storage[2, 1] = MathF.Sin(r);
+            storage[1, 2] = MathF.Cos(r);
+            storage[3, 3] = 1f;
+            return new Matrix(storage);
+        }
 
+        /// <summary>
+        /// Build 4x4 Rotation matrix for Y
+        /// </summary>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        public static Matrix RotationY(float r)
+        {
+            var storage = new float[4, 4];
+            storage[0, 0] = MathF.Cos(r);
+            storage[0, 2] = MathF.Sin(r);
+            storage[1, 1] = 1f;
+            storage[2, 0] = -MathF.Sin(r);
+            storage[2, 2] = MathF.Cos(r);
+            storage[3, 3] = 1f;
+            return new Matrix(storage);
+        }
+
+        /// <summary>
+        /// Build 4x4 Rotation matrix for Z
+        /// </summary>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        public static Matrix RotationZ(float r)
+        {
+            var storage = new float[4, 4];
+            storage[0, 0] = MathF.Cos(r);
+            storage[0, 1] = -MathF.Sin(r);
+            storage[1, 1] = MathF.Cos(r); ;
+            storage[1, 0] = MathF.Sin(r);
+            storage[2, 2] = 1f;
+            storage[3, 3] = 1f;
+            return new Matrix(storage);
+        }
+        
         #region IEquatable
         public bool Equals(Matrix other) => Equals(other, Epsilon);
         public bool Equals(Matrix other, float floatThreshold)

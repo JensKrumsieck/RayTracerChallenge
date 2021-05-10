@@ -1,5 +1,6 @@
 using RayTracer.Extension;
 using System;
+using static RayTracer.Constants;
 
 namespace RayTracer.Engine
 {
@@ -41,6 +42,9 @@ namespace RayTracer.Engine
 
         public Vector3 Translate(float x, float y, float z) => Matrix.Translation(x, y, z) * this;
         public Vector3 Scale(float x, float y, float z) => Matrix.Scale(x, y, z) * this;
+        public Vector3 RotateX(float r) => Matrix.RotationX(r) * this;
+        public Vector3 RotateY(float r) => Matrix.RotationY(r) * this;
+        public Vector3 RotateZ(float r) => Matrix.RotationZ(r) * this;
 
         public static bool operator ==(Vector3 left, Vector3 right) => left.Equals(right);
         public static bool operator !=(Vector3 left, Vector3 right) => !left.Equals(right);
@@ -54,8 +58,10 @@ namespace RayTracer.Engine
         public static Vector3 operator /(Vector3 v, float s) => new(v.X / s, v.Y / s, v.Z / s, v.W / s);
 
         /// <inheritdoc/>
-        public bool Equals(Vector3 other) =>
-            X.Equal(other.X) && Y.Equal(other.Y) && Z.Equal(other.Z) && W.Equal(other.W);
+        public bool Equals(Vector3 other) => Equals(other, Epsilon);
+
+        public bool Equals(Vector3 other, float threshold) =>
+            X.Equal(other.X, threshold) && Y.Equal(other.Y, threshold) && Z.Equal(other.Z, threshold) && W.Equal(other.W, threshold);
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is Vector3 other && Equals(other);

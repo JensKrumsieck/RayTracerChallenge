@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
+using System;
 
 namespace RayTracer.Tests
 {
@@ -9,34 +10,83 @@ namespace RayTracer.Tests
         [TestMethod]
         public void MultiplyByTranslation()
         {
-            var p = Vector3.Point(-3, 4, 5);
-            var res = Vector3.Point(2, 1, 7);
-            Assert.AreEqual(p.Translate(5, -3, 2), res);
+            var p = Vector3.Point(-3f, 4f, 5f);
+            var res = Vector3.Point(2f, 1f, 7f);
+            Assert.AreEqual(p.Translate(5f, -3f, 2f), res);
         }
 
         [TestMethod]
         public void TranslationNotAffectingVectors()
         {
-            var v = Vector3.Vector(-3, 4, 5);
-            Assert.AreEqual(v.Translate(-3,4,5), v);
+            var v = Vector3.Vector(-3f, 4f, 5f);
+            Assert.AreEqual(v.Translate(-3f, 4f, 5f), v);
         }
 
         [TestMethod]
         public void InverseTranslation()
         {
-            var mat = Matrix.Translation(5, -3, 2);
+            var mat = Matrix.Translation(5f, -3f, 2f);
             var inv = mat.Inverse();
-            var p = Vector3.Point(-3, 4, 5);
-            var res = Vector3.Point(-8, 7, 3);
+            var p = Vector3.Point(-3f, 4f, 5f);
+            var res = Vector3.Point(-8f, 7f, 3f);
             Assert.AreEqual(inv * p, res);
         }
 
         [TestMethod]
-        public void ScaleTest()
+        public void ScalePoint()
         {
-            var p = Vector3.Point(-4, 6, 8);
-            var res = Vector3.Point(-8, 18, 32);
-            Assert.AreEqual(p.Scale(2,3,4), res);
+            var p = Vector3.Point(-4f, 6f, 8f);
+            var res = Vector3.Point(-8f, 18f, 32f);
+            Assert.AreEqual(p.Scale(2f, 3f, 4f), res);
+        }
+
+        [TestMethod]
+        public void ScaleVector()
+        {
+            var p = Vector3.Vector(-4f, 6f, 8f);
+            var res = Vector3.Vector(-8f, 18f, 32f);
+            Assert.AreEqual(p.Scale(2f, 3f, 4f), res);
+        }
+
+        [TestMethod]
+        public void InverseScaling()
+        {
+            var v = Vector3.Vector(-4f, 6f, 8f);
+            var scale = Matrix.Scale(2f, 3f, 4f);
+            var inv = scale.Inverse();
+            Assert.AreEqual(inv * v, Vector3.Vector(-2f, 2f, 2f));
+        }
+
+        [TestMethod]
+        public void Reflection()
+        {
+            var p = Vector3.Point(2f, 3f, 4f);
+            Assert.AreEqual(p.Scale(-1f, 1f, 1f), Vector3.Point(-2f, 3f, 4f));
+        }
+
+        [TestMethod]
+        public void RotateX()
+        {
+            var o = Vector3.Point(0f, 1f, 0f);
+            Assert.AreEqual(o.RotateX(MathF.PI / 2f), Vector3.Point(0f, 0f, 1f));
+        }
+
+        [TestMethod]
+        public void RotateY()
+        {
+            var o = Vector3.Point(0f, 0f, 1f);
+            var res = o.RotateY(MathF.PI / 2f);
+
+            Assert.AreEqual(res, Vector3.Point(1f, 0f, 0f));
+        }
+
+        [TestMethod]
+        public void RotateZ()
+        {
+            var o = Vector3.Point(0f, 1f, 0f);
+            var res = o.RotateZ(MathF.PI / 2f);
+
+            Assert.AreEqual(res, Vector3.Point(-1f, 0f, 0f));
         }
     }
 }
