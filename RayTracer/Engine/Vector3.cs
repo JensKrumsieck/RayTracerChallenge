@@ -45,6 +45,8 @@ namespace RayTracer.Engine
         public Vector3 RotateX(float r) => Matrix.RotationX(r) * this;
         public Vector3 RotateY(float r) => Matrix.RotationY(r) * this;
         public Vector3 RotateZ(float r) => Matrix.RotationZ(r) * this;
+        public Vector3 Skew(float xy, float xz, float yx, float yz, float zx, float zy) =>
+            Matrix.Skew(xy, xz, yx, yz, zx, zy) * this;
 
         public static bool operator ==(Vector3 left, Vector3 right) => left.Equals(right);
         public static bool operator !=(Vector3 left, Vector3 right) => !left.Equals(right);

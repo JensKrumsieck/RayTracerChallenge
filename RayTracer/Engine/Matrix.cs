@@ -181,7 +181,7 @@ namespace RayTracer.Engine
             storage[1, 1] = MathF.Cos(r);
             storage[1, 2] = -MathF.Sin(r);
             storage[2, 1] = MathF.Sin(r);
-            storage[1, 2] = MathF.Cos(r);
+            storage[2, 2] = MathF.Cos(r);
             storage[3, 3] = 1f;
             return new Matrix(storage);
         }
@@ -215,6 +215,22 @@ namespace RayTracer.Engine
             storage[0, 1] = -MathF.Sin(r);
             storage[1, 1] = MathF.Cos(r); ;
             storage[1, 0] = MathF.Sin(r);
+            storage[2, 2] = 1f;
+            storage[3, 3] = 1f;
+            return new Matrix(storage);
+        }
+
+        public static Matrix Skew(float xy, float xz, float yx, float yz, float zx, float zy)
+        {
+            var storage = new float[4, 4];
+            storage[0, 0] = 1f;
+            storage[0, 1] = xy;
+            storage[0, 2] = xz;
+            storage[1, 0] = yx;
+            storage[1, 1] = 1f;
+            storage[1, 2] = yz;
+            storage[2, 0] = zx;
+            storage[2, 1] = zy;
             storage[2, 2] = 1f;
             storage[3, 3] = 1f;
             return new Matrix(storage);

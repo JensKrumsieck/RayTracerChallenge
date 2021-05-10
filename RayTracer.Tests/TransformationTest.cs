@@ -69,24 +69,89 @@ namespace RayTracer.Tests
         {
             var o = Vector3.Point(0f, 1f, 0f);
             Assert.AreEqual(o.RotateX(MathF.PI / 2f), Vector3.Point(0f, 0f, 1f));
+            Assert.AreEqual(o.RotateX(MathF.PI / 4f), Vector3.Point(0f, MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f));
         }
 
         [TestMethod]
         public void RotateY()
         {
             var o = Vector3.Point(0f, 0f, 1f);
-            var res = o.RotateY(MathF.PI / 2f);
 
-            Assert.AreEqual(res, Vector3.Point(1f, 0f, 0f));
+            Assert.AreEqual(o.RotateY(MathF.PI / 2f), Vector3.Point(1f, 0f, 0f));
+            Assert.AreEqual(o.RotateY(MathF.PI / 4f), Vector3.Point(MathF.Sqrt(2f) / 2f, 0, MathF.Sqrt(2f) / 2f));
         }
 
         [TestMethod]
         public void RotateZ()
         {
             var o = Vector3.Point(0f, 1f, 0f);
-            var res = o.RotateZ(MathF.PI / 2f);
 
-            Assert.AreEqual(res, Vector3.Point(-1f, 0f, 0f));
+            Assert.AreEqual(o.RotateZ(MathF.PI / 2f), Vector3.Point(-1f, 0f, 0f));
+            Assert.AreEqual(o.RotateZ(MathF.PI / 4f), Vector3.Point(-MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f, 0f));
+        }
+
+        [TestMethod]
+        public void SkewXY()
+        {
+            var o = Vector3.Point(2f, 3f, 4f);
+            var res = o.Skew(1f, 0f, 0f, 0f, 0f, 0f);
+
+            Assert.AreEqual(res, Vector3.Point(5f, 3f, 4f));
+        }
+
+        [TestMethod]
+        public void SkewXZ()
+        {
+            var o = Vector3.Point(2f, 3f, 4f);
+            var res = o.Skew(0f, 1f, 0f, 0f, 0f, 0f);
+
+            Assert.AreEqual(res, Vector3.Point(6f, 3f, 4f));
+        }
+
+        [TestMethod]
+        public void SkewYX()
+        {
+            var o = Vector3.Point(2f, 3f, 4f);
+            var res = o.Skew(0f, 0f, 1f, 0f, 0f, 0f);
+
+            Assert.AreEqual(res, Vector3.Point(2f, 5f, 4f));
+        }
+
+        [TestMethod]
+        public void SkewYZ()
+        {
+            var o = Vector3.Point(2f, 3f, 4f);
+            var res = o.Skew(0f, 0f, 0f, 1f, 0f, 0f);
+
+            Assert.AreEqual(res, Vector3.Point(2f, 7f, 4f));
+        }
+
+        [TestMethod]
+        public void SkewZX()
+        {
+            var o = Vector3.Point(2f, 3f, 4f);
+            var res = o.Skew(0f, 0f, 0f, 0f, 1f, 0f);
+
+            Assert.AreEqual(res, Vector3.Point(2f, 3f, 6f));
+        }
+
+        [TestMethod]
+        public void SkewZY()
+        {
+            var o = Vector3.Point(2f, 3f, 4f);
+            var res = o.Skew(0f, 0f, 0f, 0f, 0f, 1f);
+
+            Assert.AreEqual(res, Vector3.Point(2f, 3f, 7f));
+        }
+
+        [TestMethod]
+        public void ChainingTransformations()
+        {
+            var p = Vector3.Point(1f, 0f, 1f);
+            var res = p.RotateX(MathF.PI / 2f).Scale(5f, 5f, 5f).Translate(10f, 5f, 7f);
+            var resReverse = Matrix.Translation(10f, 5f, 7f) * Matrix.Scale(5f, 5f, 5f) * Matrix.RotationX(MathF.PI / 2f) * p;
+            Assert.AreEqual(res, resReverse);
+            Assert.AreEqual(res, Vector3.Point(15f, 0f, 7f));
         }
     }
 }
