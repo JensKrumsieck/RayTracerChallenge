@@ -9,9 +9,19 @@ namespace RayTracer.Tests
         [TestMethod]
         public void CreateRay()
         {
-            var ray = new Ray(Vector3.Point(1, 2, 3), Vector3.Vector(4, 5, 6));
-            Assert.AreEqual(Vector3.Point(1, 2, 3), ray.Origin);
-            Assert.AreEqual(Vector3.Vector(4, 5, 6), ray.Direction);
+            var ray = new Ray(Vector3.Point(1f, 2f, 3f), Vector3.Vector(4f, 5f, 6f));
+            Assert.AreEqual(Vector3.Point(1f, 2f, 3f), ray.Origin);
+            Assert.AreEqual(Vector3.Vector(4f, 5f, 6f), ray.Direction);
+        }
+
+        [TestMethod]
+        public void PointByDistance()
+        {
+            var ray = new Ray(Vector3.Point(2f, 3f, 4f), Vector3.Vector(1f, 0f, 0f));
+            Assert.AreEqual(Vector3.Point(2f, 3f, 4f), ray.PointByDistance(0f));
+            Assert.AreEqual(Vector3.Point(3f, 3f, 4f), ray.PointByDistance(1f));
+            Assert.AreEqual(Vector3.Point(1f, 3f, 4f), ray.PointByDistance(-1f));
+            Assert.AreEqual(Vector3.Point(4.5f, 3f, 4f), ray.PointByDistance(2.5f));
         }
     }
 }

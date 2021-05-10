@@ -10,5 +10,7 @@
             Origin = origin;
             Direction = direction;
         }
+
+        public readonly Vector3 PointByDistance(float d) => Origin + Direction * d;
     }
 }
