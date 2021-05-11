@@ -6,8 +6,8 @@ using Color = RayTracer.Engine.Color;
 
 /*
  * Implemented the System.Numerics Types, too
- * The default implementation takes about 121ms to Render
- * System.Numerics: 12 ms (!!)
+ * The default implementation takes about 121ms to Render (87 ms without saving an image)
+ * System.Numerics: 12 ms (!!), 3 ms without saving an image!
  */
 
 namespace RayTracer.Tests
