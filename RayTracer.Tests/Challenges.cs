@@ -43,7 +43,6 @@ namespace RayTracer.Tests
                     }
                 }
             });
-            canvas.Render();
         }
 
         [TestMethod]
@@ -74,7 +73,6 @@ namespace RayTracer.Tests
                     }
                 }
             });
-            canvas.Render();
         }
     }
 }
