@@ -24,8 +24,8 @@ namespace RayTracer.Primitives
             if (d < 0) return Array.Empty<float>();
             return new[]
             {
-                -b - MathF.Sqrt(d) / 2f * a,
-                -b + MathF.Sqrt(d) / 2f * a
+                (-b - MathF.Sqrt(d)) / (2f * a),
+                (-b + MathF.Sqrt(d)) / (2f * a)
             };
         }
     }

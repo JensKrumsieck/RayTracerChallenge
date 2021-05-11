@@ -29,7 +29,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void RayIntersectsSphere()
         {
-            var ray = new Ray(Vector3.Point(0f, 0f, -5f), Vector3.Vector(1f, 0f, 0f));
+            var ray = new Ray(Vector3.Point(0f, 0f, -5f), Vector3.Vector(0f, 0f, 1f));
             var s = new Sphere(Vector3.Point(0f, 0f, 0f));
             var xs = s.Intersect(ray);
             Assert.AreEqual(xs.Length, 2);
@@ -40,7 +40,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void RayIntersectsSphereTangent()
         {
-            var ray = new Ray(Vector3.Point(0f, 0f, -5f), Vector3.Vector(0f, 0f, 1f));
+            var ray = new Ray(Vector3.Point(0f, 1f, -5f), Vector3.Vector(0f, 0f, 1f));
             var s = new Sphere(Vector3.Point(0f, 0f, 0f));
             var xs = s.Intersect(ray);
             Assert.AreEqual(xs.Length, 2);
