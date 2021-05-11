@@ -11,8 +11,8 @@ namespace RayTracer.Tests
         [TestMethod]
         public void RayIntersectsSphere()
         {
-            var ray = new Ray(Vector3.Point(0f, 0f, -5f), Vector3.Vector(0f, 0f, 1f));
-            var s = new Sphere(Vector3.Point(0f, 0f, 0f));
+            var ray = new Ray(Vector.Point(0f, 0f, -5f), new Vector(0f, 0f, 1f));
+            var s = new Sphere(Vector.Point(0f, 0f, 0f));
             var xs = s.Intersect(ray);
             Assert.AreEqual(xs.Length, 2);
             Assert.AreEqual(xs[0].Distance, 4f);
@@ -22,9 +22,9 @@ namespace RayTracer.Tests
         [TestMethod]
         public void RayIntersectsSphereOtherSyntax()
         {
-            var s = new Sphere(Vector3.Point(0f, 0f, 0f));
-            var rayOrigin = Vector3.Point(0f, 0f, -5f);
-            var isHit = Ray.Intersect(rayOrigin, Vector3.UnitZ, s, out var hits);
+            var s = new Sphere(Vector.Point(0f, 0f, 0f));
+            var rayOrigin = Vector.Point(0f, 0f, -5f);
+            var isHit = Ray.Intersect(rayOrigin, Vector.UnitZ, s, out var hits);
             Assert.IsTrue(isHit);
             Assert.AreEqual(hits[0].Distance, 4f);
             Assert.AreEqual(hits[1].Distance, 6f);
@@ -34,7 +34,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void RayIntersectsSphereTangent()
         {
-            var ray = new Ray(Vector3.Point(0f, 1f, -5f), Vector3.Vector(0f, 0f, 1f));
+            var ray = new Ray(Vector.Point(0f, 1f, -5f), new Vector(0f, 0f, 1f));
             var s = new Sphere();
             var xs = s.Intersect(ray);
             Assert.AreEqual(xs.Length, 2);
@@ -45,7 +45,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void RayMissesSphere()
         {
-            var ray = new Ray(Vector3.Point(0f, 2f, -5f), Vector3.Vector(0f, 0f, 1f));
+            var ray = new Ray(Vector.Point(0f, 2f, -5f), new Vector(0f, 0f, 1f));
             var s = new Sphere();
             var xs = s.Intersect(ray);
             Assert.AreEqual(xs.Length, 0);
@@ -54,7 +54,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void RayInsideSphere()
         {
-            var ray = new Ray(Vector3.Point(0f, 0f, 0f), Vector3.Vector(0f, 0f, 1f));
+            var ray = new Ray(Vector.Point(0f, 0f, 0f), new Vector(0f, 0f, 1f));
             var s = new Sphere();
             var xs = s.Intersect(ray);
             Assert.AreEqual(xs.Length, 2);
@@ -65,7 +65,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void SphereBehindRay()
         {
-            var ray = new Ray(Vector3.Point(0f, 0f, 5f), Vector3.Vector(0f, 0f, 1f));
+            var ray = new Ray(Vector.Point(0f, 0f, 5f), new Vector(0f, 0f, 1f));
             var s = new Sphere();
             var xs = s.Intersect(ray);
             Assert.AreEqual(xs.Length, 2);

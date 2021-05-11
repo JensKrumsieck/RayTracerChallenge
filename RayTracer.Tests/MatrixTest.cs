@@ -103,8 +103,8 @@ namespace RayTracer.Tests
                 {8f, 6f, 4f, 1f},
                 {0f, 0f, 0f, 1f}
             });
-            var v = new Vector3(1f, 2f, 3f, 1f);
-            Assert.IsTrue((m * v) == new Vector3(18, 24, 33, 1));
+            var v = new Vector(1f, 2f, 3f, 1f);
+            Assert.AreEqual(m * v,new Vector(18, 24, 33, 1));
         }
 
         [TestMethod]
@@ -117,7 +117,7 @@ namespace RayTracer.Tests
                 {2f, 4f, 8f, 16f},
                 {4f, 8f, 16f, 32f}
             });
-            Assert.IsTrue(m * Matrix.Identity(4, 4) == m);
+            Assert.IsTrue(m * Matrix.Identity == m);
         }
 
         [TestMethod]
@@ -143,98 +143,12 @@ namespace RayTracer.Tests
         [TestMethod]
         public void TransposeIdentity()
         {
-            var i = Matrix.Identity(4, 4);
+            var i = Matrix.Identity;
             Assert.AreEqual(i, i.Transpose());
         }
 
         [TestMethod]
-        public void TestSubmatrix()
-        {
-            var m1 = new Matrix(new[,]
-            {
-                {1f, 5f, 0f},
-                {-3f, 2f, 7f},
-                {0f, 6f, -3f}
-            });
-            var subM1 = new Matrix(new[,]
-            {
-                {-3f, 2f},
-                {0f, 6f}
-            });
-            Assert.AreEqual(m1.Submatrix(0, 2), subM1);
-        }
-
-        [TestMethod]
-        public void TestSubmatrix_2()
-        {
-            var m1 = new Matrix(new[,]
-            {
-                {-6f, 1f, 1f, 6f},
-                {-8f, 5f, 8f, 6},
-                {-1f, 0f, 8f, 2f},
-                {-7f, 1f, -1f, 1f}
-            });
-            var subM1 = new Matrix(new[,]
-            {
-                {-6f, 1f, 6f},
-                {-8f, 8f, 6f},
-                {-7f, -1f, 1f}
-            });
-            Assert.AreEqual(m1.Submatrix(2, 1), subM1);
-        }
-
-        [TestMethod]
-        public void TestDeterminant()
-        {
-            var m1 = new Matrix(new[,]
-            {
-                {1f, 5f},
-                {-3f, 2f}
-            });
-            Assert.AreEqual(m1.Determinant(), 17);
-        }
-
-        [TestMethod]
-        public void TestMinor()
-        {
-            var m1 = new Matrix(new[,]
-            {
-                {3f, 5f, 0f},
-                {2f, -1f, -7f},
-                {6f, -1f, 5f}
-            });
-            Assert.AreEqual(m1.Minor(1, 0), 25);
-        }
-
-        [TestMethod]
-        public void TestCofactor()
-        {
-            var m1 = new Matrix(new[,]
-            {
-                {3f, 5f, 0f},
-                {2f, -1f, -7f},
-                {6f, -1f, 5f}
-            });
-            Assert.AreEqual(m1.Minor(0, 0), -12);
-            Assert.AreEqual(m1.Cofactor(0, 0), -12);
-            Assert.AreEqual(m1.Minor(1, 0), 25);
-            Assert.AreEqual(m1.Cofactor(1, 0), -25);
-        }
-
-        [TestMethod]
-        public void Determinant3x3()
-        {
-            var m1 = new Matrix(new[,]
-            {
-                {1f, 2f, 6f},
-                {-5f, 8f, -4f},
-                {2f, 6f, 4f}
-            });
-            Assert.AreEqual(m1.Determinant(), -196);
-        }
-
-        [TestMethod]
-        public void Determinant4x4()
+        public void Determinant()
         {
             var m1 = new Matrix(new[,]
             {
@@ -259,10 +173,8 @@ namespace RayTracer.Tests
             });
             var m2 = m1.Inverse();
             Assert.AreEqual(m1.Determinant(), 532);
-            Assert.AreEqual(m1.Cofactor(2, 3), -160);
-            Assert.AreEqual(m2[3, 2], -160f / 532f);
-            Assert.AreEqual(m1.Cofactor(3, 2), 105);
-            Assert.AreEqual(m2[2, 3], 105f / 532f);
+            Assert.AreEqual(m2[3, 2], -160f / 532f, 1e-4);
+            Assert.AreEqual(m2[2, 3], 105f / 532f, 1e-4);
             var m3 = new Matrix(new[,]
             {
                 {0.21805f, 0.45113f, 0.24060f, -0.04511f},
@@ -270,7 +182,7 @@ namespace RayTracer.Tests
                 {-0.07895f, -0.22368f, -0.05263f, 0.19737f},
                 {-0.52256f, -0.81391f, -0.30075f, 0.30639f}
             });
-            Assert.IsTrue(m2.Equals(m3, 1e5f));
+            Assert.IsTrue(m2.Equals(m3, 1e-5f));
         }
 
         [TestMethod]
@@ -283,7 +195,7 @@ namespace RayTracer.Tests
                 {7f, 7f, -6f, -7f},
                 {1f, -3f, 7f, 4f}
             });
-            Assert.AreEqual(m1 * m1.Inverse(), Matrix.Identity(4, 4));
+            Assert.AreEqual(m1 * m1.Inverse(), Matrix.Identity);
         }
     }
 }
