@@ -8,15 +8,11 @@ namespace RayTracer.Primitives
     {
         public float Radius => TransformationMatrix[0, 0]; //for simplicity use uniform scale
 
-        public Sphere(Vector3 position, float radius = 1f) : base(position)
-        {
-            TransformationMatrix *= Matrix.Scale(radius, radius, radius);
-        }
+        public Sphere(Vector3 position, float radius = 1f) : base(position) => TransformationMatrix *= Matrix.Scale(radius, radius, radius);
 
-        public Sphere(float radius = 1f)
-        {
-            TransformationMatrix *= Matrix.Scale(radius, radius, radius);
-        }
+        public Sphere(float radius = 1f) => TransformationMatrix *= Matrix.Scale(radius, radius, radius);
+
+        public override Vector3 Normal(Vector3 point) => Vector3.Normalize(point - Vector3.Zero);
 
         public override HitInfo[] Intersect(Ray ray, bool hit = false)
         {
