@@ -18,6 +18,8 @@ namespace RayTracer.Engine
 
         protected Transform() => TransformationMatrix = Matrix.Identity(4, 4);
 
+        public virtual Vector3 Normal(Vector3 point) => Vector3.Vector(0f, 0f, 0f);
+
         public virtual HitInfo[] Intersect(Ray ray) => Array.Empty<HitInfo>();
 
         public static HitInfo? Hit(IEnumerable<HitInfo> intersections) =>
@@ -39,6 +41,8 @@ namespace RayTracer.Engine
         }
 
         protected NativeTransform() => TransformationMatrix = System.Numerics.Matrix4x4.Identity;
+
+        public virtual System.Numerics.Vector3 Normal(Vector3 point) => System.Numerics.Vector3.Zero;
         public virtual NativeHitInfo[] Intersect(NativeRay ray) => Array.Empty<NativeHitInfo>();
 
         public static NativeHitInfo? Hit(IEnumerable<NativeHitInfo> intersections) =>
