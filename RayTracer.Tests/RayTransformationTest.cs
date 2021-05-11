@@ -23,5 +23,23 @@ namespace RayTracer.Tests
             Assert.AreEqual(r2.Direction, Vector3.UnitY * 3f);
             Assert.AreEqual(r2.Origin, Vector3.Point(2f, 6f, 12f));
         }
+
+        [TestMethod]
+        public void TranslateNativeRay()
+        {
+            var r = new NativeRay(new System.Numerics.Vector3(1f, 2f, 3f), System.Numerics.Vector3.UnitY);
+            var r2 = r.Transform(System.Numerics.Matrix4x4.CreateTranslation(3f, 4f, 5f));
+            Assert.AreEqual(r2.Direction, System.Numerics.Vector3.UnitY);
+            Assert.AreEqual(r2.Origin, new System.Numerics.Vector3(4f, 6f, 8f));
+        }
+
+        [TestMethod]
+        public void ScaleNativeRay()
+        {
+            var r = new NativeRay(new System.Numerics.Vector3(1f, 2f, 3f), System.Numerics.Vector3.UnitY);
+            var r2 = r.Transform(System.Numerics.Matrix4x4.CreateScale(2f, 3f, 4f));
+            Assert.AreEqual(r2.Direction, System.Numerics.Vector3.UnitY * 3f);
+            Assert.AreEqual(r2.Origin, new System.Numerics.Vector3(2f, 6f, 12f));
+        }
     }
 }

@@ -37,8 +37,13 @@
         }
         public readonly System.Numerics.Vector3 PointByDistance(float d) => Origin + Direction * d;
 
-        public readonly NativeRay Transform(System.Numerics.Matrix4x4 m) =>
-            new(System.Numerics.Vector3.Transform(Origin, m), System.Numerics.Vector3.Transform(Direction, m));
+        public readonly NativeRay Transform(System.Numerics.Matrix4x4 m)
+        {
+            //Vector 4 workaround for vectors
+            var direction = new System.Numerics.Vector4(Direction, 0);
+            var dir = System.Numerics.Vector4.Transform(direction, m);
+            return new NativeRay(System.Numerics.Vector3.Transform(Origin, m), new System.Numerics.Vector3(dir.X, dir.Y, dir.Z));
+        }
 
         public static bool Intersect(NativeRay ray, NativeTransform transform, out NativeHitInfo[] hits)
         {

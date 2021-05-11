@@ -3,7 +3,7 @@ using System;
 
 namespace RayTracer.Primitives
 {
-    public class Sphere : Transform
+    public sealed class Sphere : Transform
     {
         public float Radius => TransformationMatrix[0, 0]; //for simplicity use uniform scale
         public Sphere(Vector3 position, float radius = 1f) : base(position)
@@ -33,7 +33,7 @@ namespace RayTracer.Primitives
         }
     }
 
-    public class NativeSphere : NativeTransform
+    public sealed class NativeSphere : NativeTransform
     {
         public float Radius => TransformationMatrix.M11; //for simplicity use uniform scale
         public NativeSphere(System.Numerics.Vector3 position, float radius = 1f) : base(position)

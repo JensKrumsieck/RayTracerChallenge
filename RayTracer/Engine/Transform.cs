@@ -28,7 +28,7 @@ namespace RayTracer.Engine
 
     public class NativeTransform
     {
-        public System.Numerics.Vector3 Position => new(TransformationMatrix.M14, TransformationMatrix.M24, TransformationMatrix.M34);
+        public System.Numerics.Vector3 Position => new(TransformationMatrix.M41, TransformationMatrix.M42, TransformationMatrix.M43);
         public System.Numerics.Vector3 Scale => new(TransformationMatrix.M11, TransformationMatrix.M22, TransformationMatrix.M33);
 
         public System.Numerics.Matrix4x4 TransformationMatrix;
