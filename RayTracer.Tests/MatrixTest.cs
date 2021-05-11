@@ -96,13 +96,14 @@ namespace RayTracer.Tests
         [TestMethod]
         public void MultiplyVector()
         {
+            //Transpose matrix here as the book follows different conventions as system.numerics...
             var m = new Matrix(new[,]
             {
                 {1f, 2f, 3f, 4f},
                 {2f, 4f, 4f, 2f},
                 {8f, 6f, 4f, 1f},
                 {0f, 0f, 0f, 1f}
-            });
+            }).Transpose();
             var v = new Vector(1f, 2f, 3f, 1f);
             Assert.AreEqual(m * v,new Vector(18, 24, 33, 1));
         }

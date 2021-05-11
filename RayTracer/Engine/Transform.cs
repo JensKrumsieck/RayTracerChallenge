@@ -1,31 +1,50 @@
 ﻿#nullable enable
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Numerics;
 
 namespace RayTracer.Engine
 {
     public class Transform
     {
-        public Vector Position => Vector.Point(TransformationMatrix[0, 3], TransformationMatrix[1, 3], TransformationMatrix[2, 3]);
-        public Vector Scale => Vector.Point(TransformationMatrix[0, 0], TransformationMatrix[1, 1], TransformationMatrix[2, 2]);
+        private Matrix _transformationMatrix;
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public Vector3 Scale;
 
-        public Matrix TransformationMatrix;
-
-        protected Transform(Vector position)
+        public Matrix TransformationMatrix
         {
-            TransformationMatrix = Matrix.Translation(position.X, position.Y, position.Z);
+            get => _transformationMatrix;
+            set
+            {
+                _transformationMatrix = value;
+                Decompose();
+            }
         }
 
-        protected Transform() => TransformationMatrix = Matrix.Identity;
+        private void Decompose()
+        {
+            if (!Matrix4x4.Decompose(TransformationMatrix, out var scale, out var rotation, out var pos)) return;
+            Position = pos;
+            Rotation = rotation;
+            Scale = scale;
+        }
 
-        public virtual Vector Normal(Vector point) => new(0f, 0f, 0f);
+        protected Transform(Vector3 position) => TransformationMatrix = Matrix.Translation(position.X, position.Y, position.Z);
 
-        public virtual HitInfo[] Intersect(Ray ray) => Array.Empty<HitInfo>();
+        protected Transform() => TransformationMatrix = Matrix4x4.Identity;
 
-        public static HitInfo? Hit(IEnumerable<HitInfo> intersections) =>
-            intersections.Where(s => s.Distance >= 0).OrderBy(s => s.Distance).FirstOrDefault();
+        public virtual Vector3 Normal(Vector3 point) => new(0f, 0f, 0f);
+
+        public virtual HitInfo[] Intersect(Ray ray, bool hit = false) => Array.Empty<HitInfo>();
+
+        public HitInfo? Hit(Ray ray)
+        {
+            var xs = Intersect(ray, true);
+            return xs.Length == 0 ? null : xs[0];
+        }
 
         public override string ToString() => GetType().Name + ":" + Position;
+
+
     }
 }

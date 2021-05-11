@@ -1,6 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Numerics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
 using RayTracer.Primitives;
+using Vector = RayTracer.Engine.Vector;
 
 namespace RayTracer.Tests
 {
@@ -20,7 +22,7 @@ namespace RayTracer.Tests
             var s = new Sphere();
             Assert.AreEqual(s.TransformationMatrix, Matrix.Identity);
             s.TransformationMatrix = Matrix.Translation(2f,3f,4f);
-            Assert.AreEqual(s.Position, Vector.Point(2f, 3f, 4f));
+            Assert.AreEqual(s.Position, new Vector3(2f, 3f, 4f));
         }
 
         [TestMethod]

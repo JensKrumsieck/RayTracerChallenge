@@ -29,7 +29,7 @@ namespace RayTracer.Tests
             var inv = mat.Inverse();
             var p = Vector.Point(-3f, 4f, 5f);
             var res = Vector.Point(-8f, 7f, 3f);
-            Assert.AreEqual(inv.Multiply(p), res);
+            Assert.AreEqual(inv * p, res);
         }
 
         [TestMethod]
@@ -149,9 +149,10 @@ namespace RayTracer.Tests
         {
             var p = Vector.Point(1f, 0f, 1f);
             var res = p.RotateX(MathF.PI / 2f).Scale(5f, 5f, 5f).Translate(10f, 5f, 7f);
-            var resReverse = Matrix.Translation(10f, 5f, 7f) * Matrix.Scale(5f, 5f, 5f) * Matrix.RotationX(MathF.PI / 2f) * p;
-            Assert.AreEqual(res, resReverse);
+            
+            var scl = p.Scale(5f, 5f, 5f).RotateX(MathF.PI/2f).Translate(10f,5f,7f);
             Assert.AreEqual(res, Vector.Point(15f, 0f, 7f));
+            Assert.AreEqual(res, scl);
         }
     }
 }

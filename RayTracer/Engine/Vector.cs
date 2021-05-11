@@ -13,6 +13,7 @@ namespace RayTracer.Engine
         public static readonly Vector UnitY = new(0f, 1f, 0f);
         public static readonly Vector UnitZ = new(0f, 0f, 1f);
         public static Vector Point(float x, float y, float z) => new Vector4(x, y, z, 1f);
+        public static Vector Point(Vector3 v) => new Vector4(v, 1f);
 
         public Vector(float x, float y, float z)
         {
@@ -76,5 +77,6 @@ namespace RayTracer.Engine
         /// <inheritdoc/>
         public override int GetHashCode() => _storage.GetHashCode();
         public override string ToString() => $"{(IsPoint ? "Point" : "Vector")}: ({_storage.X}, {_storage.Y}, {_storage.Z})";
+        public Vector3 ToVector3() => new(X, Y, Z);
     }
 }

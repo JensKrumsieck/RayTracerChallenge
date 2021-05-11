@@ -43,6 +43,7 @@ namespace RayTracer.Engine
         public Matrix Inverse()
         {
             if (!Matrix4x4.Invert(this, out var inversion)) throw new InvalidOperationException("Matrix is not invertible!");
+            //weirdly system.numerics results in the transposed version...?
             return inversion;
         }
 
@@ -131,7 +132,7 @@ namespace RayTracer.Engine
         #region Operators
         public static Matrix operator *(Matrix left, Matrix right) => Matrix4x4.Multiply(left, right);
         public static Matrix operator *(Matrix m, float scalar) => Matrix4x4.Multiply(m, scalar);
-        public static Vector operator *(Matrix m, Vector v) => m.Multiply(v);
+        public static Vector operator *(Matrix m, Vector v) => Vector4.Transform(v, m);
 
         public static bool operator ==(Matrix left, Matrix right) => left.Equals(right);
         public static bool operator !=(Matrix left, Matrix right) => !left.Equals(right);
