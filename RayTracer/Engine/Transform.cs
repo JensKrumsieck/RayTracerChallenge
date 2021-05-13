@@ -45,6 +45,8 @@ namespace RayTracer.Engine
 
         public override string ToString() => GetType().Name + ":" + Position;
 
+        public Vector3 WorldToObject(Vector3 worldPoint) => Vector3.Transform(worldPoint, TransformationMatrix.Inverse());
 
+        public Vector3 ObjectToWorld(Vector3 objectPoint) => Vector3.Transform(objectPoint, TransformationMatrix.Inverse().Transpose());
     }
 }

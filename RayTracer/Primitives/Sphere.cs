@@ -12,7 +12,13 @@ namespace RayTracer.Primitives
 
         public Sphere(float radius = 1f) => TransformationMatrix *= Matrix.Scale(radius, radius, radius);
 
-        public override Vector3 Normal(Vector3 point) => Vector3.Normalize(point - Vector3.Zero);
+        public override Vector3 Normal(Vector3 worldPoint)
+        {
+            var objectPoint = WorldToObject(worldPoint);
+            var objectNormal = Vector3.Normalize(objectPoint - Vector3.Zero);
+            var normal = ObjectToWorld(objectNormal);
+            return Vector3.Normalize(normal);
+        }
 
         public override HitInfo[] Intersect(Ray ray, bool hit = false)
         {

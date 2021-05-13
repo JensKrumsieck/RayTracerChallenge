@@ -132,7 +132,7 @@ namespace RayTracer.Engine
         #region Operators
         public static Matrix operator *(Matrix left, Matrix right) => Matrix4x4.Multiply(left, right);
         public static Matrix operator *(Matrix m, float scalar) => Matrix4x4.Multiply(m, scalar);
-        public static Vector operator *(Matrix m, Vector v) => Vector4.Transform(v, m);
+        public static Vector operator *(Matrix m, Vector v) => Vector4.Transform((Vector4)v, m);
 
         public static bool operator ==(Matrix left, Matrix right) => left.Equals(right);
         public static bool operator !=(Matrix left, Matrix right) => !left.Equals(right);

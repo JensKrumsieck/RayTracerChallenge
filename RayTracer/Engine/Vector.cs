@@ -54,6 +54,8 @@ namespace RayTracer.Engine
 
         public static implicit operator Vector(Vector4 v) => new(v);
         public static implicit operator Vector4(Vector v) => v._storage;
+        public static implicit operator Vector(Vector3 v) => new(v.X, v.Y, v.Z);
+        public static implicit operator Vector3(Vector v) => new(v.X, v.Y, v.Z);
 
         public static bool operator ==(Vector left, Vector right) => left.Equals(right);
         public static bool operator !=(Vector left, Vector right) => !left.Equals(right);

@@ -48,8 +48,10 @@ namespace RayTracer.Tests
         {
             var s = new Sphere(new Vector3(0f, 1f, 0f));
             const float val = .70711f;
-            var n = s.Normal(new Vector3(0, 1f + val, val));
-            Assert.AreEqual(n, new Vector3(0, val, -val));
+            var n = s.Normal(new Vector3(0, 1f + val, -val));
+            Assert.AreEqual(n.X, 0);
+            Assert.AreEqual(n.Y, val, 1e-5f);
+            Assert.AreEqual(n.Z, -val, 1e-5f);
         }
     }
 }
