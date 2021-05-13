@@ -20,8 +20,8 @@ namespace RayTracer.Tests
             const float half = wallSize / 2f;
 
             var canvas = new Viewport(canvasSize, canvasSize);
-            var col = Color.Red;
-            var s = new Sphere();
+            var s = new Sphere {Material = {BaseColor = Color.Red}};
+            var col = s.Material.BaseColor;
             var origin = new Vector3(0f, 0f, -5f);
             Parallel.For(0, canvasSize, y =>
             {

@@ -8,9 +8,12 @@ namespace RayTracer.Engine
     public class Transform
     {
         private Matrix4x4 _transformationMatrix;
+
         public Vector3 Position;
         public Quaternion Rotation;
         public Vector3 Scale;
+
+        public Material Material = Material.DefaultMaterial;
 
         public Matrix4x4 TransformationMatrix
         {

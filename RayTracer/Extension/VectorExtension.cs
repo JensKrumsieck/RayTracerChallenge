@@ -1,5 +1,4 @@
-﻿using RayTracer.Engine;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace RayTracer.Extension
 {
@@ -17,7 +16,7 @@ namespace RayTracer.Extension
         public static Vector4 Normalize(this Vector4 v) => Vector4.Normalize(v);
 
         public static Vector4 AsVector4(this Vector3 v) => new (v.X, v.Y, v.Z, 0f);
-        public static Vector3 AsVector3(this Vector4 v) => new Vector3(v.X, v.Y, v.Z);
+        public static Vector3 AsVector3(this Vector4 v) => new(v.X, v.Y, v.Z);
     }
 
 }

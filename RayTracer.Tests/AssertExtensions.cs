@@ -20,6 +20,20 @@ namespace RayTracer.Tests
         }
 
         /// <summary>
+        /// Color Assertions
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expected"></param>
+        /// <param name="value"></param>
+        // ReSharper disable once UnusedParameter.Global
+#pragma warning disable IDE0060
+        public static void ColorsAreEqual(this Assert a, Color expected, Color value, float threshold)
+        {
+            Assert.IsTrue(expected.Equals(value, threshold), $"Colors did not match. Expected: {expected}, Got: {value}, threshold {threshold}");
+        }
+
+
+        /// <summary>
         /// Checks whether all items are same
         /// </summary>
         /// <typeparam name="T"></typeparam>
