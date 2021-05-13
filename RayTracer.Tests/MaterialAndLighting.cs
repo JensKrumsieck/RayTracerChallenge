@@ -5,6 +5,7 @@ using RayTracer.Engine.Material;
 using RayTracer.Primitives;
 using System;
 using System.Numerics;
+using RayTracer.Extension;
 
 namespace RayTracer.Tests
 {
@@ -33,8 +34,9 @@ namespace RayTracer.Tests
         [TestMethod]
         public void SphereHasMaterial()
         {
-            var s = new Sphere { Material = { Ambient = 1f } };
-            Assert.AreEqual(s.Material.Ambient, 1f);
+            var mat = PhongMaterial.DefaultMaterial.WithAmbient(1.0f);
+            var s = new Sphere { Material = mat };
+            Assert.AreEqual(((PhongMaterial)s.Material).Ambient, 1f);
         }
 
         private static (PhongMaterial m, Vector3 p) Setup => (PhongMaterial.DefaultMaterial, Vector3.Zero);

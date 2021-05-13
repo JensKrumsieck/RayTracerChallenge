@@ -4,9 +4,9 @@ using System.Numerics;
 
 namespace RayTracer.Engine.Material
 {
-    public struct PhongMaterial
+    public struct PhongMaterial : IMaterial
     {
-        public Color BaseColor;
+        public Color BaseColor { get; set; }
         public float Ambient;
         public float Diffuse;
         public float Specular;
@@ -55,5 +55,6 @@ namespace RayTracer.Engine.Material
             }
             return ambient + diffuse + specular;
         }
+
     }
 }
