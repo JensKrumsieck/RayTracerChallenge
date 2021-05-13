@@ -28,6 +28,6 @@ namespace RayTracer.Engine
             Intersect(new Ray(origin, direction), transform, out hits);
 
         public static HitInfo? Hit(Vector3 origin, Vector3 dir, Transform transform) => Hit(new Ray(origin, dir), transform);
-        private static HitInfo? Hit(Ray ray, Transform transform) => transform.Hit(ray);
+        public static HitInfo? Hit(Ray ray, Transform transform) => transform.Hit(ray);
     }
 }
