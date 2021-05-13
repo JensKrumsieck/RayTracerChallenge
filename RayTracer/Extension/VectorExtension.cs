@@ -15,5 +15,9 @@ namespace RayTracer.Extension
         public static float Dot(this Vector4 left, Vector4 right) => Vector4.Dot(left, right);
         public static Vector4 Cross(this Vector4 a, Vector4 b) => new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X, 0f);
         public static Vector4 Normalize(this Vector4 v) => Vector4.Normalize(v);
+
+        public static Vector4 AsVector4(this Vector3 v) => new (v.X, v.Y, v.Z, 0f);
+        public static Vector3 AsVector3(this Vector4 v) => new Vector3(v.X, v.Y, v.Z);
     }
+
 }

@@ -23,9 +23,9 @@ namespace RayTracer.Primitives
         public override HitInfo[] Intersect(Ray ray, bool hit = false)
         {
             ray = ray.Transform(TransformationMatrix.Inverse());
-            var sphereToRay = ray.Origin.ToVector3() - Position;
-            var a = Vector3.Dot(ray.Direction.ToVector3(), ray.Direction.ToVector3());
-            var b = 2f * Vector3.Dot(ray.Direction.ToVector3(), sphereToRay);
+            var sphereToRay = ray.Origin - Position;
+            var a = Vector3.Dot(ray.Direction, ray.Direction);
+            var b = 2f * Vector3.Dot(ray.Direction, sphereToRay);
             var c = Vector3.Dot(sphereToRay, sphereToRay) - 1f;
             var d = b * b - 4f * a * c;
             if (d < 0) return Array.Empty<HitInfo>();

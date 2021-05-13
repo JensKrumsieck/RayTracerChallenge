@@ -2,8 +2,6 @@
 using RayTracer.Primitives;
 using System;
 using System.Numerics;
-using RayTracer.Engine;
-using Vector = RayTracer.Engine.Vector;
 
 namespace RayTracer.Tests
 {

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace RayTracer.Engine
 {
-    public class Viewport
+    public sealed class Viewport
     {
         public int Width { get; }
         public int Height { get; }
