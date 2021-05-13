@@ -5,6 +5,7 @@ using static RayTracer.Constants;
 
 namespace RayTracer.Engine
 {
+    [Obsolete("Use Vector3 or Vector4 instead")]
     public readonly struct Vector : IEquatable<Vector>
     {
         private readonly Vector4 _storage;

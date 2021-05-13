@@ -1,9 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
 
 namespace RayTracer.Tests
 {
     [TestClass]
+    [Obsolete("Tests Obsolete struct")]
     public class MatrixTest
     {
         [TestMethod]

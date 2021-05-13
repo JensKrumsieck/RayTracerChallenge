@@ -5,6 +5,7 @@ using static RayTracer.Constants;
 
 namespace RayTracer.Engine
 {
+    [Obsolete("Use Matrix4x4 instead")]
     public struct Matrix : IEquatable<Matrix>
     {
         private readonly Matrix4x4 _storage;

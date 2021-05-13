@@ -5,6 +5,7 @@ using System;
 namespace RayTracer.Tests
 {
     [TestClass]
+    [Obsolete("Tests obsolete struct")]
     public class VectorTest
     {
         [TestMethod]
