@@ -13,14 +13,14 @@ namespace RayTracer.Tests
         public void DefaultTransformation()
         {
             var s = new Sphere();
-            Assert.AreEqual(s.TransformationMatrix, Matrix.Identity);
+            Assert.AreEqual(s.TransformationMatrix, Matrix4x4.Identity);
         }
 
         [TestMethod]
         public void ChangeTransformation()
         {
             var s = new Sphere();
-            Assert.AreEqual(s.TransformationMatrix, Matrix.Identity);
+            Assert.AreEqual(s.TransformationMatrix, Matrix4x4.Identity);
             s.TransformationMatrix = Matrix.Translation(2f,3f,4f);
             Assert.AreEqual(s.Position, new Vector3(2f, 3f, 4f));
         }

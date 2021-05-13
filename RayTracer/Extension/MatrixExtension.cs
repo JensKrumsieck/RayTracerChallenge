@@ -17,5 +17,12 @@ namespace RayTracer.Extension
             f[1, 0], f[1, 1], f[1, 2], f[1, 3],
             f[2, 0], f[2, 1], f[2, 2], f[2, 3],
             f[3, 0], f[3, 1], f[3, 2], f[3, 3]);
+
+        /// <summary>
+        /// Returns self or inverted matrix
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public static Matrix4x4 Invert(this Matrix4x4 m) => Matrix4x4.Invert(m, out var result) ? result : m;
     }
 }

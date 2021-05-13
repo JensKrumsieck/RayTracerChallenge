@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using RayTracer.Extension;
 using System;
 using System.Numerics;
 
@@ -11,7 +12,7 @@ namespace RayTracer.Engine
         public Quaternion Rotation;
         public Vector3 Scale;
 
-        public Matrix TransformationMatrix
+        public Matrix4x4 TransformationMatrix
         {
             get => _transformationMatrix;
             set
@@ -29,7 +30,7 @@ namespace RayTracer.Engine
             Scale = scale;
         }
 
-        protected Transform(Vector3 position) => TransformationMatrix = Matrix.Translation(position.X, position.Y, position.Z);
+        protected Transform(Vector3 position) => TransformationMatrix = Matrix4x4.CreateTranslation(position.X, position.Y, position.Z);
 
         protected Transform() => TransformationMatrix = Matrix4x4.Identity;
 
@@ -45,8 +46,8 @@ namespace RayTracer.Engine
 
         public override string ToString() => GetType().Name + ":" + Position;
 
-        public Vector3 WorldToObject(Vector3 worldPoint) => Vector3.Transform(worldPoint, TransformationMatrix.Inverse());
+        public Vector3 WorldToObject(Vector3 worldPoint) => Vector3.Transform(worldPoint, TransformationMatrix.Invert());
 
-        public Vector3 ObjectToWorld(Vector3 objectPoint) => Vector3.Transform(objectPoint, TransformationMatrix.Inverse().Transpose());
+        public Vector3 ObjectToWorld(Vector3 objectPoint) => Vector3.Transform(objectPoint, Matrix4x4.Transpose(TransformationMatrix.Invert()));
     }
 }

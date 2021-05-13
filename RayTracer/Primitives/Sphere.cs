@@ -1,4 +1,5 @@
 ﻿using RayTracer.Engine;
+using RayTracer.Extension;
 using System;
 using System.Numerics;
 
@@ -6,11 +7,11 @@ namespace RayTracer.Primitives
 {
     public sealed class Sphere : Transform
     {
-        public float Radius => TransformationMatrix[0, 0]; //for simplicity use uniform scale
+        public float Radius => TransformationMatrix.M11; //for simplicity use uniform scale
 
-        public Sphere(Vector3 position, float radius = 1f) : base(position) => TransformationMatrix *= Matrix.Scale(radius, radius, radius);
+        public Sphere(Vector3 position, float radius = 1f) : base(position) => TransformationMatrix = Matrix4x4.Multiply(TransformationMatrix, Matrix4x4.CreateScale(radius));
 
-        public Sphere(float radius = 1f) => TransformationMatrix *= Matrix.Scale(radius, radius, radius);
+        public Sphere(float radius = 1f) => TransformationMatrix = Matrix4x4.Multiply(TransformationMatrix, Matrix4x4.CreateScale(radius));
 
         public override Vector3 Normal(Vector3 worldPoint)
         {
@@ -22,7 +23,7 @@ namespace RayTracer.Primitives
 
         public override HitInfo[] Intersect(Ray ray, bool hit = false)
         {
-            ray = ray.Transform(TransformationMatrix.Inverse());
+            ray = ray.Transform(TransformationMatrix.Invert());
             var sphereToRay = ray.Origin - Position;
             var a = Vector3.Dot(ray.Direction, ray.Direction);
             var b = 2f * Vector3.Dot(ray.Direction, sphereToRay);
