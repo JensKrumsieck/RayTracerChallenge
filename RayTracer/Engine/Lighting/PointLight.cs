@@ -4,8 +4,8 @@ namespace RayTracer.Engine.Lighting
 {
     public struct PointLight : ILight
     {
-        public Vector3 Position { get; }
-        public Color Intensity { get; }
+        public Vector3 Position { get; set; }
+        public Color Intensity { get; set; }
 
         public PointLight(Vector3 position, Color intensity)
         {

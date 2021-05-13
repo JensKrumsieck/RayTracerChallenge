@@ -1,8 +1,8 @@
 ﻿#nullable enable
+using RayTracer.Engine.Material;
 using RayTracer.Extension;
 using System;
 using System.Numerics;
-using RayTracer.Engine.Material;
 
 namespace RayTracer.Engine
 {
@@ -14,7 +14,7 @@ namespace RayTracer.Engine
         public Quaternion Rotation;
         public Vector3 Scale;
 
-        public IMaterial Material = PhongMaterial.DefaultMaterial;
+        public IMaterial Material = PhongMaterial.Default;
 
         public Matrix4x4 TransformationMatrix
         {

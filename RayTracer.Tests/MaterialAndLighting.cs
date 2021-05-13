@@ -2,10 +2,10 @@
 using RayTracer.Engine;
 using RayTracer.Engine.Lighting;
 using RayTracer.Engine.Material;
+using RayTracer.Extension;
 using RayTracer.Primitives;
 using System;
 using System.Numerics;
-using RayTracer.Extension;
 
 namespace RayTracer.Tests
 {
@@ -15,7 +15,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void DefaultMaterial()
         {
-            var m = PhongMaterial.DefaultMaterial;
+            var m = PhongMaterial.Default;
             Assert.AreEqual(m.BaseColor, Color.White);
             Assert.AreEqual(m.Ambient, .1f);
             Assert.AreEqual(m.Diffuse, .9f);
@@ -34,12 +34,12 @@ namespace RayTracer.Tests
         [TestMethod]
         public void SphereHasMaterial()
         {
-            var mat = PhongMaterial.DefaultMaterial.WithAmbient(1.0f);
+            var mat = PhongMaterial.Default.WithAmbient(1.0f);
             var s = new Sphere { Material = mat };
             Assert.AreEqual(((PhongMaterial)s.Material).Ambient, 1f);
         }
 
-        private static (PhongMaterial m, Vector3 p) Setup => (PhongMaterial.DefaultMaterial, Vector3.Zero);
+        private static (PhongMaterial m, Vector3 p) Setup => (PhongMaterial.Default, Vector3.Zero);
 
         [TestMethod]
         public void EyeBetween()
@@ -47,7 +47,7 @@ namespace RayTracer.Tests
             var (m, position) = Setup;
             var eye = -Vector3.UnitZ;
             var light = new PointLight(Vector3.UnitZ * -10, Color.White);
-            var result = m.Lighten(light, position, eye, eye);
+            var result = m.Shade(light, position, eye, eye);
             Assert.AreEqual(result, new Color(1.9f, 1.9f, 1.9f));
         }
 
@@ -57,7 +57,7 @@ namespace RayTracer.Tests
             var (m, position) = Setup;
             var eye = -Vector3.UnitZ;
             var light = new PointLight(Vector3.UnitZ * 10, Color.White);
-            var result = m.Lighten(light, position, eye, eye);
+            var result = m.Shade(light, position, eye, eye);
             Assert.AreEqual(result, new Color(.1f, .1f, .1f));
         }
 
@@ -68,7 +68,7 @@ namespace RayTracer.Tests
             var eye = new Vector3(0, MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
             var normal = -Vector3.UnitZ;
             var light = new PointLight(Vector3.UnitZ * -10, Color.White);
-            var result = m.Lighten(light, position, eye, normal);
+            var result = m.Shade(light, position, eye, normal);
             Assert.AreEqual(result, Color.White);
         }
 
@@ -79,7 +79,7 @@ namespace RayTracer.Tests
             var eye = -Vector3.UnitZ;
             var normal = -Vector3.UnitZ;
             var light = new PointLight(new Vector3(0f, 10f, -10f), Color.White);
-            var result = m.Lighten(light, position, eye, normal);
+            var result = m.Shade(light, position, eye, normal);
             Assert.That.ColorsAreEqual(result, new Color(.7364f, .7364f, .7364f), 1e-4f);
         }
 
@@ -90,7 +90,7 @@ namespace RayTracer.Tests
             var eye = new Vector3(0, -MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f);
             var normal = -Vector3.UnitZ;
             var light = new PointLight(new Vector3(0f, 10f, -10f), Color.White);
-            var result = m.Lighten(light, position, eye, normal);
+            var result = m.Shade(light, position, eye, normal);
             Assert.That.ColorsAreEqual(result, new Color(1.6364f, 1.6364f, 1.6364f), 1e-4f);
         }
     }

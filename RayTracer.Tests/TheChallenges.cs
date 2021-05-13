@@ -60,7 +60,7 @@ namespace RayTracer.Tests
                     var p = ray.PointByDistance(hit.Distance);
                     var normal = hit.HitObject.Normal(p);
                     var eye = -ray.Direction;
-                    canvas.SetPixel(x, y, s.Material.Lighten(light, p, eye, normal));
+                    canvas.SetPixel(x, y, s.Material.Shade(light, p, eye, normal));
                 }
             });
         }

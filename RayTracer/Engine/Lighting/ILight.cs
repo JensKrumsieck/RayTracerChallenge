@@ -4,8 +4,8 @@ namespace RayTracer.Engine.Lighting
 {
     public interface ILight
     {
-        public Vector3 Position { get; }
+        public Vector3 Position { get; set; }
 
-        public Color Intensity { get; }
+        public Color Intensity { get; set; }
     }
 }

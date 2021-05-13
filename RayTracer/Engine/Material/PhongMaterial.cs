@@ -21,9 +21,9 @@ namespace RayTracer.Engine.Material
             Shininess = shininess;
         }
 
-        public static readonly PhongMaterial DefaultMaterial = new(Color.White, .1f, .9f, .9f, 200f);
+        public static readonly PhongMaterial Default = new(Color.White, .1f, .9f, .9f, 200f);
 
-        public readonly Color Lighten(ILight light, Vector3 point, Vector3 eye, Vector3 normal)
+        public readonly Color Shade(ILight light, Vector3 point, Vector3 eye, Vector3 normal)
         {
             var effectiveCol = BaseColor * light.Intensity;
             //get direction to light source
