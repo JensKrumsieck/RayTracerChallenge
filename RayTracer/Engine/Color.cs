@@ -38,7 +38,7 @@ namespace RayTracer.Engine
         #region IEquatable
         /// <inheritdoc />
         public bool Equals(Color other) => R.Equal(other.R) && G.Equal(other.G) & B.Equal(other.B);
-        
+
         public bool Equals(Color other, float threshold) => R.Equal(other.R, threshold) && G.Equal(other.G, threshold) & B.Equal(other.B, threshold);
         /// <inheritdoc />
         public override bool Equals(object obj) => obj is Color other && Equals(other);

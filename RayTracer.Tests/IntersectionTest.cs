@@ -1,7 +1,7 @@
-﻿using System.Numerics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
 using RayTracer.Primitives;
+using System.Numerics;
 
 namespace RayTracer.Tests
 {

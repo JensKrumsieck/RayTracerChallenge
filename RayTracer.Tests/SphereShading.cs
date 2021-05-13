@@ -38,7 +38,7 @@ namespace RayTracer.Tests
             var s = new Sphere();
             var sqrt = MathF.Sqrt(3f) / 3f;
             var n = s.Normal(new Vector3(sqrt, sqrt, sqrt));
-            Assert.IsTrue(n.LengthSquared()-1f < Constants.Epsilon);
+            Assert.IsTrue(n.LengthSquared() - 1f < Constants.Epsilon);
         }
 
         [TestMethod]

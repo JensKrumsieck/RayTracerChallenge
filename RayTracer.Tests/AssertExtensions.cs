@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
+using System.Collections;
 
 namespace RayTracer.Tests
 {
@@ -13,7 +13,7 @@ namespace RayTracer.Tests
         /// <param name="expected"></param>
         /// <param name="value"></param>
         // ReSharper disable once UnusedParameter.Global
-        #pragma warning disable IDE0060
+#pragma warning disable IDE0060
         public static void ColorsAreEqual(this Assert a, Color expected, Color value)
         {
             Assert.IsTrue(expected == value, $"Colors did not match. Expected: {expected}, Got: {value}");
@@ -44,6 +44,6 @@ namespace RayTracer.Tests
         {
             foreach (var i in col) Assert.AreEqual(i, item);
         }
-        #pragma warning restore IDE0060
+#pragma warning restore IDE0060
     }
 }

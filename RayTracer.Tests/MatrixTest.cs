@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
+using System;
 
 namespace RayTracer.Tests
 {
@@ -107,7 +107,7 @@ namespace RayTracer.Tests
                 {0f, 0f, 0f, 1f}
             }).Transpose();
             var v = new Vector(1f, 2f, 3f, 1f);
-            Assert.AreEqual(m * v,new Vector(18, 24, 33, 1));
+            Assert.AreEqual(m * v, new Vector(18, 24, 33, 1));
         }
 
         [TestMethod]

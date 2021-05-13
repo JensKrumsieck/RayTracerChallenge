@@ -1,10 +1,10 @@
-﻿using System;
+﻿using RayTracer.Engine.Lighting;
+using System;
 using System.Numerics;
-using RayTracer.Engine.Lighting;
 
-namespace RayTracer.Engine
+namespace RayTracer.Engine.Material
 {
-    public struct Material
+    public struct PhongMaterial
     {
         public Color BaseColor;
         public float Ambient;
@@ -12,7 +12,7 @@ namespace RayTracer.Engine
         public float Specular;
         public float Shininess;
 
-        public Material(Color color, float ambient, float diffuse, float specular, float shininess)
+        public PhongMaterial(Color color, float ambient, float diffuse, float specular, float shininess)
         {
             BaseColor = color;
             Ambient = ambient;
@@ -21,14 +21,14 @@ namespace RayTracer.Engine
             Shininess = shininess;
         }
 
-        public static readonly Material DefaultMaterial = new(Color.White, .1f, .9f, .9f, 200f);
+        public static readonly PhongMaterial DefaultMaterial = new(Color.White, .1f, .9f, .9f, 200f);
 
         public readonly Color Lighten(ILight light, Vector3 point, Vector3 eye, Vector3 normal)
         {
             var effectiveCol = BaseColor * light.Intensity;
             //get direction to light source
             var lightDir = Vector3.Normalize(light.Position - point);
-            
+
             //calculate ambient
             var ambient = effectiveCol * Ambient;
 
@@ -46,7 +46,7 @@ namespace RayTracer.Engine
                 diffuse = effectiveCol * Diffuse * lightNormal;
                 var reflect = Vector3.Reflect(-lightDir, normal);
                 var reflectDotEye = Vector3.Dot(reflect, eye);
-                if(reflectDotEye <= 0) specular = Color.Black;
+                if (reflectDotEye <= 0) specular = Color.Black;
                 else
                 {
                     var factor = MathF.Pow(reflectDotEye, Shininess);

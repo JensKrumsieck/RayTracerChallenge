@@ -1,6 +1,6 @@
-﻿using System.Numerics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
+using System.Numerics;
 
 namespace RayTracer.Tests
 {
@@ -13,7 +13,7 @@ namespace RayTracer.Tests
             var r = new Ray(new Vector3(1f, 2f, 3f), Vector3.UnitY);
             var r2 = r.Transform(Matrix4x4.CreateTranslation(3f, 4f, 5f));
             Assert.AreEqual(r2.Direction, Vector3.UnitY);
-            Assert.AreEqual(r2.Origin, new Vector3(4f,6f,8f));
+            Assert.AreEqual(r2.Origin, new Vector3(4f, 6f, 8f));
         }
 
         [TestMethod]

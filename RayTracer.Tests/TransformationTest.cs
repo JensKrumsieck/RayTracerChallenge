@@ -150,8 +150,8 @@ namespace RayTracer.Tests
         {
             var p = Vector.Point(1f, 0f, 1f);
             var res = p.RotateX(MathF.PI / 2f).Scale(5f, 5f, 5f).Translate(10f, 5f, 7f);
-            
-            var scl = p.Scale(5f, 5f, 5f).RotateX(MathF.PI/2f).Translate(10f,5f,7f);
+
+            var scl = p.Scale(5f, 5f, 5f).RotateX(MathF.PI / 2f).Translate(10f, 5f, 7f);
             Assert.AreEqual(res, Vector.Point(15f, 0f, 7f));
             Assert.AreEqual(res, scl);
         }

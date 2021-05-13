@@ -13,7 +13,7 @@ namespace RayTracer.Engine
         public Quaternion Rotation;
         public Vector3 Scale;
 
-        public Material Material = Material.DefaultMaterial;
+        public Material.PhongMaterial Material = Engine.Material.PhongMaterial.DefaultMaterial;
 
         public Matrix4x4 TransformationMatrix
         {

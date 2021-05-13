@@ -1,9 +1,10 @@
-﻿using System;
-using System.Numerics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
 using RayTracer.Engine.Lighting;
+using RayTracer.Engine.Material;
 using RayTracer.Primitives;
+using System;
+using System.Numerics;
 
 namespace RayTracer.Tests
 {
@@ -13,7 +14,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void DefaultMaterial()
         {
-            var m = Material.DefaultMaterial;
+            var m = PhongMaterial.DefaultMaterial;
             Assert.AreEqual(m.BaseColor, Color.White);
             Assert.AreEqual(m.Ambient, .1f);
             Assert.AreEqual(m.Diffuse, .9f);
@@ -32,11 +33,11 @@ namespace RayTracer.Tests
         [TestMethod]
         public void SphereHasMaterial()
         {
-            var s = new Sphere {Material = {Ambient = 1f}};
+            var s = new Sphere { Material = { Ambient = 1f } };
             Assert.AreEqual(s.Material.Ambient, 1f);
         }
 
-        private static (Material m, Vector3 p) Setup => (Material.DefaultMaterial, Vector3.Zero);
+        private static (PhongMaterial m, Vector3 p) Setup => (PhongMaterial.DefaultMaterial, Vector3.Zero);
 
         [TestMethod]
         public void EyeBetween()
@@ -62,7 +63,7 @@ namespace RayTracer.Tests
         public void EyeOffset45()
         {
             var (m, position) = Setup;
-            var eye = new Vector3(0, MathF.Sqrt(2f)/2f, MathF.Sqrt(2f)/2f);
+            var eye = new Vector3(0, MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
             var normal = -Vector3.UnitZ;
             var light = new PointLight(Vector3.UnitZ * -10, Color.White);
             var result = m.Lighten(light, position, eye, normal);

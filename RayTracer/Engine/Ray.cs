@@ -1,6 +1,6 @@
 ﻿#nullable enable
-using System.Numerics;
 using RayTracer.Extension;
+using System.Numerics;
 
 namespace RayTracer.Engine
 {

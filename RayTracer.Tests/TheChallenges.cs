@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
+using RayTracer.Engine.Lighting;
 using RayTracer.Primitives;
 using System.Numerics;
 using System.Threading.Tasks;
-using RayTracer.Engine.Lighting;
 using Color = RayTracer.Engine.Color;
 
 namespace RayTracer.Tests
@@ -21,7 +21,7 @@ namespace RayTracer.Tests
             const float half = wallSize / 2f;
 
             var canvas = new Viewport(canvasSize, canvasSize);
-            var s = new Sphere {Material = {BaseColor = Color.Red}};
+            var s = new Sphere { Material = { BaseColor = Color.Red } };
             var col = s.Material.BaseColor;
             var origin = new Vector3(0f, 0f, -5f);
             Parallel.For(0, canvasSize, y =>
@@ -45,7 +45,7 @@ namespace RayTracer.Tests
             const float half = wallSize / 2f;
 
             var canvas = new Viewport(canvasSize, canvasSize);
-            var s = new Sphere{Material = {BaseColor = new Color(1f, .2f, 1f)}};
+            var s = new Sphere { Material = { BaseColor = new Color(1f, .2f, 1f) } };
             var origin = new Vector3(0f, 0f, -5f);
             var light = new PointLight(new Vector3(-10f, 10f, -10f), Color.White);
             Parallel.For(0, canvasSize, y =>

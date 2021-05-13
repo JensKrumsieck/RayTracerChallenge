@@ -116,7 +116,8 @@ namespace RayTracer.Engine
 
         #region IEquatable
         public bool Equals(Matrix other) => Equals(other, Epsilon);
-        public bool Equals(Matrix other, float threshold){
+        public bool Equals(Matrix other, float threshold)
+        {
             for (var i = 0; i < 4; i++)
             {
                 for (var j = 0; j < 4; j++)
