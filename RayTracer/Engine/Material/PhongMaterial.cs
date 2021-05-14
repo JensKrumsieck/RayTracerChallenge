@@ -21,7 +21,7 @@ namespace RayTracer.Engine.Material
             Shininess = shininess;
         }
 
-        public static readonly PhongMaterial Default = new(Color.White, .1f, .9f, .9f, 200f);
+        public static PhongMaterial Default => new(Color.White, .1f, .9f, .9f, 200f);
 
         public readonly Color Shade(ILight light, Vector3 point, Vector3 eye, Vector3 normal)
         {

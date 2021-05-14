@@ -2,6 +2,7 @@
 using RayTracer.Engine.Lighting;
 using RayTracer.Engine.Material;
 using RayTracer.Primitives;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Numerics;
@@ -15,7 +16,7 @@ namespace RayTracer.Engine
 
         public ILight[] Lights;
 
-        public static readonly World Default = new()
+        public static World Default => new()
         {
             Lights = new ILight[] { new PointLight(new Vector3(-10, 10, -10), Color.White) },
             Objects = new Transform[]
@@ -44,6 +45,7 @@ namespace RayTracer.Engine
 
         public Color ColorAt(Ray ray)
         {
+            Console.WriteLine(Lights[0]);
             if (!Intersections(ray, out var xs, true)) return Color.Black;
             var com = IntersectionPoint.Prepare(xs[0], ray);
             var col = Shade(com);
