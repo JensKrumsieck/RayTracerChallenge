@@ -1,6 +1,6 @@
-﻿using RayTracer.Engine.Lighting;
+﻿#nullable enable
+using RayTracer.Engine.Lighting;
 using RayTracer.Engine.Material;
-using RayTracer.Extension;
 using RayTracer.Primitives;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -28,17 +28,26 @@ namespace RayTracer.Engine
             }
         };
 
-        public HitInfo[] Intersections(Ray ray)
+        public bool Intersections(Ray ray, out HitInfo[] hitInfo, bool doHit = false)
         {
             var hits = new ConcurrentBag<HitInfo>();
             Parallel.ForEach(Objects, o =>
             {
-                var newHits = o.Intersect(ray);
+                var newHits = o.Intersect(ray, doHit); //if doHit is true only one intersection is returned
                 foreach (var hit in newHits) hits.Add(hit);
             });
-            return hits.OrderBy(s => s.Distance).ToArray();
+            hitInfo = hits.OrderBy(s => s.Distance).ToArray();
+            return hitInfo.Length != 0;
         }
 
         public Color Shade(IntersectionPoint p) => Lights.Aggregate(Color.Black, (current, l) => current + p.Object.Material.Shade(l, p.HitPoint, p.Eye, p.Normal));
+
+        public Color ColorAt(Ray ray)
+        {
+            if (!Intersections(ray, out var xs, true)) return Color.Black;
+            var com = IntersectionPoint.Prepare(xs[0], ray);
+            var col = Shade(com);
+            return col;
+        }
     }
 }

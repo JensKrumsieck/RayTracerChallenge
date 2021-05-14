@@ -13,7 +13,7 @@ namespace RayTracer.Tests
         {
             var w = World.Default;
             var ray = new Ray(new Vector3(0f, 0f, -5f), Vector3.UnitZ);
-            var xs = w.Intersections(ray);
+            w.Intersections(ray, out var xs);
             Assert.AreEqual(xs.Length, 4);
             Assert.AreEqual(xs[0].Distance, 4f);
             Assert.AreEqual(xs[1].Distance, 4.5f);
@@ -79,6 +79,22 @@ namespace RayTracer.Tests
             var c = IntersectionPoint.Prepare(i, ray);
             var col = w.Shade(c);
             Assert.That.ColorsAreEqual(col, new Color(.90498f, .90498f, .90498f), 1e-5f);
+        }
+
+        [TestMethod]
+        public void RayMisses()
+        {
+            var w = World.Default;
+            var ray = new Ray(new Vector3(0f, 0f, -5f), Vector3.UnitY);
+            var c = w.ColorAt(ray);
+            Assert.That.ColorsAreEqual(c, Color.Black);
+        }
+
+        [TestMethod]
+        public void RayHits()
+        {
+            var c = World.Default.ColorAt(new Ray(new Vector3(0f, 0f, -5f), Vector3.UnitZ));
+            Assert.That.ColorsAreEqual(c, new Color(.38066f, .47583f, .2855f), 1e-5f);
         }
     }
 }
