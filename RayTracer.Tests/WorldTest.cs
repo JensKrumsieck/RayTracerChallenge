@@ -1,7 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
 using RayTracer.Primitives;
 using System.Numerics;
+using RayTracer.Engine.Material;
+using RayTracer.Extension;
 
 namespace RayTracer.Tests
 {
@@ -95,6 +98,19 @@ namespace RayTracer.Tests
         {
             var c = World.Default.ColorAt(new Ray(new Vector3(0f, 0f, -5f), Vector3.UnitZ));
             Assert.That.ColorsAreEqual(c, new Color(.38066f, .47583f, .2855f), 1e-5f);
+        }
+
+        [TestMethod]
+        public void RayBehind()
+        {
+            var w = World.Default;
+            var outer = w.Objects[0];
+            var inner = w.Objects[1];
+            outer.Material = ((PhongMaterial)outer.Material).WithAmbient(1f);
+            inner.Material = outer.Material;
+            var r = new Ray(new Vector3(0f, 0f, .75f), -Vector3.UnitZ);
+            var c = w.ColorAt(r);
+            Assert.AreEqual(c, inner.Material.BaseColor);
         }
     }
 }

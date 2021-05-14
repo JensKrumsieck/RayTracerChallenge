@@ -1,6 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
+using RayTracer.Extension;
+using System;
 using System.Collections;
+using System.Numerics;
 
 namespace RayTracer.Tests
 {
@@ -25,6 +28,7 @@ namespace RayTracer.Tests
         /// <param name="a"></param>
         /// <param name="expected"></param>
         /// <param name="value"></param>
+        /// <param name="threshold"></param>
         // ReSharper disable once UnusedParameter.Global
 #pragma warning disable IDE0060
         public static void ColorsAreEqual(this Assert a, Color expected, Color value, float threshold)
@@ -32,6 +36,53 @@ namespace RayTracer.Tests
             Assert.IsTrue(expected.Equals(value, threshold), $"Colors did not match. Expected: {expected}, Got: {value}, threshold {threshold}");
         }
 
+        /// <summary>
+        /// Color Assertions
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expected"></param>
+        /// <param name="value"></param>
+        /// <param name="threshold"></param>
+        // ReSharper disable once UnusedParameter.
+        public static void VectorsAreEqual(this Assert a, Vector3 expected, Vector3 value, float threshold)
+        {
+            Assert.IsTrue(MathF.Abs(expected.X - value.X) < threshold, $"{expected} did not match {value} for X");
+            Assert.IsTrue(MathF.Abs(expected.Y - value.Y) < threshold, $"{expected} did not match {value} for Y");
+            Assert.IsTrue(MathF.Abs(expected.Z - value.Z) < threshold, $"{expected} did not match {value} for Z");
+        }
+
+        /// <summary>
+        /// Color Assertions
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expected"></param>
+        /// <param name="value"></param>
+        /// <param name="threshold"></param>
+        // ReSharper disable once UnusedParameter.Global
+        public static void VectorsAreEqual(this Assert a, Vector3 expected, Vector3 value) =>
+            a.VectorsAreEqual(expected, value, Constants.Epsilon);
+
+
+        /// <summary>
+        /// Color Assertions
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expected"></param>
+        /// <param name="value"></param>
+        /// <param name="threshold"></param>
+        // ReSharper disable once UnusedParameter.
+        public static void MatricesAreEqual(this Assert a, Matrix4x4 expected, Matrix4x4 value, float threshold)
+        {
+            var arrE = expected.ToArray();
+            var arrV = value.ToArray();
+            for (var i = 0; i <= 4; i++)
+            {
+                for (var j = 0; j <= 4; j++)
+                {
+                    Assert.IsTrue(arrE[i, j].Equal(arrV[i, j]));
+                }
+            }
+        }
 
         /// <summary>
         /// Checks whether all items are same

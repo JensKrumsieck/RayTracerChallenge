@@ -56,5 +56,7 @@ namespace RayTracer.Engine.Material
             return ambient + diffuse + specular;
         }
 
+        public override readonly string ToString() =>
+            $"PhongMaterial: {BaseColor}\n\tAmbient: {Ambient}\n\tDiffuse: {Diffuse}\n\tSpecular: {Specular}\n\tShininess: {Shininess}";
     }
 }

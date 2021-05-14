@@ -13,6 +13,7 @@ namespace RayTracer.Engine.Lighting
             Intensity = intensity;
         }
 
-        public override string ToString() => $"PointLight at {Position} with Intensity {Intensity}";
+        /// <inheritdoc />
+        public override readonly string ToString() => $"PointLight at {Position} with Intensity {Intensity}";
     }
 }

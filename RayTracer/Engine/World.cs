@@ -43,13 +43,6 @@ namespace RayTracer.Engine
 
         public Color Shade(IntersectionPoint p) => Lights.Aggregate(Color.Black, (current, l) => current + p.Object.Material.Shade(l, p.HitPoint, p.Eye, p.Normal));
 
-        public Color ColorAt(Ray ray)
-        {
-            Console.WriteLine(Lights[0]);
-            if (!Intersections(ray, out var xs, true)) return Color.Black;
-            var com = IntersectionPoint.Prepare(xs[0], ray);
-            var col = Shade(com);
-            return col;
-        }
+        public Color ColorAt(Ray ray) => !Intersections(ray, out var xs, true) ? Color.Black : Shade(IntersectionPoint.Prepare(xs[0], ray));
     }
 }
