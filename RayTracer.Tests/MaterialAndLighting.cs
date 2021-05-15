@@ -47,7 +47,7 @@ namespace RayTracer.Tests
             var (m, position) = Setup;
             var eye = -Vector3.UnitZ;
             var light = new PointLight(Vector3.UnitZ * -10, Color.White);
-            var result = m.Shade(light, position, eye, eye);
+            var result = m.Shade(light, new IntersectionPoint { HitPoint = position, Eye = eye, Normal = eye });
             Assert.AreEqual(result, new Color(1.9f, 1.9f, 1.9f));
         }
 
@@ -57,7 +57,7 @@ namespace RayTracer.Tests
             var (m, position) = Setup;
             var eye = -Vector3.UnitZ;
             var light = new PointLight(Vector3.UnitZ * 10, Color.White);
-            var result = m.Shade(light, position, eye, eye);
+            var result = m.Shade(light, new IntersectionPoint { HitPoint = position, Eye = eye, Normal = eye });
             Assert.AreEqual(result, new Color(.1f, .1f, .1f));
         }
 
@@ -65,10 +65,10 @@ namespace RayTracer.Tests
         public void EyeOffset45()
         {
             var (m, position) = Setup;
-            var eye = new Vector3(0, MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
+            var eye = new Vector3(0, MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f);
             var normal = -Vector3.UnitZ;
             var light = new PointLight(Vector3.UnitZ * -10, Color.White);
-            var result = m.Shade(light, position, eye, normal);
+            var result = m.Shade(light, new IntersectionPoint { HitPoint = position, Eye = eye, Normal = normal });
             Assert.AreEqual(result, Color.White);
         }
 
@@ -79,7 +79,7 @@ namespace RayTracer.Tests
             var eye = -Vector3.UnitZ;
             var normal = -Vector3.UnitZ;
             var light = new PointLight(new Vector3(0f, 10f, -10f), Color.White);
-            var result = m.Shade(light, position, eye, normal);
+            var result = m.Shade(light, new IntersectionPoint { HitPoint = position, Eye = eye, Normal = normal });
             Assert.That.ColorsAreEqual(result, new Color(.7364f, .7364f, .7364f), 1e-4f);
         }
 
@@ -90,7 +90,7 @@ namespace RayTracer.Tests
             var eye = new Vector3(0, -MathF.Sqrt(2f) / 2f, -MathF.Sqrt(2f) / 2f);
             var normal = -Vector3.UnitZ;
             var light = new PointLight(new Vector3(0f, 10f, -10f), Color.White);
-            var result = m.Shade(light, position, eye, normal);
+            var result = m.Shade(light, new IntersectionPoint { HitPoint = position, Eye = eye, Normal = normal });
             Assert.That.ColorsAreEqual(result, new Color(1.6364f, 1.6364f, 1.6364f), 1e-4f);
         }
     }

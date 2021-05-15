@@ -12,7 +12,7 @@ namespace RayTracer.Engine.Material
         public float Specular;
         public float Shininess;
 
-        public PhongMaterial(Color color, float ambient, float diffuse, float specular, float shininess)
+        public PhongMaterial(Color color, float ambient = .1f, float diffuse = .9f, float specular = .9f, float shininess = 200f)
         {
             BaseColor = color;
             Ambient = ambient;
@@ -21,18 +21,18 @@ namespace RayTracer.Engine.Material
             Shininess = shininess;
         }
 
-        public static PhongMaterial Default => new(Color.White, .1f, .9f, .9f, 200f);
+        public static PhongMaterial Default => new(Color.White);
 
-        public readonly Color Shade(ILight light, Vector3 point, Vector3 eye, Vector3 normal)
+        public readonly Color Shade(ILight light, IntersectionPoint p)
         {
             var effectiveCol = BaseColor * light.Intensity;
             //get direction to light source
-            var lightDir = Vector3.Normalize(light.Position - point);
+            var lightDir = Vector3.Normalize(light.Position - p.HitPoint);
 
             //calculate ambient
             var ambient = effectiveCol * Ambient;
 
-            var lightNormal = Vector3.Dot(lightDir, normal);
+            var lightNormal = Vector3.Dot(lightDir, p.Normal);
 
             Color diffuse;
             Color specular;
@@ -44,8 +44,8 @@ namespace RayTracer.Engine.Material
             else
             {
                 diffuse = effectiveCol * Diffuse * lightNormal;
-                var reflect = Vector3.Reflect(-lightDir, normal);
-                var reflectDotEye = Vector3.Dot(reflect, eye);
+                var reflect = Vector3.Reflect(-lightDir, p.Normal);
+                var reflectDotEye = Vector3.Dot(reflect, p.Eye);
                 if (reflectDotEye <= 0) specular = Color.Black;
                 else
                 {

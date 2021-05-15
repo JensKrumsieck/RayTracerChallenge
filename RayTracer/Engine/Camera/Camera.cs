@@ -46,30 +46,27 @@ namespace RayTracer.Engine.Camera
             return view;
         }
 
-        public static Matrix4x4 ViewTransform(Vector3 from, Vector3 to, Vector3 up)
-        {
-            var zaxis = Vector3.Normalize(to - from);
-            var xaxis = Vector3.Cross(zaxis, Vector3.Normalize(up));
-            var yaxis = Vector3.Cross(xaxis, zaxis);
-
-            Matrix4x4 result;
-            result.M11 = xaxis.X;
-            result.M12 = xaxis.Y;
-            result.M13 = xaxis.Z;
-            result.M14 = 0.0f;
-            result.M21 = yaxis.X;
-            result.M22 = yaxis.Y;
-            result.M23 = yaxis.Z;
-            result.M24 = 0.0f;
-            result.M31 = -zaxis.X;
-            result.M32 = -zaxis.Y;
-            result.M33 = -zaxis.Z;
-            result.M34 = 0.0f;
-            result.M41 = 0.0f;
-            result.M42 = 0.0f;
-            result.M43 = 0.0f;
-            result.M44 = 1.0f;
-            return Matrix4x4.Multiply(result, Matrix4x4.Transpose(Matrix4x4.CreateTranslation(-from)));
-        }
+        public static Matrix4x4 ViewTransform(Vector3 from, Vector3 to, Vector3 up) => Matrix4x4.CreateLookAt(from, to, up);
+        //var zaxis = Vector3.Normalize(to - from);
+        //var xaxis = Vector3.Cross(zaxis, Vector3.Normalize(up));
+        //var yaxis = Vector3.Cross(xaxis, zaxis);
+        //Matrix4x4 result;
+        //result.M11 = xaxis.X;
+        //result.M12 = xaxis.Y;
+        //result.M13 = xaxis.Z;
+        //result.M14 = 0.0f;
+        //result.M21 = yaxis.X;
+        //result.M22 = yaxis.Y;
+        //result.M23 = yaxis.Z;
+        //result.M24 = 0.0f;
+        //result.M31 = -zaxis.X;
+        //result.M32 = -zaxis.Y;
+        //result.M33 = -zaxis.Z;
+        //result.M34 = 0.0f;
+        //result.M41 = 0.0f;
+        //result.M42 = 0.0f;
+        //result.M43 = 0.0f;
+        //result.M44 = 1.0f;
+        //return Matrix4x4.Multiply(result, Matrix4x4.Transpose(Matrix4x4.CreateTranslation(-from)));
     }
 }

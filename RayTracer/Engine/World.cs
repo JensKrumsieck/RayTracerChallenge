@@ -2,7 +2,6 @@
 using RayTracer.Engine.Lighting;
 using RayTracer.Engine.Material;
 using RayTracer.Primitives;
-using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Numerics;
@@ -41,7 +40,7 @@ namespace RayTracer.Engine
             return hitInfo.Length != 0;
         }
 
-        public Color Shade(IntersectionPoint p) => Lights.Aggregate(Color.Black, (current, l) => current + p.Object.Material.Shade(l, p.HitPoint, p.Eye, p.Normal));
+        public Color Shade(IntersectionPoint p) => Lights.Aggregate(Color.Black, (current, l) => current + p.Object.Material.Shade(l, p));
 
         public Color ColorAt(Ray ray) => !Intersections(ray, out var xs, true) ? Color.Black : Shade(IntersectionPoint.Prepare(xs[0], ray));
     }

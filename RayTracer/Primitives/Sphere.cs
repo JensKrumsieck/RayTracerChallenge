@@ -7,11 +7,11 @@ namespace RayTracer.Primitives
 {
     public sealed class Sphere : Transform
     {
-        public float Radius => TransformationMatrix.M11; //for simplicity use uniform scale
+        public Sphere(Vector3 position, float radius = 1f) : base(position, Vector3.Zero, Vector3.One * radius) { }
 
-        public Sphere(Vector3 position, float radius = 1f) : base(position) => TransformationMatrix = Matrix4x4.Multiply(TransformationMatrix, Matrix4x4.CreateScale(radius));
+        public Sphere(float radius = 1f) : base(Vector3.Zero, Vector3.Zero, Vector3.One * radius) { }
 
-        public Sphere(float radius = 1f) => TransformationMatrix = Matrix4x4.Multiply(TransformationMatrix, Matrix4x4.CreateScale(radius));
+        public Sphere(Vector3 position, Vector3 rotation, Vector3 scale) : base(position, rotation, scale) { }
 
         public override Vector3 Normal(Vector3 worldPoint)
         {

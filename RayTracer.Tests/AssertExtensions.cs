@@ -79,7 +79,7 @@ namespace RayTracer.Tests
             {
                 for (var j = 0; j < 4; j++)
                 {
-                    Assert.IsTrue(arrE[i, j].Equal(arrV[i, j], threshold), 
+                    Assert.IsTrue(arrE[i, j].Equal(arrV[i, j], threshold),
                         $"Matrix evaluation failed at {j},{i}. \nExpected: {expected} \nGiven: {value}\nLast Check: {arrE[i, j]} Equals{arrV[i, j]}");
                 }
             }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Engine;
 using System;
+using System.Numerics;
+using Vector = RayTracer.Engine.Vector;
 
 namespace RayTracer.Tests
 {
@@ -148,11 +150,15 @@ namespace RayTracer.Tests
         [TestMethod]
         public void ChainingTransformations()
         {
-            var p = Vector.Point(1f, 0f, 1f);
-            var res = p.RotateX(MathF.PI / 2f).Scale(5f, 5f, 5f).Translate(10f, 5f, 7f);
-
-            var scl = p.Scale(5f, 5f, 5f).RotateX(MathF.PI / 2f).Translate(10f, 5f, 7f);
-            Assert.AreEqual(res, Vector.Point(15f, 0f, 7f));
+            var p = new Vector3(1f, 0f, 1f);
+            var t = Matrix4x4.CreateTranslation(10f, 5f, 7f);
+            var s = Matrix4x4.CreateScale(5f);
+            var r = Matrix4x4.CreateRotationX(MathF.PI / 2f);
+            var res = Vector3.Transform(p, r);
+            res = Vector3.Transform(res, s);
+            res = Vector3.Transform(res, t);
+            var scl = Vector3.Transform(p, s * r * t);
+            Assert.AreEqual(res, new Vector3(15f, 0f, 7f));
             Assert.AreEqual(res, scl);
         }
     }

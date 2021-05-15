@@ -88,6 +88,8 @@ namespace RayTracer.Engine
             image.SaveTo(s);
         }
 
+        public void RenderPPM(string path = "D://test.ppm") => File.WriteAllText(path, ToPixmap());
+
         /// <inheritdoc/>
         public override string ToString() => ToPixmap();
     }

@@ -16,7 +16,7 @@ namespace RayTracer.Engine
         public Vector3 Normal
         {
             readonly get => IsInside ? -_normal : _normal;
-            private set => _normal = value;
+            set => _normal = value;
         }
 
         public static IntersectionPoint Prepare(HitInfo intersection, Ray ray)

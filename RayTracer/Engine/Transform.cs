@@ -34,7 +34,16 @@ namespace RayTracer.Engine
             Scale = scale;
         }
 
-        protected Transform(Vector3 position) => TransformationMatrix = Matrix4x4.CreateTranslation(position.X, position.Y, position.Z);
+        public Transform(Vector3 position, Vector3 rotation, Vector3 scale)
+        {
+            var translation = Matrix4x4.CreateTranslation(position);
+            var rot =
+                Matrix4x4.CreateRotationY(rotation.Z) *
+                Matrix4x4.CreateRotationX(rotation.Y) *
+                Matrix4x4.CreateRotationZ(rotation.X);
+            var scaling = Matrix4x4.CreateScale(scale);
+            TransformationMatrix = scaling * rot * translation;
+        }
 
         protected Transform() => TransformationMatrix = Matrix4x4.Identity;
 

@@ -3,7 +3,6 @@ using RayTracer.Engine;
 using RayTracer.Engine.Camera;
 using RayTracer.Engine.Lighting;
 using RayTracer.Engine.Material;
-using RayTracer.Extension;
 using RayTracer.Primitives;
 using System;
 using System.Numerics;
@@ -64,7 +63,7 @@ namespace RayTracer.Tests
                     var p = ray.PointByDistance(hit.Distance);
                     var normal = hit.HitObject.Normal(p);
                     var eye = -ray.Direction;
-                    canvas.SetPixel(x, y, s.Material.Shade(light, p, eye, normal));
+                    canvas.SetPixel(x, y, s.Material.Shade(light, new IntersectionPoint { HitPoint = p, Eye = eye, Normal = normal }));
                 }
             });
         }
@@ -72,55 +71,45 @@ namespace RayTracer.Tests
         [TestMethod]
         public void ChapterVII()
         {
-            var floor = new Sphere
+            var wallMaterial = new PhongMaterial(new Color(1f, .9f, .9f), .1f, .9f, 0f);
+            var wallScale = new Vector3(10f, .01f, 10f);
+            var wallPos = Vector3.UnitZ * 5f;
+            var floor = new Sphere(Vector3.Zero, Vector3.Zero, wallScale)
             {
-                TransformationMatrix = Matrix4x4.CreateScale(10f, .01f, 10f),
-                Material = PhongMaterial.Default.WithColor(new Color(1f, .9f, .9f)).WithSpecular(0f)
+                Material = wallMaterial,
             };
-
-            var leftWall = new Sphere
+            var leftWall = new Sphere(wallPos, new Vector3(MathF.PI / 2f, MathF.PI / -4f, 0f), wallScale)
             {
-                TransformationMatrix =
-                    Matrix4x4.Multiply(
-                        Matrix4x4.CreateTranslation(0f, 0f, 5f), Matrix4x4.Multiply(
-                        Matrix4x4.Multiply(
-                            Matrix4x4.CreateRotationY(-MathF.PI / 2f),
-                            Matrix4x4.CreateRotationX(MathF.PI / 2f)),
-                    Matrix4x4.CreateScale(10f, .01f, 10f))),
-                Material = floor.Material
+                Material = wallMaterial
             };
-            var rightWall = new Sphere(new Vector3(-.5f, 1f, .5f))
+            var rightWall = new Sphere(wallPos, new Vector3(MathF.PI / 2f, MathF.PI / 4f, 0f), wallScale)
             {
-                TransformationMatrix = 
-                    Matrix4x4.Multiply(
-                        Matrix4x4.CreateTranslation(0f, 0f, 5f), Matrix4x4.Multiply(
-                        Matrix4x4.Multiply(
-                            Matrix4x4.CreateRotationY(MathF.PI / 2f),
-                            Matrix4x4.CreateRotationX(MathF.PI / 2f)),
-                    Matrix4x4.CreateScale(10f, .01f, 10f))),
-                Material = PhongMaterial.Default.WithColor(new Color(.1f, 1f, .5f)).WithSpecular(.3f).WithDiffuse(.7f)
+                Material = wallMaterial
             };
             var right = new Sphere(new Vector3(1.5f, .5f, -.5f), .5f)
             {
-                Material = PhongMaterial.Default.WithColor(new Color(.5f, 1f, .1f)).WithDiffuse(.7f).WithSpecular(.3f)
+                Material = new PhongMaterial(new Color(.5f, 1f, .1f), .1f, .7f, .3f)
+            };
+            var middle = new Sphere(new Vector3(-.5f, 1f, .5f))
+            {
+                Material = new PhongMaterial(new Color(.1f, 1f, .5f), .1f, .7f, .3f)
             };
             var left = new Sphere(new Vector3(-1.5f, .33f, -.75f), .33f)
             {
-                Material = PhongMaterial.Default.WithColor(new Color(1f, .8f, .1f)).WithDiffuse(.7f).WithSpecular(.3f)
+                Material = new PhongMaterial(new Color(1f, .8f, .1f), .1f, .7f, .3f)
             };
             var world = new World
             {
-                Objects = new Transform[] { floor, leftWall, rightWall, left, right },
+                Objects = new Transform[] { left, middle, right, floor, leftWall, rightWall },
                 Lights = new ILight[] { new PointLight(new Vector3(-10f, 10f, -10f), Color.White) }
             };
-            var camera = new Camera(1000, 500, MathF.PI / 3)
+            var camera = new Camera(600, 300, MathF.PI / 3f)
             {
                 TransformationMatrix = Camera.ViewTransform(
                     new Vector3(0, 1.5f, -5f),
                     Vector3.UnitY, Vector3.UnitY)
             };
             var image = camera.Render(world);
-            image.Render();
         }
     }
 }
