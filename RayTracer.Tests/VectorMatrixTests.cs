@@ -61,10 +61,10 @@ namespace RayTracer.Tests
             var v1 = new Vector3(1, -1, 0);
             var n = new Vector3(0, 1, 0);
             var r = Vector3.Reflect(v1, n);
-            Assert.AreEqual(r, new Vector3(1,1,0));
+            Assert.AreEqual(r, new Vector3(1, 1, 0));
 
             var v2 = new Vector3(0, -1, 0);
-            var n2 = new Vector3(MathF.Sqrt(2f)/2f, MathF.Sqrt(2f) / 2f,0f);
+            var n2 = new Vector3(MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f, 0f);
             var r2 = Vector3.Reflect(v2, n2);
             Assert.That.VectorsAreEqual(r2, new Vector3(1, 0, 0), 1e-5f);
         }

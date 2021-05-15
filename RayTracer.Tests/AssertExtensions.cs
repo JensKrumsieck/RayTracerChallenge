@@ -13,7 +13,7 @@ namespace RayTracer.Tests
         {
             Assert.IsTrue(expected == value, $"Colors did not match. Expected: {expected}, Got: {value}");
         }
-        
+
         public static void ColorsAreEqual(this Assert a, Color expected, Color value, float threshold)
         {
             Assert.IsTrue(expected.Equals(value, threshold), $"Colors did not match. Expected: {expected}, Got: {value}, threshold {threshold}");
@@ -24,10 +24,10 @@ namespace RayTracer.Tests
             Assert.IsTrue(MathF.Abs(expected.Y - value.Y) < threshold, $"{expected} did not match {value} for Y");
             Assert.IsTrue(MathF.Abs(expected.Z - value.Z) < threshold, $"{expected} did not match {value} for Z");
         }
-        
+
         public static void VectorsAreEqual(this Assert a, Vector3 expected, Vector3 value) =>
             a.VectorsAreEqual(expected, value, Constants.Epsilon);
-        
+
         public static void MatricesAreEqual(this Assert a, Matrix4x4 expected, Matrix4x4 value, float threshold)
         {
             var arrE = expected.ToArray();

@@ -3,11 +3,11 @@ using RayTracer.Engine;
 using RayTracer.Engine.Camera;
 using RayTracer.Engine.Lighting;
 using RayTracer.Engine.Material;
+using RayTracer.Extension;
 using RayTracer.Primitives;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using RayTracer.Extension;
 
 namespace RayTracer.Tests
 {
@@ -107,7 +107,7 @@ namespace RayTracer.Tests
             };
             var rightWall = new Sphere
             {
-                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI/-4f) * Matrix.RotationXMatrix(MathF.PI/2f) * wallScale,
+                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI / -4f) * Matrix.RotationXMatrix(MathF.PI / 2f) * wallScale,
                 Material = wallMaterial
             };
             var right = new Sphere

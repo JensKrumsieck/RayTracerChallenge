@@ -28,7 +28,7 @@ namespace RayTracer.Engine
         {
             Position = new Vector3(TransformationMatrix.M14, TransformationMatrix.M24, TransformationMatrix.M34);
         }
-        
+
         protected Transform() => TransformationMatrix = Matrix4x4.Identity;
 
         public virtual Vector3 Normal(Vector3 point) => new(0f, 0f, 0f);

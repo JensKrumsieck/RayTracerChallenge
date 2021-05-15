@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System.ComponentModel;
 using RayTracer.Extension;
 using System.Numerics;
 

@@ -5,7 +5,7 @@ namespace RayTracer.Extension
 {
     public static class Matrix
     {
-        public static float[,] ToArray(this Matrix4x4 m) => new [,]
+        public static float[,] ToArray(this Matrix4x4 m) => new[,]
         {
             {m.M11, m.M12, m.M13, m.M14},
             {m.M21, m.M22, m.M23, m.M24},
@@ -17,15 +17,23 @@ namespace RayTracer.Extension
 
         public static Matrix4x4 Transpose(this Matrix4x4 m) => Matrix4x4.Transpose(m);
 
-        public static Matrix4x4 TranslationMatrix(Vector3 v) => Matrix4x4.CreateTranslation(v).Transpose();
+        public static Matrix4x4 TranslationMatrix(Vector3 v) =>
+            new(1f, 0f, 0f, v.X,
+                0f, 1f, 0f, v.Y,
+                0f, 0f, 1f, v.Z,
+                0f, 0f, 0f, 1f);
 
         public static Matrix4x4 TranslationMatrix(float x, float y, float z) => TranslationMatrix(new Vector3(x, y, z));
 
         public static Matrix4x4 ScaleMatrix(float x, float y, float z) => ScaleMatrix(new Vector3(x, y, z));
 
-        public static Matrix4x4 ScaleMatrix(Vector3 s) => Matrix4x4.CreateScale(s);
+        public static Matrix4x4 ScaleMatrix(Vector3 s) =>
+            new(s.X, 0f, 0f, 0f,
+                0f, s.Y, 0f, 0f,
+                0f, 0f, s.Z, 0f,
+                0f, 0f, 0f, 1f);
 
-        public static Matrix4x4 ScaleMatrix(float f) => Matrix4x4.CreateScale(f, f, f);
+        public static Matrix4x4 ScaleMatrix(float f) => ScaleMatrix(new Vector3(f, f, f));
 
         public static Matrix4x4 RotationXMatrix(float r) =>
             new(1f, 0f, 0f, 0f,
