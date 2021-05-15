@@ -137,5 +137,22 @@ namespace RayTracer.Tests
             var p = new Vector3(-2f, 2f, -2f);
             Assert.IsFalse(w.ShadowCheck(p));
         }
+
+        [TestMethod]
+        public void ShadeHitIntersection()
+        {
+            var w = new World
+            {
+                Light = new PointLight(new Vector3(0f, 0f, -10f), new Color(1f, 1f, 1f))
+            };
+            var s1 = new Sphere();
+            var s2 = new Sphere {TransformationMatrix = Matrix.TranslationMatrix(0f, 0f, 10f)};
+            w.Objects = new Transform[] {s1, s2};
+            var r = new Ray(new Vector3(0f, 0f, 5f), Vector3.UnitZ);
+            var i = new HitInfo(4, s2);
+            var comps = IntersectionPoint.Prepare(i, r);
+            var col = w.Shade(comps);
+            Assert.AreEqual(col, new Color(.1f,.1f,.1f));
+        }
     }
 }

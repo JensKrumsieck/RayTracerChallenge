@@ -74,7 +74,7 @@ namespace RayTracer.Tests
         public void IntersectionShadingInside()
         {
             var w = World.Default;
-            w.Lights[0].Position = new Vector3(0f, .25f, 0f);
+            w.Light.Position = new Vector3(0f, .25f, 0f);
             var s = w.Objects[1];
             var ray = new Ray(new Vector3(0f, 0f, 0f), Vector3.UnitZ);
             var i = new HitInfo(.5f, s);

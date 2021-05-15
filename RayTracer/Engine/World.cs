@@ -13,11 +13,11 @@ namespace RayTracer.Engine
     {
         public Transform[] Objects;
 
-        public ILight[] Lights;
+        public PointLight Light;
 
         public static World Default => new()
         {
-            Lights = new ILight[] { new PointLight(new Vector3(-10, 10, -10), Color.White) },
+            Light =  new PointLight(new Vector3(-10, 10, -10), Color.White),
             Objects = new Transform[]
             {
                 new Sphere
@@ -48,13 +48,17 @@ namespace RayTracer.Engine
             return hit != null;
         }
 
-        public Color Shade(IntersectionPoint p) => Lights.Aggregate(Color.Black, (current, l) => current + p.Object.Material.Shade(l, p));
+        public Color Shade(IntersectionPoint p)
+        {
+            var shadowed = ShadowCheck(p.OverPoint);
+            return p.Object.Material.Shade(Light, p, shadowed);
+        }
 
         public Color ColorAt(Ray ray) => !Hit(ray, out var hit) ? Color.Black : Shade(IntersectionPoint.Prepare(hit, ray));
 
         public bool ShadowCheck(Vector3 p)
         {
-            var v = Lights[0].Position - p;
+            var v = Light.Position - p;
             var dist = v.Length();
             var dir = Vector3.Normalize(v);
             var r = new Ray(p, dir);

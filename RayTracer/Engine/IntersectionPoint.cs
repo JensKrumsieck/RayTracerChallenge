@@ -8,6 +8,7 @@ namespace RayTracer.Engine
         public Vector3 HitPoint;
         public Vector3 Eye;
         public HitInfo Intersection;
+        public readonly Vector3 OverPoint => HitPoint + Normal * Constants.Epsilon;
 
         private Vector3 _normal;
         /// <summary>

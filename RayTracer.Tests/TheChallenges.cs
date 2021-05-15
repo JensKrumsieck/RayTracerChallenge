@@ -83,7 +83,7 @@ namespace RayTracer.Tests
             };
             var w = new World
             {
-                Lights = new ILight[] { light },
+                Light = light,
                 Objects = new Transform[] { s }
             };
             cam.Render(w);
