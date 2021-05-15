@@ -36,7 +36,22 @@ namespace RayTracer.Tests
             var to = Vector3.Zero;
             var up = Vector3.UnitY;
             var t = Camera.ViewTransform(from, to, up);
-            Assert.AreEqual(t, Matrix4x4.CreateTranslation(0f, 0f, -8f));
+            Assert.AreEqual(t, Matrix4x4.Transpose(Matrix4x4.CreateTranslation(0f, 0f, -8f)));
+        }
+
+        [TestMethod]
+        public void ArbitraryView()
+        {
+            var from = new Vector3(1f, 3f, 2f);
+            var to = new Vector3(4f,-2f,8f);
+            var up = new Vector3(1f, 1f, 0f);
+            var t = Camera.ViewTransform(from, to, up);
+            Assert.That.MatricesAreEqual(t,
+                new Matrix4x4(
+                    -.50709f, .50709f, .67612f, -2.36643f, 
+                    .76772f, .60609f, .12122f, -2.82843f, 
+                    -.35857f, .59761f, -.71714f, 0f, 
+                    0f, 0f, 0f, 1f), 1e-4f);
         }
 
         [TestMethod]

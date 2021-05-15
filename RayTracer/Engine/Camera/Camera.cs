@@ -40,7 +40,7 @@ namespace RayTracer.Engine.Camera
                 for (var x = 0; x < Resolution.X; x++)
                 {
                     var r = RayTo(x, y);
-                    view.SetPixel(x,y, w.ColorAt(r));
+                    view.SetPixel(x, y, w.ColorAt(r));
                 }
             });
             return view;
@@ -48,15 +48,28 @@ namespace RayTracer.Engine.Camera
 
         public static Matrix4x4 ViewTransform(Vector3 from, Vector3 to, Vector3 up)
         {
-            var forward = Vector3.Normalize(to - from);
-            var left = Vector3.Cross(forward, Vector3.Normalize(up));
-            var trueUp = Vector3.Cross(left, forward);
-            return new Matrix4x4(
-                    left.X, left.Y, left.Z, 0f,
-                    trueUp.X, trueUp.Y, trueUp.Z, 0f,
-                    -forward.X, -forward.Y, -forward.Z, 0f,
-                    0f, 0f, 0f, 1f)
-            { Translation = -from };
+            var zaxis = Vector3.Normalize(to - from);
+            var xaxis = Vector3.Cross(zaxis, Vector3.Normalize(up));
+            var yaxis = Vector3.Cross(xaxis, zaxis);
+
+            Matrix4x4 result;
+            result.M11 = xaxis.X;
+            result.M12 = xaxis.Y;
+            result.M13 = xaxis.Z;
+            result.M14 = 0.0f;
+            result.M21 = yaxis.X;
+            result.M22 = yaxis.Y;
+            result.M23 = yaxis.Z;
+            result.M24 = 0.0f;
+            result.M31 = -zaxis.X;
+            result.M32 = -zaxis.Y;
+            result.M33 = -zaxis.Z;
+            result.M34 = 0.0f;
+            result.M41 = 0.0f;
+            result.M42 = 0.0f;
+            result.M43 = 0.0f;
+            result.M44 = 1.0f;
+            return Matrix4x4.Multiply(result, Matrix4x4.Transpose(Matrix4x4.CreateTranslation(-from)));
         }
     }
 }
