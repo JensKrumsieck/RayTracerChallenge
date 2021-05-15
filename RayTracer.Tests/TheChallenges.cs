@@ -85,7 +85,7 @@ namespace RayTracer.Tests
                 Lights = new ILight[] { light },
                 Objects = new Transform[] { s }
             };
-            var i = cam.Render(w);
+            cam.Render(w);
         }
 
         [TestMethod]
@@ -130,6 +130,7 @@ namespace RayTracer.Tests
                     Vector3.UnitY, Vector3.UnitY)
             };
             var image = camera.Render(world);
+            image.Render();
         }
     }
 }

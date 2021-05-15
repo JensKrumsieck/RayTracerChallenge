@@ -30,7 +30,6 @@ namespace RayTracer.Tests
         /// <param name="value"></param>
         /// <param name="threshold"></param>
         // ReSharper disable once UnusedParameter.Global
-#pragma warning disable IDE0060
         public static void ColorsAreEqual(this Assert a, Color expected, Color value, float threshold)
         {
             Assert.IsTrue(expected.Equals(value, threshold), $"Colors did not match. Expected: {expected}, Got: {value}, threshold {threshold}");
@@ -57,7 +56,6 @@ namespace RayTracer.Tests
         /// <param name="a"></param>
         /// <param name="expected"></param>
         /// <param name="value"></param>
-        /// <param name="threshold"></param>
         // ReSharper disable once UnusedParameter.Global
         public static void VectorsAreEqual(this Assert a, Vector3 expected, Vector3 value) =>
             a.VectorsAreEqual(expected, value, Constants.Epsilon);
