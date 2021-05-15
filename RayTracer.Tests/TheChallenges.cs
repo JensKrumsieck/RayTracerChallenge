@@ -7,6 +7,7 @@ using RayTracer.Primitives;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using RayTracer.Extension;
 
 namespace RayTracer.Tests
 {
@@ -92,30 +93,36 @@ namespace RayTracer.Tests
         public void ChapterVII()
         {
             var wallMaterial = new PhongMaterial(new Color(1f, .9f, .9f), .1f, .9f, 0f);
-            var wallScale = new Vector3(10f, .01f, 10f);
+            var wallScale = Matrix.ScaleMatrix(10f, .01f, 10f);
             var wallPos = Vector3.UnitZ * 5f;
-            var floor = new Sphere(Vector3.Zero, Vector3.Zero, wallScale)
+            var floor = new Sphere
             {
+                TransformationMatrix = wallScale,
                 Material = wallMaterial,
             };
-            var leftWall = new Sphere(wallPos, new Vector3(MathF.PI / 2f, MathF.PI / -4f, 0f), wallScale)
+            var leftWall = new Sphere
             {
+                Material = wallMaterial,
+                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI / 4f) * Matrix.RotationXMatrix(MathF.PI / 2f) * wallScale
+            };
+            var rightWall = new Sphere
+            {
+                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI/-4f) * Matrix.RotationXMatrix(MathF.PI/2f) * wallScale,
                 Material = wallMaterial
             };
-            var rightWall = new Sphere(wallPos, new Vector3(MathF.PI / 2f, MathF.PI / 4f, 0f), wallScale)
+            var right = new Sphere
             {
-                Material = wallMaterial
-            };
-            var right = new Sphere(new Vector3(1.5f, .5f, -.5f), .5f)
-            {
+                TransformationMatrix = Matrix.TranslationMatrix(1.5f, .5f, -.5f) * Matrix.ScaleMatrix(.5f),
                 Material = new PhongMaterial(new Color(.5f, 1f, .1f), .1f, .7f, .3f)
             };
-            var middle = new Sphere(new Vector3(-.5f, 1f, .5f))
+            var middle = new Sphere
             {
+                TransformationMatrix = Matrix.TranslationMatrix(-.5f, 1f, .5f),
                 Material = new PhongMaterial(new Color(.1f, 1f, .5f), .1f, .7f, .3f)
             };
-            var left = new Sphere(new Vector3(-1.5f, .33f, -.75f), .33f)
+            var left = new Sphere
             {
+                TransformationMatrix = Matrix.TranslationMatrix(-1.5f, .33f, -.75f) * Matrix.ScaleMatrix(.33f),
                 Material = new PhongMaterial(new Color(1f, .8f, .1f), .1f, .7f, .3f)
             };
             var world = new World

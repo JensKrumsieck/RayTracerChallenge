@@ -11,8 +11,6 @@ namespace RayTracer.Engine
         private Matrix4x4 _transformationMatrix;
 
         public Vector3 Position;
-        public Quaternion Rotation;
-        public Vector3 Scale;
 
         public IMaterial Material = PhongMaterial.Default;
 
@@ -28,23 +26,9 @@ namespace RayTracer.Engine
 
         private void Decompose()
         {
-            if (!Matrix4x4.Decompose(TransformationMatrix, out var scale, out var rotation, out var pos)) return;
-            Position = pos;
-            Rotation = rotation;
-            Scale = scale;
+            Position = new Vector3(TransformationMatrix.M14, TransformationMatrix.M24, TransformationMatrix.M34);
         }
-
-        public Transform(Vector3 position, Vector3 rotation, Vector3 scale)
-        {
-            var translation = Matrix4x4.CreateTranslation(position);
-            var rot =
-                Matrix4x4.CreateRotationY(rotation.Z) *
-                Matrix4x4.CreateRotationX(rotation.Y) *
-                Matrix4x4.CreateRotationZ(rotation.X);
-            var scaling = Matrix4x4.CreateScale(scale);
-            TransformationMatrix = scaling * rot * translation;
-        }
-
+        
         protected Transform() => TransformationMatrix = Matrix4x4.Identity;
 
         public virtual Vector3 Normal(Vector3 point) => new(0f, 0f, 0f);
@@ -59,8 +43,8 @@ namespace RayTracer.Engine
 
         public override string ToString() => GetType().Name + ":" + Position;
 
-        public Vector3 WorldToObject(Vector3 worldPoint) => Vector3.Transform(worldPoint, TransformationMatrix.Invert());
+        public Vector3 WorldToObject(Vector3 worldPoint) => worldPoint.Multiply(TransformationMatrix.Invert());
 
-        public Vector3 ObjectToWorld(Vector3 objectPoint) => Vector3.Transform(objectPoint, Matrix4x4.Transpose(TransformationMatrix.Invert()));
+        public Vector3 ObjectToWorld(Vector3 objectPoint) => objectPoint.Multiply(Matrix4x4.Transpose(TransformationMatrix.Invert()));
     }
 }

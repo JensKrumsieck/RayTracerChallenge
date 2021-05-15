@@ -2,6 +2,7 @@
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using static RayTracer.Extension.Matrix;
 
 namespace RayTracer.Engine.Camera
 {
@@ -27,8 +28,8 @@ namespace RayTracer.Engine.Camera
             var wX = HalfWidth - (x + .5f) * PixelSize;
             var wY = HalfHeight - (y + .5f) * PixelSize;
             var inv = TransformationMatrix.Invert();
-            var px = Vector3.Transform(new Vector3(wX, wY, -1f), inv);
-            var origin = Vector3.Transform(Vector3.Zero, inv);
+            var px = new Vector3(wX, wY, -1f).Multiply(inv);
+            var origin = Vector3.Zero.Multiply(inv);
             return new Ray(origin, Vector3.Normalize(px - origin));
         }
 
@@ -46,27 +47,19 @@ namespace RayTracer.Engine.Camera
             return view;
         }
 
-        public static Matrix4x4 ViewTransform(Vector3 from, Vector3 to, Vector3 up) => Matrix4x4.CreateLookAt(from, to, up);
-        //var zaxis = Vector3.Normalize(to - from);
-        //var xaxis = Vector3.Cross(zaxis, Vector3.Normalize(up));
-        //var yaxis = Vector3.Cross(xaxis, zaxis);
-        //Matrix4x4 result;
-        //result.M11 = xaxis.X;
-        //result.M12 = xaxis.Y;
-        //result.M13 = xaxis.Z;
-        //result.M14 = 0.0f;
-        //result.M21 = yaxis.X;
-        //result.M22 = yaxis.Y;
-        //result.M23 = yaxis.Z;
-        //result.M24 = 0.0f;
-        //result.M31 = -zaxis.X;
-        //result.M32 = -zaxis.Y;
-        //result.M33 = -zaxis.Z;
-        //result.M34 = 0.0f;
-        //result.M41 = 0.0f;
-        //result.M42 = 0.0f;
-        //result.M43 = 0.0f;
-        //result.M44 = 1.0f;
-        //return Matrix4x4.Multiply(result, Matrix4x4.Transpose(Matrix4x4.CreateTranslation(-from)));
+        public static Matrix4x4 ViewTransform(Vector3 from, Vector3 to, Vector3 up)
+        {
+            var forward = Vector3.Normalize(to - from);
+            var upNormal = Vector3.Normalize(up);
+            var left = Vector3.Cross(forward, upNormal);
+            var trueUp = Vector3.Cross(left, forward);
+
+            var orientation = new Matrix4x4(
+                left.X, left.Y, left.Z, 0f,
+                trueUp.X, trueUp.Y, trueUp.Z, 0f,
+                -forward.X, -forward.Y, -forward.Z, 0f,
+                0f, 0f, 0f, 1f);
+            return orientation * TranslationMatrix(-from);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.ComponentModel;
 using RayTracer.Extension;
 using System.Numerics;
 
@@ -17,7 +18,7 @@ namespace RayTracer.Engine
 
         public readonly Vector3 PointByDistance(float d) => Origin + Direction * d;
 
-        public readonly Ray Transform(Matrix4x4 m) => new(Vector3.Transform(Origin, m), Vector4.Transform(Direction.AsVector4(), m).AsVector3());
+        public readonly Ray Transform(Matrix4x4 m) => new(Origin.Multiply(m), Direction.MultiplyVector(m));
 
         private static bool Intersect(Ray ray, Transform transform, out HitInfo[] hits)
         {

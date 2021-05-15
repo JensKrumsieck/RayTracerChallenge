@@ -1,29 +1,33 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace RayTracer.Extension
 {
     public static class VectorExtension
     {
-        public static Vector4 Translate(this Vector4 v, float x, float y, float z) => Vector4.Transform(v, Matrix4x4.CreateTranslation(x, y, z));
-        public static Vector4 Scale(this Vector4 v, float x, float y, float z) => Vector4.Transform(v, Matrix4x4.CreateScale(x, y, z));
-        public static Vector4 RotateX(this Vector4 v, float r) => Vector4.Transform(v, Matrix4x4.CreateRotationX(r));
-        public static Vector4 RotateY(this Vector4 v, float r) => Vector4.Transform(v, Matrix4x4.CreateRotationY(r));
-        public static Vector4 RotateZ(this Vector4 v, float r) => Vector4.Transform(v, Matrix4x4.CreateRotationZ(r));
-        public static Vector4 Skew(this Vector4 v, float xy, float xz, float yx, float yz, float zx, float zy) => Vector4.Transform(v, Matrix4x4.Transpose(new Matrix4x4(1f, xy, xz, 0f, yx, 1f, yz, 0f, zx, zy, 1f, 0f, 0f, 0f, 0f, 1f)));
-
-        public static Vector3 Translate(this Vector3 v, float x, float y, float z) => Vector3.Transform(v, Matrix4x4.CreateTranslation(x, y, z));
-        public static Vector3 Scale(this Vector3 v, float x, float y, float z) => Vector3.Transform(v, Matrix4x4.CreateScale(x, y, z));
-        public static Vector3 RotateX(this Vector3 v, float r) => Vector3.Transform(v, Matrix4x4.CreateRotationX(r));
-        public static Vector3 RotateY(this Vector3 v, float r) => Vector3.Transform(v, Matrix4x4.CreateRotationY(r));
-        public static Vector3 RotateZ(this Vector3 v, float r) => Vector3.Transform(v, Matrix4x4.CreateRotationZ(r));
-        public static Vector3 Skew(this Vector3 v, float xy, float xz, float yx, float yz, float zx, float zy) => Vector3.Transform(v, Matrix4x4.Transpose(new Matrix4x4(1f, xy, xz, 0f, yx, 1f, yz, 0f, zx, zy, 1f, 0f, 0f, 0f, 0f, 1f)));
-
-        public static float Dot(this Vector4 left, Vector4 right) => Vector4.Dot(left, right);
-        public static Vector4 Cross(this Vector4 a, Vector4 b) => new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X, 0f);
-        public static Vector4 Normalize(this Vector4 v) => Vector4.Normalize(v);
+        public static Vector4 Multiply(this Vector4 v, Matrix4x4 m)
+        {
+            var vStorage = v.ToArray();
+            var mStorage = m.ToArray();
+            var rStorage = new float[4];
+            for (var i = 0; i < 4; i++)
+            {
+                var tmp = 0f;
+                for (var j = 0; j < 4; j++)
+                {
+                    tmp += mStorage[i, j] * vStorage[j];
+                }
+                rStorage[i] = tmp;
+            }
+            return new Vector4(rStorage[0], rStorage[1], rStorage[2], rStorage[3]);
+        }
+        public static Vector3 Multiply(this Vector3 v, Matrix4x4 m) => v.AsPoint4().Multiply(m).AsVector3();
+        public static Vector3 MultiplyVector(this Vector3 v, Matrix4x4 m) => v.AsVector4().Multiply(m).AsVector3();
 
         public static Vector4 AsVector4(this Vector3 v) => new(v.X, v.Y, v.Z, 0f);
+        public static Vector4 AsPoint4(this Vector3 v) => new(v.X, v.Y, v.Z, 1f);
         public static Vector3 AsVector3(this Vector4 v) => new(v.X, v.Y, v.Z);
+        public static ReadOnlySpan<float> ToArray(this Vector4 v) => new[] { v.X, v.Y, v.Z, v.W };
     }
 
 }
