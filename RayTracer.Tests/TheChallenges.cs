@@ -7,7 +7,6 @@ using RayTracer.Primitives;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using Color = RayTracer.Engine.Color;
 
 namespace RayTracer.Tests
 {
@@ -66,6 +65,27 @@ namespace RayTracer.Tests
                     canvas.SetPixel(x, y, s.Material.Shade(light, new IntersectionPoint { HitPoint = p, Eye = eye, Normal = normal }));
                 }
             });
+        }
+
+        [TestMethod]
+        public void ChapterVI_extended()
+        {
+            //same as chap 6 with new classes
+            const int canvasSize = 100;
+            var s = new Sphere { Material = { BaseColor = new Color(1f, .2f, 1f) } };
+            var light = new PointLight(new Vector3(-10f, 10f, -10f), Color.White);
+            var cam = new Camera(canvasSize, canvasSize, MathF.PI / 3f)
+            {
+                TransformationMatrix = Camera.ViewTransform(
+                    new Vector3(0f, 1.5f, -1.5f),
+                    s.Position, Vector3.UnitY)
+            };
+            var w = new World
+            {
+                Lights = new ILight[] { light },
+                Objects = new Transform[] { s }
+            };
+            var i = cam.Render(w);
         }
 
         [TestMethod]
