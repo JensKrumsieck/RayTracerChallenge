@@ -154,5 +154,19 @@ namespace RayTracer.Tests
             var col = w.Shade(comps);
             Assert.AreEqual(col, new Color(.1f,.1f,.1f));
         }
+
+        [TestMethod]
+        public void HitOffsetsPoint()
+        {
+            var r = new Ray(new Vector3(0f, 0f, -5f), Vector3.UnitZ);
+            var s = new Sphere
+            {
+                TransformationMatrix = Matrix.TranslationMatrix(0f, 0f, 1f)
+            };
+            var i = new HitInfo(5, s);
+            var c = IntersectionPoint.Prepare(i, r);
+            Assert.IsTrue(c.OverPoint.Z < -Constants.Epsilon / 2);
+            Assert.IsTrue(c.HitPoint.Z > c.OverPoint.Z);
+        }
     }
 }
