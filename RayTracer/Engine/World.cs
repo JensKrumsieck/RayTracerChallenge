@@ -28,20 +28,38 @@ namespace RayTracer.Engine
             }
         };
 
-        public bool Intersections(Ray ray, out HitInfo[] hitInfo, bool doHit = false)
+        public bool Intersections(Ray ray, out HitInfo[] hitInfo)
         {
             var hits = new ConcurrentBag<HitInfo>();
             Parallel.ForEach(Objects, o =>
             {
-                var newHits = o.Intersect(ray, doHit); //if doHit is true only one intersection is returned
+                var newHits = o.Intersect(ray);
                 foreach (var hit in newHits) hits.Add(hit);
             });
             hitInfo = hits.OrderBy(s => s.Distance).ToArray();
             return hitInfo.Length != 0;
         }
 
+        public bool Hit(Ray ray, out HitInfo? hit)
+        {
+            hit = null;
+            if (!Intersections(ray, out var hitInfo)) return false;
+            hit = HitInfo.DetermineHit(hitInfo);
+            return hit != null;
+        }
+
         public Color Shade(IntersectionPoint p) => Lights.Aggregate(Color.Black, (current, l) => current + p.Object.Material.Shade(l, p));
 
-        public Color ColorAt(Ray ray) => !Intersections(ray, out var xs, true) ? Color.Black : Shade(IntersectionPoint.Prepare(xs[0], ray));
+        public Color ColorAt(Ray ray) => !Hit(ray, out var hit) ? Color.Black : Shade(IntersectionPoint.Prepare(hit, ray));
+
+        public bool ShadowCheck(Vector3 p)
+        {
+            var v = Lights[0].Position - p;
+            var dist = v.Length();
+            var dir = Vector3.Normalize(v);
+            var r = new Ray(p, dir);
+            if (!Hit(r, out var hit)) return false;
+            return hit?.Distance < dist;
+        }
     }
 }

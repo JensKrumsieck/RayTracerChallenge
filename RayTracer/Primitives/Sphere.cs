@@ -25,7 +25,7 @@ namespace RayTracer.Primitives
             return Vector3.Normalize(normal);
         }
 
-        public override HitInfo[] Intersect(Ray ray, bool hit = false)
+        public override HitInfo[] Intersect(Ray ray)
         {
             ray = ray.Transform(TransformationMatrix.Invert());
             var sphereToRay = ray.Origin - Position;
@@ -36,7 +36,6 @@ namespace RayTracer.Primitives
             if (d < 0) return Array.Empty<HitInfo>();
             var t1 = (-b - MathF.Sqrt(d)) / (2f * a);
             var t2 = (-b + MathF.Sqrt(d)) / (2f * a);
-            if (hit) return new[] { new HitInfo(MathF.Min(t1, t2), this) };
             return new[]
             {
                 new HitInfo(t1, this),

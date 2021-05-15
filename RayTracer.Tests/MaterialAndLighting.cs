@@ -10,7 +10,7 @@ using System.Numerics;
 namespace RayTracer.Tests
 {
     [TestClass]
-    public class MaterialAndLighting
+    public class MaterialShadowingAndLighting
     {
         [TestMethod]
         public void DefaultMaterial()
@@ -92,6 +92,50 @@ namespace RayTracer.Tests
             var light = new PointLight(new Vector3(0f, 10f, -10f), Color.White);
             var result = m.Shade(light, new IntersectionPoint { HitPoint = position, Eye = eye, Normal = normal });
             Assert.That.ColorsAreEqual(result, new Color(1.6364f, 1.6364f, 1.6364f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void LightWithSurfInShadow()
+        {
+            var (m, position) = Setup;
+            var eyeV = new Vector3(0f, 0f, -1f);
+            var normalV = new Vector3(0f, 0f, -1f);
+            var light = new PointLight(Vector3.UnitZ * -10, Color.White);
+            var res = m.Shade(light,
+                new IntersectionPoint {Eye = eyeV, HitPoint = position, Normal = normalV, Object = null}, true);
+            Assert.AreEqual(res, new Color(.1f, .1f, .1f));
+        }
+
+        [TestMethod]
+        public void NoShadowWhenCollinearWithPointAndLight()
+        {
+            var w = World.Default;
+            var p = new Vector3(0f, 10f, 0f);
+            Assert.IsFalse(w.ShadowCheck(p));
+        }
+
+        [TestMethod]
+        public void ShadowObjectBetweenPointAndLight()
+        {
+            var w = World.Default;
+            var p = new Vector3(10f, -10f, 10f);
+            Assert.IsTrue(w.ShadowCheck(p));
+        }
+
+        [TestMethod]
+        public void NoShadowObjectBehindLight()
+        {
+            var w = World.Default;
+            var p = new Vector3(-20f, 20f, -20f);
+            Assert.IsFalse(w.ShadowCheck(p));
+        }
+
+        [TestMethod]
+        public void NoShadowObjectBehindPoint()
+        {
+            var w = World.Default;
+            var p = new Vector3(-2f, 2f, -2f);
+            Assert.IsFalse(w.ShadowCheck(p));
         }
     }
 }

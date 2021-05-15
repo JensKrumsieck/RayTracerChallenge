@@ -23,7 +23,7 @@ namespace RayTracer.Engine.Material
 
         public static PhongMaterial Default => new(Color.White);
 
-        public readonly Color Shade(ILight light, IntersectionPoint p)
+        public readonly Color Shade(ILight light, IntersectionPoint p, bool inShadow = false)
         {
             var effectiveCol = BaseColor * light.Intensity;
             //get direction to light source
@@ -35,7 +35,7 @@ namespace RayTracer.Engine.Material
             var lightNormal = Vector3.Dot(lightDir, p.Normal);
 
             var specular = Color.Black;
-            if (lightNormal < 0) return ambient;
+            if (lightNormal < 0 || inShadow) return ambient;
             var diffuse = effectiveCol * Diffuse * lightNormal;
             var reflect = Vector3.Reflect(-lightDir, p.Normal);
             var reflectDotEye = Vector3.Dot(reflect, p.Eye);

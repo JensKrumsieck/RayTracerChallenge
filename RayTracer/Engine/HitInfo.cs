@@ -1,4 +1,8 @@
-﻿namespace RayTracer.Engine
+﻿using System.Collections.Generic;
+using System.Linq;
+
+#nullable enable
+namespace RayTracer.Engine
 {
     public sealed class HitInfo
     {
@@ -12,5 +16,7 @@
         }
 
         public override string ToString() => $"HitInfo: \n\tObject: {HitObject}\n\tDistance: {Distance}";
+
+        public static HitInfo? DetermineHit(IEnumerable<HitInfo> xs) => xs.FirstOrDefault(i => i.Distance > 0);
     }
 }

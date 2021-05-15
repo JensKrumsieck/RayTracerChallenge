@@ -1,7 +1,6 @@
 ﻿#nullable enable
 using RayTracer.Engine.Material;
 using RayTracer.Extension;
-using System;
 using System.Numerics;
 
 namespace RayTracer.Engine
@@ -36,13 +35,9 @@ namespace RayTracer.Engine
 
         public abstract Vector3 Normal(Vector3 point);
 
-        public virtual HitInfo[] Intersect(Ray ray, bool hit = false) => Array.Empty<HitInfo>();
+        public abstract HitInfo[] Intersect(Ray ray);
 
-        public HitInfo? Hit(Ray ray)
-        {
-            var xs = Intersect(ray, true);
-            return xs.Length == 0 ? null : xs[0];
-        }
+        public HitInfo? Hit(Ray ray) => HitInfo.DetermineHit(Intersect(ray));
 
         public override string ToString() => GetType().Name + ":" + Position;
 

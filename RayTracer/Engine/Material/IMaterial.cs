@@ -6,6 +6,6 @@ namespace RayTracer.Engine.Material
     {
         public Color BaseColor { get; set; }
 
-        public Color Shade(ILight light, IntersectionPoint p);
+        public Color Shade(ILight light, IntersectionPoint p, bool inShadow = false);
     }
 }
