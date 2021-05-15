@@ -6,30 +6,42 @@ using static RayTracer.Extension.Matrix;
 
 namespace RayTracer.Engine.Camera
 {
-    public class Camera : Transform
+    public class Camera
     {
         public Vector2Int Resolution;
         public float FieldOfView;
 
         public float PixelSize => HalfWidth * 2f / Resolution.X;
-        public float AspectRatio => Resolution.X / (float)Resolution.Y;
+        public float AspectRatio => (float)Resolution.X / Resolution.Y;
         private float HalfView => MathF.Tan(FieldOfView / 2f);
         public float HalfWidth => AspectRatio >= 1 ? HalfView : HalfView * AspectRatio;
         public float HalfHeight => AspectRatio >= 1 ? HalfView / AspectRatio : HalfView;
+
+        private Matrix4x4 _transform;
+        private Matrix4x4 _inverseTransform;
+        public Matrix4x4 Transform
+        {
+            get => _transform;
+            set
+            {
+                _transform = value;
+                _inverseTransform = _transform.Invert();
+            }
+        }
 
         public Camera(int width, int height, float foV)
         {
             Resolution = new Vector2Int(width, height);
             FieldOfView = foV;
+            Transform = Matrix4x4.Identity;
         }
 
         public Ray RayTo(int x, int y)
         {
             var wX = HalfWidth - (x + .5f) * PixelSize;
             var wY = HalfHeight - (y + .5f) * PixelSize;
-            var inv = TransformationMatrix.Invert();
-            var px = new Vector3(wX, wY, -1f).Multiply(inv);
-            var origin = Vector3.Zero.Multiply(inv);
+            var px = new Vector3(wX, wY, -1f).Multiply(_inverseTransform);
+            var origin = Vector3.Zero.Multiply(_inverseTransform);
             return new Ray(origin, Vector3.Normalize(px - origin));
         }
 

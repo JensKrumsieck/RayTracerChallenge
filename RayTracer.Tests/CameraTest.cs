@@ -62,7 +62,7 @@ namespace RayTracer.Tests
             Assert.AreEqual(c.Resolution.X, 160);
             Assert.AreEqual(c.Resolution.Y, 120);
             Assert.AreEqual(c.FieldOfView, MathF.PI / 2f);
-            Assert.AreEqual(c.TransformationMatrix, Matrix4x4.Identity);
+            Assert.AreEqual(c.Transform, Matrix4x4.Identity);
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace RayTracer.Tests
         {
             var c = new Camera(201, 101, MathF.PI / 2f)
             {
-                TransformationMatrix = RotationYMatrix(MathF.PI / 4) * TranslationMatrix(0f, -2f, 5f)
+                Transform = RotationYMatrix(MathF.PI / 4) * TranslationMatrix(0f, -2f, 5f)
             };
             var r = c.RayTo(100, 50);
             Assert.That.VectorsAreEqual(r.Origin, new Vector3(0f, 2f, -5f), 1e-5f);
@@ -110,7 +110,7 @@ namespace RayTracer.Tests
             var from = new Vector3(0f, 0f, -5f);
             var to = Vector3.Zero;
             var up = Vector3.UnitY;
-            c.TransformationMatrix = Camera.ViewTransform(from, to, up);
+            c.Transform = Camera.ViewTransform(from, to, up);
             var image = c.Render(w);
             Assert.That.ColorsAreEqual(image.PixelAt(5, 5), new Color(.38066f, .47583f, .2855f), 1e-5f);
         }

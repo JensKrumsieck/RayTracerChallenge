@@ -77,7 +77,7 @@ namespace RayTracer.Tests
             var light = new PointLight(new Vector3(-10f, 10f, -10f), Color.White);
             var cam = new Camera(canvasSize, canvasSize, MathF.PI / 3f)
             {
-                TransformationMatrix = Camera.ViewTransform(
+                Transform = Camera.ViewTransform(
                     new Vector3(0f, 1.5f, -1.5f),
                     s.Position, Vector3.UnitY)
             };
@@ -94,7 +94,7 @@ namespace RayTracer.Tests
         {
             var wallMaterial = new PhongMaterial(new Color(1f, .9f, .9f), .1f, .9f, 0f);
             var wallScale = Matrix.ScaleMatrix(10f, .01f, 10f);
-            var wallPos = Vector3.UnitZ * 5f;
+            var wallPos = new Vector3(0f, 0f, 5f);
             var floor = new Sphere
             {
                 TransformationMatrix = wallScale,
@@ -103,11 +103,11 @@ namespace RayTracer.Tests
             var leftWall = new Sphere
             {
                 Material = wallMaterial,
-                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI / 4f) * Matrix.RotationXMatrix(MathF.PI / 2f) * wallScale
+                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI / -4f) * Matrix.RotationXMatrix(MathF.PI / 2f) * wallScale
             };
             var rightWall = new Sphere
             {
-                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI / -4f) * Matrix.RotationXMatrix(MathF.PI / 2f) * wallScale,
+                TransformationMatrix = Matrix.TranslationMatrix(wallPos) * Matrix.RotationYMatrix(MathF.PI / 4f) * Matrix.RotationXMatrix(MathF.PI / 2f) * wallScale,
                 Material = wallMaterial
             };
             var right = new Sphere
@@ -125,19 +125,15 @@ namespace RayTracer.Tests
                 TransformationMatrix = Matrix.TranslationMatrix(-1.5f, .33f, -.75f) * Matrix.ScaleMatrix(.33f),
                 Material = new PhongMaterial(new Color(1f, .8f, .1f), .1f, .7f, .3f)
             };
-            var world = new World
+            var world = World.Default;
+            world.Objects = new Transform[] { left, middle, right, floor, leftWall, rightWall };
+            var camera = new Camera(600, 300, MathF.PI /3f)
             {
-                Objects = new Transform[] { left, middle, right, floor, leftWall, rightWall },
-                Lights = new ILight[] { new PointLight(new Vector3(-10f, 10f, -10f), Color.White) }
-            };
-            var camera = new Camera(600, 300, MathF.PI / 3f)
-            {
-                TransformationMatrix = Camera.ViewTransform(
+                Transform = Camera.ViewTransform(
                     new Vector3(0, 1.5f, -5f),
                     Vector3.UnitY, Vector3.UnitY)
             };
-            var image = camera.Render(world);
-            image.Render();
+            camera.Render(world).Save();
         }
     }
 }

@@ -73,7 +73,7 @@ namespace RayTracer.Engine
         /// path default to D:/ is for debugging purpose and will be removed
         /// </summary>
         /// <param name="path"></param>
-        public void Render(string path = "D://test.jpg")
+        public void Save(string path = "D://test.jpg")
         {
             var info = new SKImageInfo(Width, Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
             var surface = SKSurface.Create(info);

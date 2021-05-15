@@ -34,24 +34,16 @@ namespace RayTracer.Engine.Material
 
             var lightNormal = Vector3.Dot(lightDir, p.Normal);
 
-            Color diffuse;
-            Color specular;
-            if (lightNormal < 0)
+            var specular = Color.Black;
+            if (lightNormal < 0) return ambient;
+            var diffuse = effectiveCol * Diffuse * lightNormal;
+            var reflect = Vector3.Reflect(-lightDir, p.Normal);
+            var reflectDotEye = Vector3.Dot(reflect, p.Eye);
+            // ReSharper disable once InvertIf
+            if (reflectDotEye > 0) 
             {
-                diffuse = Color.Black;
-                specular = Color.Black;
-            }
-            else
-            {
-                diffuse = effectiveCol * Diffuse * lightNormal;
-                var reflect = Vector3.Reflect(-lightDir, p.Normal);
-                var reflectDotEye = Vector3.Dot(reflect, p.Eye);
-                if (reflectDotEye <= 0) specular = Color.Black;
-                else
-                {
-                    var factor = MathF.Pow(reflectDotEye, Shininess);
-                    specular = light.Intensity * Specular * factor;
-                }
+                var factor = MathF.Pow(reflectDotEye, Shininess);
+                specular = light.Intensity * Specular * factor;
             }
             return ambient + diffuse + specular;
         }
