@@ -106,5 +106,29 @@ namespace RayTracer.Tests
             var c = w.ColorAt(r);
             Assert.That.VectorsAreEqual(c, inner.Material.BaseColor);
         }
+
+        [TestMethod]
+        public void NoShadowWhenNothingCollinear()
+        {
+            var w = World.Default;
+            var p = Point(0f, 10f, 0f);
+            Assert.IsFalse(w.InShadow(p));
+        }
+
+        [TestMethod]
+        public void ShadowWhenObjectBetweenPointLight()
+        {
+            var w = World.Default;
+            var p = Point(10f, -10f, 10f);
+            Assert.IsTrue(w.InShadow(p));
+        }
+
+        [TestMethod]
+        public void NoShadowWhenBehindPoint()
+        {
+            var w = World.Default;
+            var p = Point(-2f, 2f, -2f);
+            Assert.IsFalse(w.InShadow(p));
+        }
     }
 }

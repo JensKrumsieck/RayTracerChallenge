@@ -24,14 +24,14 @@ namespace RayTracer.Materials
             Shininess = shininess;
         }
 
-        public Color Shade(PointLight l, Vector4 point, Vector4 eye, Vector4 normal)
+        public readonly Color Shade(PointLight l, Vector4 point, Vector4 eye, Vector4 normal, bool inShadow = false)
         {
             var effCol = BaseColor * l.Intensity;
             var lightV = Vector4.Normalize(l.Position - point);
             var ambient = effCol * Ambient;
 
             var lightDotNormal = Vector4.Dot(lightV, normal);
-            if (lightDotNormal < 0) return ambient;
+            if (lightDotNormal < 0 || inShadow) return ambient;
             var diffuse = effCol * Diffuse * lightDotNormal;
             var reflect = (-lightV).Reflect(normal);
             var reflectDotEye = Vector4.Dot(reflect, eye);

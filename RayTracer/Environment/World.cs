@@ -3,6 +3,7 @@ using RayTracer.Shapes;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using static RayTracer.Extension.MatrixExtension;
@@ -39,10 +40,7 @@ namespace RayTracer.Environment
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Color ShadeHit(IntersectionState comps) =>
-            comps.Object is not IShadedObject shaded ?
-                Color.Black :
-                shaded.Material.Shade(Lights[0], comps.Point, comps.Eye, comps.Normal);
+        public Color ShadeHit(IntersectionState comps) => comps.Object.Material.Shade(Lights[0], comps.Point, comps.Eye, comps.Normal, InShadow(comps.OverPoint));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Color ColorAt(in Ray ray)
@@ -50,6 +48,17 @@ namespace RayTracer.Environment
             var xs = Intersect(ray);
             var hit = Intersection.Hit(xs);
             return hit == null ? Color.Black : ShadeHit(IntersectionState.Prepare(hit, ray));
+        }
+
+        public bool InShadow(Vector4 point)
+        {
+            var v = Lights[0].Position - point;
+            var dis = v.Length();
+            var dir = Vector4.Normalize(v);
+
+            var xs = Intersect(new Ray(point, dir));
+            var hit = Intersection.Hit(xs);
+            return hit != null && hit.Distance < dis;
         }
     }
 }

@@ -69,7 +69,7 @@ namespace RayTracer.Tests
         }
 
         [TestMethod]
-        public void ChapterVII()
+        public void ChapterVII_III()
         {
             var w = new World();
             var wallMaterial = new PhongMaterial(new Color(1f, .9f, .9f)) { Specular = 0f };

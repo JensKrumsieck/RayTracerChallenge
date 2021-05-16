@@ -6,7 +6,7 @@ namespace RayTracer
 {
     public struct IntersectionState
     {
-        public IRayObject Object;
+        public Entity Object;
         public float Distance;
 
         public Vector4 Point;
@@ -15,10 +15,11 @@ namespace RayTracer
         private Vector4 _normal;
         public Vector4 Normal
         {
-            get => IsInside ? -_normal : _normal;
+            readonly get => IsInside ? -_normal : _normal;
             set => _normal = value;
         }
 
+        public readonly Vector4 OverPoint => Point + Normal * 5e-3f;
         public readonly bool IsInside => Vector4.Dot(_normal, Eye) < 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

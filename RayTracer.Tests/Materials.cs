@@ -75,5 +75,15 @@ namespace RayTracer.Tests
             var res = _m.Shade(l, _position, eye, normal);
             Assert.That.VectorsAreEqual(res, new Color(.1f, .1f, .1f));
         }
+
+        [TestMethod]
+        public void LightingWithSurfinShadow()
+        {
+            var eye = Direction(0f, 0f, -1f);
+            var normal = Direction(0f, 0f, -1f);
+            var l = new PointLight(Point(0f, 0f, -10f), Color.White);
+            var res = _m.Shade(l, _position, eye, normal, true);
+            Assert.That.VectorsAreEqual(res, new Color(.1f, .1f, .1f));
+        }
     }
 }

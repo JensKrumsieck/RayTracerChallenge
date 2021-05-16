@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Shapes;
+using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
 namespace RayTracer.Tests
@@ -109,6 +110,17 @@ namespace RayTracer.Tests
             Assert.That.VectorsAreEqual(comps.Point, Point(0f, 0f, 1f));
             Assert.That.VectorsAreEqual(comps.Eye, Direction(0f, 0f, -1f));
             Assert.That.VectorsAreEqual(comps.Normal, Direction(0f, 0f, -1f));
+        }
+
+        [TestMethod]
+        public void HitOffsetsPoint()
+        {
+            var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
+            var s = new Sphere(Translation(0f, 0f, 1f));
+            var i = new Intersection(5f, s);
+            var c = IntersectionState.Prepare(i, r);
+            Assert.IsTrue(c.OverPoint.Z < -Constants.Epsilon / 2f);
+            Assert.IsTrue(c.Point.Z > c.OverPoint.Z);
         }
     }
 }

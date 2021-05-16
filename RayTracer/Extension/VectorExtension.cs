@@ -5,7 +5,7 @@ namespace RayTracer.Extension
 {
     public static class VectorExtension
     {
-        public static bool IsPoint(this Vector4 v) => MathF.Abs(v.W - 1.0f) < float.Epsilon;
+        public static bool IsPoint(this Vector4 v) => MathF.Abs(v.W - 1.0f) < Constants.EpsilonHigh;
         public static bool IsVector(this Vector4 v) => !v.IsPoint();
 
         public static Vector4 Point(float x, float y, float z) => new(x, y, z, 1.0f);
