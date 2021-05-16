@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Drawing;
+using System.Linq;
 using static System.Environment;
 
 namespace RayTracer.Tests.Drawing

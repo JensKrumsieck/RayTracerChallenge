@@ -5,14 +5,14 @@ using System.Runtime.CompilerServices;
 
 namespace RayTracer.Shapes
 {
-    public abstract class Entity : IRayObject, IShadedObject, IEquatable<Sphere>
+    public abstract class Entity : IEquatable<Sphere>
     {
         protected Entity(Transform transform)
         {
             Transform = transform;
             Material = PhongMaterial.Default;
         }
-        protected Entity():this(Transform.Identity) { }
+        protected Entity() : this(Transform.Identity) { }
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

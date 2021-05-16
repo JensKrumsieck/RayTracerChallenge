@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RayTracer.Tests.TestObjects;
-using System.Numerics;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Materials;
-using RayTracer.Shapes;
+using RayTracer.Tests.TestObjects;
+using System;
+using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
@@ -43,7 +42,7 @@ namespace RayTracer.Tests.Shapes
         {
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new TestShape(Scale(2f, 2f, 2f));
-            var xs = s.Intersect(r);
+            s.Intersect(r);
             Assert.AreEqual(s.SavedRay.Origin, Point(0f, 0f, -2.5f));
             Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, .5f));
         }
@@ -75,13 +74,6 @@ namespace RayTracer.Tests.Shapes
             var val = MathF.Sqrt(2f) / 2f;
             var n = s.Normal(Point(0f, val, -val));
             Assert.That.VectorsAreEqual(n, Direction(0f, .97014f, -.24254f));
-        }
-
-        [TestMethod]
-        public void SphereIsShape()
-        {
-            var s = new Sphere();
-            Assert.IsTrue(s is Entity e);
         }
     }
 }
