@@ -2,7 +2,7 @@
 using RayTracer.Environment;
 using static RayTracer.Extension.VectorExtension;
 
-namespace RayTracer.Tests
+namespace RayTracer.Tests.Environment
 {
     [TestClass]
     public class Lights

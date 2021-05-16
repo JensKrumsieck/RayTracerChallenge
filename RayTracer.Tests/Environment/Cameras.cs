@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Environment;
-using System;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
-namespace RayTracer.Tests
+namespace RayTracer.Tests.Environment
 {
     [TestClass]
     public class Cameras

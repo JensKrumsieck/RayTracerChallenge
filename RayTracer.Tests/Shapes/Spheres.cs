@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Numerics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Materials;
 using RayTracer.Shapes;
-using System;
-using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
-namespace RayTracer.Tests
+namespace RayTracer.Tests.Shapes
 {
     [TestClass]
     public class Spheres

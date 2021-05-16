@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Drawing;
-using System.Linq;
 using static System.Environment;
 
-namespace RayTracer.Tests
+namespace RayTracer.Tests.Drawing
 {
     [TestClass]
     public class CanvasTest

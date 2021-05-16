@@ -5,7 +5,7 @@ using RayTracer.Shapes;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
-namespace RayTracer.Tests
+namespace RayTracer.Tests.Environment
 {
     [TestClass]
     public class WorldTest
