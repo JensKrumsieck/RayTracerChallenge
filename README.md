@@ -7,4 +7,4 @@ This Repository contains my approach to the [Book by Jamis Buck](https://www.ama
 ### Challenges
 |Chapter VI|Chapter VII|Chapter VIII|Chapter IX|
 |-|-|-|-|
-|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20vi.jpg" height="150"/>|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20vii.jpg" height="150"/>|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20viii.jpg" height="150"/>|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20ix.jpg" height="150"/>|
+|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20vi.jpg" height="100"/>|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20vii.jpg" height="100"/>|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20viii.jpg" height="100"/>|<img src="https://github.com/JensKrumsieck/RayTracerChallenge/blob/master/.github/renders/chapter%20ix.jpg" height="100"/>|
