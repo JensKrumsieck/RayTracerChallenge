@@ -19,6 +19,8 @@ namespace RayTracer.Extension
             return new Vector4(Vector3.Cross(a.ToVector3(), b.ToVector3()), 0f);
         }
 
+        public static Vector4 Reflect(this Vector4 a, Vector4 normal) => a - normal * 2 * Vector4.Dot(a, normal);
+
         private static Vector3 ToVector3(this Vector4 v) => new(v.X, v.Y, v.Z);
     }
 }

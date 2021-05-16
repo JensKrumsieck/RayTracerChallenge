@@ -201,5 +201,24 @@ namespace RayTracer.Tests.Numerics
             var c2 = new Color(.9f, 1f, .1f);
             Assert.That.VectorsAreEqual(c1 * c2, new Color(.9f, .2f, .04f));
         }
+
+        [TestMethod]
+        public void ReflectingVector45()
+        {
+            var v = Direction(1f, -1f, 0f);
+            var n = Direction(0f, 1f, 0f);
+            var r = v.Reflect(n);
+            Assert.That.VectorsAreEqual(r, Direction(1f,1f,0f));
+        }
+
+        [TestMethod]
+        public void ReflectingSlanted()
+        {
+            var v = Direction(0f, -1f, 0f);
+            var val = MathF.Sqrt(2f) / 2f;
+            var n = Direction(val,val ,0f);
+            var r = v.Reflect(n);
+            Assert.That.VectorsAreEqual(r, Direction(1f, 0f, 0f));
+        }
     }
 }

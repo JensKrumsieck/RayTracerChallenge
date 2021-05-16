@@ -8,6 +8,7 @@ namespace RayTracer
     public struct Color : IEquatable<Color>
     {
         public static Color Black => new(0f, 0f, 0f);
+        public static Color White => new(1f, 1f, 1f);
         public static Color Red => new(1f, 0f, 0f);
 
         private readonly Vector3 _storage;

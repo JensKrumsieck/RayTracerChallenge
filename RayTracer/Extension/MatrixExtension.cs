@@ -59,7 +59,7 @@ namespace RayTracer.Extension
             new(
                 Cos(r), -Sin(r), 0f, 0f,
                 Sin(r), Cos(r), 0f, 0f,
-                0f, 0f, 0f, 0f,
+                0f, 0f, 1f, 0f,
                 0f, 0f, 0f, 1f);
 
         public static Matrix4x4 Shear(float xy, float xz, float yx, float yz, float zx, float zy) =>
