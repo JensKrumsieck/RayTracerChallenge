@@ -1,11 +1,9 @@
 ﻿using RayTracer.Materials;
 using RayTracer.Shapes;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using static RayTracer.Extension.MatrixExtension;
 
 namespace RayTracer.Environment
@@ -25,17 +23,18 @@ namespace RayTracer.Environment
             }
         };
 
+
         public List<PointLight> Lights = new();
         public List<Entity> Objects = new();
 
         public Intersection[] Intersect(Ray ray)
         {
-            var hits = new ConcurrentStack<Intersection>();
-            Parallel.ForEach(Objects, s =>
+            var hits = new List<Intersection>();
+            foreach (var entity in Objects)
             {
-                var xs = s.Intersect(ray);
-                if (xs.Length > 0) hits.PushRange(xs);
-            });
+                var xs = entity.Intersect(ray);
+                if (xs.Length > 0) hits.AddRange(xs);
+            }
             return hits.OrderBy(s => s.Distance).ToArray();
         }
 
