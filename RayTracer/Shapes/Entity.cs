@@ -1,14 +1,36 @@
 ﻿using RayTracer.Materials;
 using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace RayTracer.Shapes
 {
     public abstract class Entity : IRayObject, IShadedObject, IEquatable<Sphere>
-    {/// <inheritdoc />
-        public abstract Intersection[] Intersect(in Ray r);
+    {
+        protected Entity(Transform transform)
+        {
+            Transform = transform;
+            Material = PhongMaterial.Default;
+        }
+        protected Entity():this(Transform.Identity) { }
+
         /// <inheritdoc />
-        public abstract Intersection? Hit(in Ray r);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Intersection[] Intersect(in Ray r)
+        {
+            var localRay = r.Transform(Transform.Inverse);
+            return IntersectLocal(localRay);
+        }
+
+        public abstract Intersection[] IntersectLocal(in Ray r);
+
+        /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Intersection? Hit(in Ray r)
+        {
+            var xs = Intersect(r);
+            return Intersection.Hit(xs);
+        }
         /// <inheritdoc />
         public abstract Vector4 LocalNormal(in Vector4 at);
 
@@ -27,6 +49,7 @@ namespace RayTracer.Shapes
         public Transform Transform;
 
         /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(Sphere? other)
         {
             if (other is null) return false;
