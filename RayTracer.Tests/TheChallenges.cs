@@ -101,7 +101,7 @@ namespace RayTracer.Tests
             {
                 Transform = Camera.ViewTransform(Point(0f, 1.5f, -5f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f))
             };
-            cam.Render(w).Save();
+            cam.Render(w);
         }
     }
 }
