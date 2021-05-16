@@ -97,7 +97,7 @@ namespace RayTracer.Tests
             w.Objects.Add(right);
             w.Objects.Add(left);
             w.Lights.Add(new PointLight(Point(-10f, 10f, -10f), Color.White));
-            var cam = new Camera(1000, 500, MathF.PI / 3f)
+            var cam = new Camera(100, 50, MathF.PI / 3f)
             {
                 Transform = Camera.ViewTransform(Point(0f, 1.5f, -5f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f))
             };
