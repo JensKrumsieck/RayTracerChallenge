@@ -1,7 +1,7 @@
 ﻿using SkiaSharp;
-using System;
 using System.IO;
 using System.Text;
+using static System.Environment;
 
 namespace RayTracer.Drawing
 {
@@ -44,7 +44,7 @@ namespace RayTracer.Drawing
         public string ToPixmap()
         {
             var b = new StringBuilder();
-            b.Append($"P3{Environment.NewLine}{Size.X} {Size.Y}{Environment.NewLine}255{Environment.NewLine}");
+            b.Append($"P3{NewLine}{Size.X} {Size.Y}{NewLine}255{NewLine}");
             for (var y = 0; y < Size.Y; y++)
             {
                 var line = "";
@@ -61,8 +61,8 @@ namespace RayTracer.Drawing
             const int max = 70;
             foreach (var v in col.ToBytes())
             {
-                var parts = line.Split(Environment.NewLine);
-                if (parts[^1].Length + v.ToString().Length > max) line = line.Trim() + Environment.NewLine;
+                var parts = line.Split(NewLine);
+                if (parts[^1].Length + v.ToString().Length > max) line = line.Trim() + NewLine;
                 line += $"{v} ";
             }
         }

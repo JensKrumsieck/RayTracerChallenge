@@ -1,9 +1,12 @@
 ﻿using System.Numerics;
+using static RayTracer.Extension.VectorExtension;
 
-namespace RayTracer.Lights
+namespace RayTracer.Environment
 {
     public struct PointLight
     {
+        public static PointLight Default => new(Point(-10f, 10f, -10f), Color.White);
+
         public Vector4 Position;
         public Color Intensity;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Shapes;
+using static RayTracer.Extension.VectorExtension;
 
 namespace RayTracer.Tests
 {
@@ -71,6 +72,43 @@ namespace RayTracer.Tests
             var xs = new[] { i1, i2, i3, i4 };
             var i = Intersection.Hit(xs);
             Assert.AreEqual(i, i4);
+        }
+
+        [TestMethod]
+        public void PrecomputingStateOfIntersection()
+        {
+            var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
+            var s = new Sphere();
+            var i = new Intersection(4f, s);
+            var comps = IntersectionState.Prepare(i, r);
+            Assert.AreEqual(comps.Distance, i.Distance);
+            Assert.AreEqual(comps.Object, i.Object);
+            Assert.That.VectorsAreEqual(comps.Point, Point(0f, 0f, -1f));
+            Assert.That.VectorsAreEqual(comps.Eye, Direction(0f, 0f, -1f));
+            Assert.That.VectorsAreEqual(comps.Normal, Direction(0f, 0f, -1f));
+        }
+
+        [TestMethod]
+        public void HitOccursOutside()
+        {
+            var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
+            var s = new Sphere();
+            var i = new Intersection(4f, s);
+            var comps = IntersectionState.Prepare(i, r);
+            Assert.IsFalse(comps.IsInside);
+        }
+
+        [TestMethod]
+        public void HitOccursInside()
+        {
+            var r = new Ray(0f, 0f, 0f, 0f, 0f, 1f);
+            var s = new Sphere();
+            var i = new Intersection(1f, s);
+            var comps = IntersectionState.Prepare(i, r);
+            Assert.IsTrue(comps.IsInside);
+            Assert.That.VectorsAreEqual(comps.Point, Point(0f, 0f, 1f));
+            Assert.That.VectorsAreEqual(comps.Eye, Direction(0f, 0f, -1f));
+            Assert.That.VectorsAreEqual(comps.Normal, Direction(0f, 0f, -1f));
         }
     }
 }

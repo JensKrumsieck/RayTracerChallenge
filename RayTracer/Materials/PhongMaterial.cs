@@ -1,5 +1,5 @@
-﻿using RayTracer.Extension;
-using RayTracer.Lights;
+﻿using RayTracer.Environment;
+using RayTracer.Extension;
 using System;
 using System.Numerics;
 

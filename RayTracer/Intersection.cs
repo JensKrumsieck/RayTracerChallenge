@@ -4,7 +4,7 @@ using System;
 #nullable enable
 namespace RayTracer
 {
-    public struct Intersection
+    public sealed class Intersection
     {
         public float Distance;
         public IRayObject Object;
@@ -19,10 +19,10 @@ namespace RayTracer
         {
             if (intersections.Length == 0 || Array.TrueForAll(intersections, i => i.Distance < 0f)) return null;
             Intersection? lowest = null;
-            for (var i = 0; i < intersections.Length; i++)
+            foreach (var t in intersections)
             {
-                if (intersections[i].Distance < 0f) continue;
-                if (lowest == null || intersections[i].Distance < lowest?.Distance) lowest = intersections[i];
+                if (t.Distance < 0f) continue;
+                if (lowest == null || t.Distance < lowest?.Distance) lowest = t;
             }
             return lowest;
         }

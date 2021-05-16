@@ -8,7 +8,7 @@ namespace RayTracer.Tests
     {
         public static void FloatsAreEqual(this Assert a, float expected, float value, float threshold = Constants.Epsilon, string message = "")
         {
-            Assert.IsTrue(MathF.Abs(value - expected) < threshold, 
+            Assert.IsTrue(MathF.Abs(value - expected) < threshold,
                 message + $"Float comparison failed for {value} and {expected} with Threshold {threshold}");
         }
 

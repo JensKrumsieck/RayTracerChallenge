@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RayTracer.Lights;
+using RayTracer.Environment;
 using static RayTracer.Extension.VectorExtension;
 
 namespace RayTracer.Tests
@@ -12,7 +12,7 @@ namespace RayTracer.Tests
         {
             var l = new PointLight(Point(0f, 0f, 0f), Color.White);
             Assert.AreEqual(l.Intensity, Color.White);
-            Assert.AreEqual(l.Position, Point(0f,0f,0f));
+            Assert.AreEqual(l.Position, Point(0f, 0f, 0f));
         }
     }
 }

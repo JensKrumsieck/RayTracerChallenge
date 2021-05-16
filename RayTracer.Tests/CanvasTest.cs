@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Drawing;
-using System;
 using System.Linq;
+using static System.Environment;
 
 namespace RayTracer.Tests
 {
@@ -34,7 +34,7 @@ namespace RayTracer.Tests
         public void PixmapHeader()
         {
             var c = new Canvas(5, 3);
-            var ppm = c.ToPixmap().Split(Environment.NewLine);
+            var ppm = c.ToPixmap().Split(NewLine);
             Assert.AreEqual(ppm[0], "P3");
             Assert.AreEqual(ppm[1], "5 3");
             Assert.AreEqual(ppm[2], "255");
@@ -50,7 +50,7 @@ namespace RayTracer.Tests
                 [4, 2] = new(-.5f, 0f, 1f)
             };
             var ppm = c.ToPixmap();
-            var expected = string.Join(Environment.NewLine,
+            var expected = string.Join(NewLine,
                 "P3",
                 "5 3",
                 "255",
@@ -67,7 +67,7 @@ namespace RayTracer.Tests
             var c = new Canvas(10, 2);
             c.Fill(new Color(1f, .8f, .6f));
 
-            var expected = string.Join(Environment.NewLine,
+            var expected = string.Join(NewLine,
                 "P3",
                 "10 2",
                 "255",
@@ -83,7 +83,7 @@ namespace RayTracer.Tests
         public void PixmapEndsNewLine()
         {
             var c = new Canvas(5, 3);
-            Assert.AreEqual(c.ToPixmap().Last(), Environment.NewLine.Last());
+            Assert.AreEqual(c.ToPixmap().Last(), NewLine.Last());
         }
     }
 }

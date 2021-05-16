@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RayTracer.Environment;
 using RayTracer.Materials;
+using System;
 using System.Numerics;
-using RayTracer.Lights;
 using static RayTracer.Extension.VectorExtension;
 
 namespace RayTracer.Tests
@@ -48,7 +48,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void LightOffset45()
         {
-            var eye = Direction(0f, 0, -1f); 
+            var eye = Direction(0f, 0, -1f);
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 10f, -10f), Color.White);
             var res = _m.Shade(l, _position, eye, normal);
@@ -73,7 +73,7 @@ namespace RayTracer.Tests
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 0, 10f), Color.White);
             var res = _m.Shade(l, _position, eye, normal);
-            Assert.That.VectorsAreEqual(res, new Color(.1f,.1f,.1f));
+            Assert.That.VectorsAreEqual(res, new Color(.1f, .1f, .1f));
         }
     }
 }

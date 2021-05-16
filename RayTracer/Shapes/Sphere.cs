@@ -1,16 +1,15 @@
-﻿using System;
+﻿#nullable enable
+using RayTracer.Materials;
+using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using RayTracer.Materials;
 using static RayTracer.Extension.VectorExtension;
 using static System.MathF;
 
 namespace RayTracer.Shapes
 {
-    public sealed class Sphere : IRayObject, IShadedObject
+    public sealed class Sphere : Entity
     {
-        public Transform Transform;
-
         public Sphere(Transform transform)
         {
             Transform = transform;
@@ -19,7 +18,7 @@ namespace RayTracer.Shapes
         public Sphere() : this(Transform.Identity) { }
 
         /// <inheritdoc />
-        public Intersection[] Intersect(in Ray r)
+        public override Intersection[] Intersect(in Ray r)
         {
             var r2 = r.Transform(Transform.Inverse);
             var str = r2.Origin - Point(0f, 0f, 0f);
@@ -37,17 +36,17 @@ namespace RayTracer.Shapes
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Intersection? Hit(in Ray r)
+        public override Intersection? Hit(in Ray r)
         {
             var xs = Intersect(r);
             return Intersection.Hit(xs);
         }
 
         /// <inheritdoc />
-        public Vector4 LocalNormal(in Vector4 at) => Vector4.Normalize(at - Point(0f,0f,0f));
+        public override Vector4 LocalNormal(in Vector4 at) => Vector4.Normalize(at - Point(0f, 0f, 0f));
 
         /// <inheritdoc />
-        public Vector4 Normal(in Vector4 at)
+        public override Vector4 Normal(in Vector4 at)
         {
             var obj = Transform.WorldToObject(at);
             var localNormal = LocalNormal(obj);
@@ -56,6 +55,6 @@ namespace RayTracer.Shapes
             return Vector4.Normalize(worldNormal);
         }
 
-        public PhongMaterial Material { get; set; }
+
     }
 }

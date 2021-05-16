@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RayTracer.Environment;
+using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 using static System.MathF;
@@ -136,6 +138,50 @@ namespace RayTracer.Tests.Numerics
 
             var t = c * b * a;
             Assert.That.VectorsAreEqual(t.Multiply(p), Point(15f, 0f, 7f));
+        }
+
+        [TestMethod]
+        public void TransformationMatrixDefault()
+        {
+            var from = Point(0f, 0f, 0f);
+            var to = Point(0f, 0f, -1f);
+            var up = Direction(0f, 1f, 0f);
+            var t = Camera.ViewTransform(from, to, up);
+            Assert.That.MatricesAreEqual(t.Matrix, Matrix4x4.Identity);
+        }
+
+        [TestMethod]
+        public void TransformationMatrixPositiveZ()
+        {
+            var from = Point(0f, 0f, 0f);
+            var to = Point(0f, 0f, 1f);
+            var up = Direction(0f, 1f, 0f);
+            var t = Camera.ViewTransform(from, to, up);
+            Assert.That.MatricesAreEqual(t.Matrix, Scale(-1f, 1f, -1f));
+        }
+
+        [TestMethod]
+        public void TransformationMatrixMovesWorld()
+        {
+            var from = Point(0f, 0f, 8f);
+            var to = Point(0f, 0f, 0f);
+            var up = Direction(0f, 1f, 0f);
+            var t = Camera.ViewTransform(from, to, up);
+            Assert.That.MatricesAreEqual(t.Matrix, Translation(0f, 0f, -8f));
+        }
+
+        [TestMethod]
+        public void ArbitraryViewTransformation()
+        {
+            var from = Point(1f, 3f, 2f);
+            var to = Point(4f, -2f, 8f);
+            var up = Direction(1f, 1f, 0f);
+            var t = Camera.ViewTransform(from, to, up);
+            Assert.That.MatricesAreEqual(t.Matrix, new(
+                -.50709f, .50709f, .67612f, -2.36643f,
+                .76772f, .60609f, .12122f, -2.82843f,
+                -.35857f, .59761f, -.71714f, 0f,
+                0f, 0f, 0f, 1f));
         }
     }
 }

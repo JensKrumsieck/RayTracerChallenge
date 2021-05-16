@@ -1,8 +1,8 @@
-﻿using System;
-using System.Numerics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Materials;
 using RayTracer.Shapes;
+using System;
+using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
@@ -114,7 +114,7 @@ namespace RayTracer.Tests
         {
             var s = new Sphere();
             var n = s.LocalNormal(Point(1f, 0f, 0f));
-            Assert.That.VectorsAreEqual(n, Direction(1f,0f,0f));
+            Assert.That.VectorsAreEqual(n, Direction(1f, 0f, 0f));
         }
 
         [TestMethod]
@@ -138,15 +138,15 @@ namespace RayTracer.Tests
         {
             var s = new Sphere();
             var val = MathF.Sqrt(3f) / 3f;
-            var n = s.LocalNormal(Point(val,val,val));
-            Assert.That.VectorsAreEqual(n, Direction(val,val,val));
+            var n = s.LocalNormal(Point(val, val, val));
+            Assert.That.VectorsAreEqual(n, Direction(val, val, val));
             Assert.That.VectorsAreEqual(n, Vector4.Normalize(n));
         }
 
         [TestMethod]
         public void NormalOnTranslatedSphere()
         {
-            var s = new Sphere(Translation(0f,1f,0f));
+            var s = new Sphere(Translation(0f, 1f, 0f));
             var n = s.Normal(Point(0f, 1.70711f, -.70711f));
             Assert.That.VectorsAreEqual(n, Direction(0f, .70711f, -.70711f));
         }
@@ -154,7 +154,7 @@ namespace RayTracer.Tests
         [TestMethod]
         public void NormalOnTransformedSphere()
         {
-            var s = new Sphere(Scale(1f, .5f, 1f)* RotationZ(MathF.PI / 5f));
+            var s = new Sphere(Scale(1f, .5f, 1f) * RotationZ(MathF.PI / 5f));
             var val = MathF.Sqrt(2f) / 2f;
             var n = s.Normal(Point(0f, val, -val));
             Assert.That.VectorsAreEqual(n, Direction(0f, .97014f, -.24254f));
