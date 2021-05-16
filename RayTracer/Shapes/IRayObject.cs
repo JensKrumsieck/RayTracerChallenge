@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace RayTracer.Shapes
 {

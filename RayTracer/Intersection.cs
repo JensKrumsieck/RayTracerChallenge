@@ -1,7 +1,6 @@
 ﻿using RayTracer.Shapes;
 using System;
 
-#nullable enable
 namespace RayTracer
 {
     public sealed class Intersection

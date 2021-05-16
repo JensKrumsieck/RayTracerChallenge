@@ -1,5 +1,4 @@
-﻿#nullable enable
-using RayTracer.Materials;
+﻿using RayTracer.Materials;
 using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
