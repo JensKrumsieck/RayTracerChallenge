@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace RayTracer.Materials.Patterns
 {
-    public class CheckerPattern : Pattern
+    public sealed class CheckerPattern : Pattern
     {
         public Color A;
         public Color B;
@@ -16,6 +16,6 @@ namespace RayTracer.Materials.Patterns
         }
 
         public override Color At(Vector4 point) =>
-            (MathF.Floor(point.X) + MathF.Floor(point.Y) + MathF.Floor(point.Z)) % 2 == 0f ? A : B;
+            (MathF.Floor(point.X) + MathF.Floor(point.Y) + MathF.Floor(point.Z)) % 2 == 0 ? A : B;
     }
 }

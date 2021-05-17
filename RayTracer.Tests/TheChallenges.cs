@@ -2,6 +2,7 @@
 using RayTracer.Drawing;
 using RayTracer.Environment;
 using RayTracer.Materials;
+using RayTracer.Materials.Patterns;
 using RayTracer.Shapes;
 using System;
 using System.Collections.Generic;
@@ -126,6 +127,33 @@ namespace RayTracer.Tests
             {
                 Transform = Camera.ViewTransform(Point(1f, .5f, -12f), Point(0f, .5f, 0f), Direction(0f, 1f, 0f))
             };
+            cam.Render(w);
+        }
+
+        [TestMethod]
+        public void Chapter_X()
+        {
+            var floorMaterial = PhongMaterial.Default;
+            floorMaterial.Pattern = new CheckerPattern(Util.FromHex("#bd2c00"), Util.FromHex("#222222"), RotationY(MathF.PI / 4f));
+            floorMaterial.Specular = 0f;
+
+            var back = PhongMaterial.Default;
+            back.Pattern = new RingPattern(Util.FromHex("#0c3866"), Util.FromHex("#007cc0"));
+            back.Specular = 0.5f;
+            var sphereMaterial = PhongMaterial.Default;
+            sphereMaterial.Pattern = new StripePattern(Util.FromHex("#ffc20e"), Util.FromHex("#ffd54f"))
+                {Transform = Scale(.1f)*RotationY(MathF.PI/2f)};
+            sphereMaterial.Diffuse = 1f;
+            var floor = new Plane { Material = floorMaterial };
+            var s = new Sphere(Translation(0f,0f,2f)) {Material = sphereMaterial};
+            var backDrop = new Plane(Translation(0f, 0f, 10f) * RotationX(MathF.PI / 2f)){Material = back};
+            var w = new World
+            {
+                Objects = new List<Entity> { floor, s, backDrop},
+            };
+            w.Lights.Add(PointLight.Default);
+            var cam = new Camera(100, 100, MathF.PI / 3f)
+            { Transform = Camera.ViewTransform(Point(0f,1f, -2f), Point(0f,1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
     }
