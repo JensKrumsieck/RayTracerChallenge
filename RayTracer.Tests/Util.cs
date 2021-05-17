@@ -9,7 +9,7 @@ namespace RayTracer.Tests
 {
     public static class Util
     {
-        private static IEnumerable<Sphere> LoadAtoms(string file,  Dictionary<string, PhongMaterial> materials)
+        private static IEnumerable<Sphere> LoadAtoms(string file, Dictionary<string, PhongMaterial> materials)
         {
             var mol = MoleculeFactory.Create(file);
             foreach (var a in mol.Atoms)

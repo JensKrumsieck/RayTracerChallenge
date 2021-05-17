@@ -142,18 +142,18 @@ namespace RayTracer.Tests
             back.Specular = 0.5f;
             var sphereMaterial = PhongMaterial.Default;
             sphereMaterial.Pattern = new StripePattern(Util.FromHex("#ffc20e"), Util.FromHex("#ffd54f"))
-                {Transform = Scale(.1f)*RotationY(MathF.PI/2f)};
+            { Transform = Scale(.1f) * RotationY(MathF.PI / 2f) };
             sphereMaterial.Diffuse = 1f;
             var floor = new Plane { Material = floorMaterial };
-            var s = new Sphere(Translation(0f,0f,2f)) {Material = sphereMaterial};
-            var backDrop = new Plane(Translation(0f, 0f, 10f) * RotationX(MathF.PI / 2f)){Material = back};
+            var s = new Sphere(Translation(0f, 0f, 2f)) { Material = sphereMaterial };
+            var backDrop = new Plane(Translation(0f, 0f, 10f) * RotationX(MathF.PI / 2f)) { Material = back };
             var w = new World
             {
-                Objects = new List<Entity> { floor, s, backDrop},
+                Objects = new List<Entity> { floor, s, backDrop },
             };
             w.Lights.Add(PointLight.Default);
             var cam = new Camera(100, 100, MathF.PI / 3f)
-            { Transform = Camera.ViewTransform(Point(0f,1f, -2f), Point(0f,1f, 0f), Direction(0f, 1f, 0f)) };
+            { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
     }
