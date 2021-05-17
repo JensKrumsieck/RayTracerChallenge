@@ -132,5 +132,30 @@ namespace RayTracer.Tests
             Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 1f)), Color.Black);
             Assert.That.VectorsAreEqual(p.At(Point(.708f, 0f, .708f)), Color.Black);
         }
+
+        [TestMethod]
+        public void CheckerPatternX()
+        {
+            var p = new CheckerPattern(Color.White, Color.Black);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(.99f, 0f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(1.01f, 0f, 0f)), Color.Black);
+        }
+        [TestMethod]
+        public void CheckerPatternY()
+        {
+            var p = new CheckerPattern(Color.White, Color.Black);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, .99f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 1.01f, 0f)), Color.Black);
+        }
+        [TestMethod]
+        public void CheckerPatternZ()
+        {
+            var p = new CheckerPattern(Color.White, Color.Black);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, .99f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 1.01f)), Color.Black);
+        }
     }
 }
