@@ -4,10 +4,10 @@ using System.Numerics;
 
 namespace RayTracer
 {
-    public struct Ray
+    public readonly struct Ray
     {
-        public Vector4 Origin;
-        public Vector4 Direction;
+        public readonly Vector4 Origin;
+        public readonly Vector4 Direction;
 
         public Ray(Vector4 origin, Vector4 direction)
         {
@@ -22,8 +22,8 @@ namespace RayTracer
         public Ray(float ox, float oy, float oz, float dx, float dy, float dz)
             : this(new Vector4(ox, oy, oz, 1f), new Vector4(dx, dy, dz, 0f)) { }
 
-        public readonly Vector4 PointByDistance(float distance) => Origin + Direction * distance;
+        public Vector4 PointByDistance(float distance) => Origin + Direction * distance;
 
-        public readonly Ray Transform(Matrix4x4 m) => new(m.Multiply(Origin), m.Multiply(Direction));
+        public Ray Transform(Matrix4x4 m) => new(m.Multiply(Origin), m.Multiply(Direction));
     }
 }

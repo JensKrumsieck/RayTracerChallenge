@@ -65,9 +65,8 @@ namespace RayTracer.Tests
                     var ray = new Ray(rayOrigin, Vector4.Normalize(pos - rayOrigin));
                     var hit = shape.Hit(ray);
                     if (hit == null) continue;
-                    var point = ray.PointByDistance(hit.Distance);
-                    var comps = new IntersectionState { Point = point, Eye = -ray.Direction, Normal = hit.Object.Normal(point) };
-                    canvas[x, y] = shape.Material.Shade(l, comps);
+                    var comps = IntersectionState.Prepare(ref hit, in ray);
+                    canvas[x, y] = shape.Material.Shade(in l, in comps);
                 }
             });
         }
@@ -91,9 +90,9 @@ namespace RayTracer.Tests
                 RotationX(MathF.PI / 2f) *
                 wallScale)
             { Material = wallMaterial };
-            var middle = new Sphere(Translation(-.5f, 1f, .5f)) { Material = new PhongMaterial(new Color(.1f, 1f, .5f), .7f, .3f) };
-            var right = new Sphere(Translation(1.5f, .5f, -.5f) * Scale(.5f)) { Material = new PhongMaterial(new Color(.5f, 1f, .1f), .7f, .3f) };
-            var left = new Sphere(Translation(-1.5f, .33f, -.75f) * Scale(.33f)) { Material = new PhongMaterial(new Color(1f, .8f, .1f), .7f, .3f) };
+            var middle = new Sphere(Translation(-.5f, 1f, .5f)) { Material = new PhongMaterial(new Color(.1f, 1f, .5f)) { Diffuse = .7f, Specular = .2f } };
+            var right = new Sphere(Translation(1.5f, .5f, -.5f) * Scale(.5f)) { Material = new PhongMaterial(new Color(.5f, 1f, .1f)) { Diffuse = .7f, Specular = .2f } };
+            var left = new Sphere(Translation(-1.5f, .33f, -.75f) * Scale(.33f)) { Material = new PhongMaterial(new Color(1f, .8f, .1f)) { Diffuse = .7f, Specular = .2f } };
             w.Objects.Add(floor);
             w.Objects.Add(leftWall);
             w.Objects.Add(rightWall);

@@ -16,7 +16,7 @@ namespace RayTracer.Environment
             {
                 new Sphere
                 {
-                    Material = new PhongMaterial(new Color(.8f, 1f, .6f), .7f, .2f)
+                    Material = new PhongMaterial(new Color(.8f, 1f, .6f)){Diffuse = .7f, Specular = .2f}
                 },
                 new Sphere(Scale(.5f))
             }
@@ -26,13 +26,13 @@ namespace RayTracer.Environment
         public List<PointLight> Lights = new();
         public List<Entity> Objects = new();
 
-        public List<Intersection> Intersect(Ray ray)
+        public List<Intersection> Intersect(in Ray ray)
         {
             var hits = new List<Intersection>();
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var entity in Objects)
             {
-                var xs = entity.Intersect(ray);
+                var xs = entity.Intersect(in ray);
                 if (xs.Count > 0) hits.AddRange(xs);
             }
             hits.Sort();
@@ -40,14 +40,14 @@ namespace RayTracer.Environment
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Color ShadeHit(IntersectionState comps) => comps.Object.Material.Shade(Lights[0], comps, InShadow(comps.OverPoint));
+        public Color ShadeHit(IntersectionState comps) => comps.Object.Material.Shade(Lights[0], in comps, InShadow(comps.OverPoint));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Color ColorAt(in Ray ray)
         {
-            var xs = Intersect(ray);
+            var xs = Intersect(in ray);
             var hit = Intersection.Hit(xs);
-            return hit == null ? Color.Black : ShadeHit(IntersectionState.Prepare(hit, ray));
+            return hit == null ? Color.Black : ShadeHit(IntersectionState.Prepare(ref hit, ray));
         }
 
         public bool InShadow(Vector4 point)
@@ -55,8 +55,8 @@ namespace RayTracer.Environment
             var v = Lights[0].Position - point;
             var dis = v.Length();
             var dir = Vector4.Normalize(v);
-
-            var xs = Intersect(new Ray(point, dir));
+            var r = new Ray(point, dir);
+            var xs = Intersect(in r);
             var hit = Intersection.Hit(xs);
             return hit != null && hit.Distance < dis;
         }

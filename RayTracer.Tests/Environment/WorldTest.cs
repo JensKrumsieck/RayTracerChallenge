@@ -24,7 +24,7 @@ namespace RayTracer.Tests.Environment
             var w = World.Default;
             var s1 = new Sphere
             {
-                Material = new PhongMaterial(new Color(.8f, 1f, .6f), .7f, .2f)
+                Material = new PhongMaterial(new Color(.8f, 1f, .6f)) { Diffuse = .7f, Specular = .2f }
             };
             var s2 = new Sphere(Scale(.5f));
             Assert.AreEqual(w.Objects.Count, 2);
@@ -54,7 +54,7 @@ namespace RayTracer.Tests.Environment
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var s = w.Objects[0];
             var i = new Intersection(4f, s);
-            var comps = IntersectionState.Prepare(i, r);
+            var comps = IntersectionState.Prepare(ref i, in r);
             var c = w.ShadeHit(comps);
             Assert.That.VectorsAreEqual(c, new Color(.38066f, .47583f, .2855f));
         }
@@ -67,7 +67,7 @@ namespace RayTracer.Tests.Environment
             var s = w.Objects[1];
             w.Lights[0] = new PointLight(Point(0f, .25f, 0f), Color.White);
             var i = new Intersection(.5f, s);
-            var comps = IntersectionState.Prepare(i, r);
+            var comps = IntersectionState.Prepare(ref i, in r);
             var c = w.ShadeHit(comps);
             Assert.That.VectorsAreEqual(c, new Color(.90498f, .90498f, .90498f));
         }

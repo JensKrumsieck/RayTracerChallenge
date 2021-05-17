@@ -6,27 +6,23 @@ using System.Numerics;
 
 namespace RayTracer.Materials
 {
-    public class PhongMaterial : IEquatable<PhongMaterial>
+    public class PhongMaterial : IMaterial, IEquatable<PhongMaterial>
     {
         public Color BaseColor;
-        public float Ambient { get; set; }
-        public float Diffuse;
-        public float Specular;
-        public float Shininess;
+        public float Ambient = .1f;
+        public float Diffuse = .9f;
+        public float Specular = .9f;
+        public float Shininess = 200f;
         public Pattern? Pattern;
 
         public static PhongMaterial Default => new(Color.White);
 
-        public PhongMaterial(Color baseColor, float diffuse = .9f, float specular = .9f, float ambient = .1f, float shininess = 200f)
+        public PhongMaterial(Color baseColor)
         {
             BaseColor = baseColor;
-            Ambient = ambient;
-            Diffuse = diffuse;
-            Specular = specular;
-            Shininess = shininess;
         }
 
-        public Color Shade(PointLight l, IntersectionState c, bool inShadow = false)
+        public Color Shade(in PointLight l, in IntersectionState c, bool inShadow = false)
         {
             var effCol = (Pattern?.ColorAtEntity(c.Object, c.Point) ?? BaseColor) * l.Intensity;
             var lightV = Vector4.Normalize(l.Position - c.Point);

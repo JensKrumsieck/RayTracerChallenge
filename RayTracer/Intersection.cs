@@ -6,8 +6,8 @@ namespace RayTracer
 {
     public sealed class Intersection : IComparable<Intersection>
     {
-        public float Distance;
-        public Entity Object;
+        public readonly float Distance;
+        public readonly Entity Object;
 
         public Intersection(float distance, Entity hitObject)
         {

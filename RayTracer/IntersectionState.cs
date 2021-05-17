@@ -4,36 +4,49 @@ using System.Runtime.CompilerServices;
 
 namespace RayTracer
 {
-    public struct IntersectionState
+    public readonly struct IntersectionState
     {
-        public Entity Object;
-        public float Distance;
+        public readonly Entity Object;
+        public readonly float Distance;
 
-        public Vector4 Point;
-        public Vector4 Eye;
+        public readonly Vector4 Point;
+        public readonly Vector4 Eye;
 
-        private Vector4 _normal;
-        public Vector4 Normal
+        private readonly Vector4 _normal;
+        public Vector4 Normal => IsInside ? -_normal : _normal;
+
+        public Vector4 OverPoint => Point + Normal * 5e-3f;
+        public bool IsInside => Vector4.Dot(_normal, Eye) < 0;
+
+        private IntersectionState(Entity o, float distance, Vector4 point, Vector4 eye, Vector4 normal)
         {
-            readonly get => IsInside ? -_normal : _normal;
-            set => _normal = value;
+            Object = o;
+            Distance = distance;
+            Point = point;
+            Eye = eye;
+            _normal = normal;
         }
 
-        public readonly Vector4 OverPoint => Point + Normal * 5e-3f;
-        public readonly bool IsInside => Vector4.Dot(_normal, Eye) < 0;
+        /// <summary>
+        /// USE IN TESTS ONLY!
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="eye"></param>
+        /// <param name="normal"></param>
+        public IntersectionState(Vector4 point, Vector4 eye, Vector4 normal)
+        {
+            Point = point;
+            Eye = eye;
+            _normal = normal;
+            Object = null!;
+            Distance = 0f;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntersectionState Prepare(Intersection i, in Ray r)
+        public static IntersectionState Prepare(ref Intersection i, in Ray r)
         {
             var point = r.PointByDistance(i.Distance);
-            return new IntersectionState
-            {
-                Distance = i.Distance,
-                Object = i.Object,
-                Eye = -r.Direction,
-                _normal = i.Object.Normal(point),
-                Point = point
-            };
+            return new IntersectionState(i.Object, i.Distance, point, -r.Direction, i.Object.Normal(point));
         }
     }
 }
