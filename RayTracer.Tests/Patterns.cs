@@ -122,5 +122,15 @@ namespace RayTracer.Tests
             Assert.That.VectorsAreEqual(p.At(Point(.5f, 0f, 0f)), new Color(.5f, .5f, .5f));
             Assert.That.VectorsAreEqual(p.At(Point(.75f, 0f, 0f)), new Color(.25f, .25f, .25f));
         }
+
+        [TestMethod]
+        public void RingPattern()
+        {
+            var p = new RingPattern(Color.White, Color.Black);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(1f, 0f, 0f)), Color.Black);
+            Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 1f)), Color.Black);
+            Assert.That.VectorsAreEqual(p.At(Point(.708f, 0f, .708f)), Color.Black);
+        }
     }
 }

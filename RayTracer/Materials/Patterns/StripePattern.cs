@@ -20,6 +20,6 @@ namespace RayTracer.Materials.Patterns
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public override Color At(Vector4 point) => MathF.Floor(point.X) % 2 == 0 ? A : B;
+        public override Color At(Vector4 point) => MathF.Floor(point.X) % 2f == 0 ? A : B;
     }
 }
