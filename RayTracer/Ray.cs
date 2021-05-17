@@ -1,4 +1,5 @@
-﻿using RayTracer.Extension;
+﻿using System;
+using RayTracer.Extension;
 using System.Numerics;
 
 namespace RayTracer

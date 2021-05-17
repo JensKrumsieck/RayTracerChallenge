@@ -46,7 +46,7 @@ namespace RayTracer
 
         #region IEquatable
         public bool Equals(Color other) => _storage.Equals(other._storage);
-        public override bool Equals(object obj) => obj is Color other && Equals(other);
+        public override bool Equals(object? obj) => obj is Color other && Equals(other);
         public override int GetHashCode() => _storage.GetHashCode();
         #endregion
     }
