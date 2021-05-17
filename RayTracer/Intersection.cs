@@ -1,9 +1,10 @@
 ﻿using RayTracer.Shapes;
 using System;
+using System.Collections.Generic;
 
 namespace RayTracer
 {
-    public sealed class Intersection
+    public sealed class Intersection : IComparable<Intersection>
     {
         public float Distance;
         public Entity Object;
@@ -14,9 +15,9 @@ namespace RayTracer
             Object = hitObject;
         }
 
-        public static Intersection? Hit(Intersection[] intersections)
+        public static Intersection? Hit(List<Intersection> intersections)
         {
-            if (intersections.Length == 0 || Array.TrueForAll(intersections, i => i.Distance < 0f)) return null;
+            if (intersections.Count == 0 || intersections.TrueForAll(i => i.Distance < 0f)) return null;
             Intersection? lowest = null;
             foreach (var t in intersections)
             {
@@ -24,6 +25,12 @@ namespace RayTracer
                 if (lowest == null || t.Distance < lowest.Distance) lowest = t;
             }
             return lowest;
+        }
+
+        public int CompareTo(Intersection? other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            return other is null ? 1 : Distance.CompareTo(other.Distance);
         }
     }
 }

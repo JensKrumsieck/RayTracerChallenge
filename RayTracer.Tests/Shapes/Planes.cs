@@ -1,5 +1,5 @@
-﻿using System.Numerics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Numerics;
 using static RayTracer.Extension.VectorExtension;
 using Plane = RayTracer.Shapes.Plane;
 
@@ -26,7 +26,7 @@ namespace RayTracer.Tests.Shapes
             var p = new Plane();
             var r = new Ray(0f, 10f, 0f, 0f, 0f, 1f);
             var xs = p.IntersectLocal(r);
-            Assert.AreEqual(xs.Length, 0);
+            Assert.AreEqual(xs.Count, 0);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace RayTracer.Tests.Shapes
             var p = new Plane();
             var r = new Ray(0f, 0f, 0f, 0f, 0f, 1f);
             var xs = p.IntersectLocal(r);
-            Assert.AreEqual(xs.Length, 0);
+            Assert.AreEqual(xs.Count, 0);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace RayTracer.Tests.Shapes
             var p = new Plane();
             var r = new Ray(0f, 1f, 0f, 0f, -1f, 0f);
             var xs = p.IntersectLocal(r);
-            Assert.AreEqual(xs.Length,1);
+            Assert.AreEqual(xs.Count, 1);
             Assert.AreEqual(xs[0].Distance, 1f);
             Assert.AreEqual(xs[0].Object, p);
         }
@@ -55,7 +55,7 @@ namespace RayTracer.Tests.Shapes
             var p = new Plane();
             var r = new Ray(0f, -1f, 0f, 0f, 1f, 0f);
             var xs = p.IntersectLocal(r);
-            Assert.AreEqual(xs.Length, 1);
+            Assert.AreEqual(xs.Count, 1);
             Assert.AreEqual(xs[0].Distance, 1f);
             Assert.AreEqual(xs[0].Object, p);
         }

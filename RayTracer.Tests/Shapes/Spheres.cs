@@ -17,7 +17,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var s = new Sphere();
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 2);
+            Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0].Distance, 4.0f);
             Assert.AreEqual(xs[1].Distance, 6.0f);
         }
@@ -28,7 +28,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(0f, 1f, -5f, 0f, 0f, 1f);
             var s = new Sphere();
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 2);
+            Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0].Distance, 5.0f);
             Assert.AreEqual(xs[1].Distance, 5.0f);
         }
@@ -39,7 +39,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(0f, 2f, -5f, 0f, 0f, 1f);
             var s = new Sphere();
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 0);
+            Assert.AreEqual(xs.Count, 0);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(0f, 0f, 0f, 0f, 0f, 1f);
             var s = new Sphere();
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 2);
+            Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0].Distance, -1.0f);
             Assert.AreEqual(xs[1].Distance, 1.0f);
         }
@@ -59,7 +59,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(0f, 0f, 5f, 0f, 0f, 1f);
             var s = new Sphere();
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 2);
+            Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0].Distance, -6.0f);
             Assert.AreEqual(xs[1].Distance, -4.0f);
         }
@@ -70,7 +70,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var s = new Sphere();
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 2);
+            Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0].Object, s);
             Assert.AreEqual(xs[1].Object, s);
         }
@@ -95,7 +95,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new Sphere(Scale(2f, 2f, 2f));
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 2);
+            Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0].Distance, 3f);
             Assert.AreEqual(xs[1].Distance, 7f);
         }
@@ -106,7 +106,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new Sphere(Translation(5f, 0f, 0f));
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 0);
+            Assert.AreEqual(xs.Count, 0);
         }
 
         [TestMethod]

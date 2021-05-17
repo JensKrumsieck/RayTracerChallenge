@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using static System.MathF;
 
 namespace RayTracer.Extension
 {
     public static class MatrixExtension
     {
-        public static Vector4 Multiply(this Matrix4x4 m, Vector4 v) => new(
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 Multiply(this Matrix4x4 m, Vector4 v)
+            => new(
             m.M11 * v.X + m.M12 * v.Y + m.M13 * v.Z + m.M14 * v.W,
             m.M21 * v.X + m.M22 * v.Y + m.M23 * v.Z + m.M24 * v.W,
             m.M31 * v.X + m.M32 * v.Y + m.M33 * v.Z + m.M34 * v.W,
@@ -22,6 +25,7 @@ namespace RayTracer.Extension
             return result;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 Translation(float x, float y, float z) =>
             new(
                 1f, 0f, 0f, x,
@@ -31,6 +35,7 @@ namespace RayTracer.Extension
 
         public static Matrix4x4 Translation(Vector3 v) => Translation(v.X, v.Y, v.Z);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 Scale(float x, float y, float z) =>
             new(
                 x, 0f, 0f, 0f,
@@ -41,6 +46,7 @@ namespace RayTracer.Extension
         public static Matrix4x4 Scale(Vector3 v) => Scale(v.X, v.Y, v.Z);
         public static Matrix4x4 Scale(float f) => Scale(f, f, f);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 RotationX(float r) =>
             new(
                 1f, 0f, 0f, 0f,
@@ -48,6 +54,7 @@ namespace RayTracer.Extension
                 0f, Sin(r), Cos(r), 0f,
                 0f, 0f, 0f, 1f);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 RotationY(float r) =>
             new(
                 Cos(r), 0f, Sin(r), 0f,
@@ -55,6 +62,7 @@ namespace RayTracer.Extension
                 -Sin(r), 0f, Cos(r), 0f,
                 0f, 0f, 0f, 1f);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 RotationZ(float r) =>
             new(
                 Cos(r), -Sin(r), 0f, 0f,
@@ -62,6 +70,7 @@ namespace RayTracer.Extension
                 0f, 0f, 1f, 0f,
                 0f, 0f, 0f, 1f);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 Shear(float xy, float xz, float yx, float yz, float zx, float zy) =>
             new(
                 1f, xy, xz, 0f,

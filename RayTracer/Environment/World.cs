@@ -1,7 +1,6 @@
 ﻿using RayTracer.Materials;
 using RayTracer.Shapes;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using static RayTracer.Extension.MatrixExtension;
@@ -27,15 +26,17 @@ namespace RayTracer.Environment
         public List<PointLight> Lights = new();
         public List<Entity> Objects = new();
 
-        public Intersection[] Intersect(Ray ray)
+        public List<Intersection> Intersect(Ray ray)
         {
             var hits = new List<Intersection>();
+            // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var entity in Objects)
             {
                 var xs = entity.Intersect(ray);
-                if (xs.Length > 0) hits.AddRange(xs);
+                if (xs.Count > 0) hits.AddRange(xs);
             }
-            return hits.OrderBy(s => s.Distance).ToArray();
+            hits.Sort();
+            return hits;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

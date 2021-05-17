@@ -40,7 +40,7 @@ namespace RayTracer.Tests.Environment
             var w = World.Default;
             var ray = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var xs = w.Intersect(ray);
-            Assert.AreEqual(xs.Length, 4);
+            Assert.AreEqual(xs.Count, 4);
             Assert.AreEqual(xs[0].Distance, 4f);
             Assert.AreEqual(xs[1].Distance, 4.5f);
             Assert.AreEqual(xs[2].Distance, 5.5f);

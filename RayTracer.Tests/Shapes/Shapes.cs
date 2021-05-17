@@ -53,7 +53,7 @@ namespace RayTracer.Tests.Shapes
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new TestShape(Translation(5f, 0f, 0f));
             var xs = s.Intersect(r);
-            Assert.AreEqual(xs.Length, 0);
+            Assert.AreEqual(xs.Count, 0);
             Assert.AreEqual(s.SavedRay.Origin, Point(-5f, 0f, -5f));
             Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, 1f));
         }

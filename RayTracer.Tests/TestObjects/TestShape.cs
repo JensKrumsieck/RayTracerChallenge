@@ -1,5 +1,5 @@
 ﻿using RayTracer.Shapes;
-using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace RayTracer.Tests.TestObjects
@@ -15,10 +15,10 @@ namespace RayTracer.Tests.TestObjects
         public Ray SavedRay;
 
         /// <inheritdoc />
-        public override Intersection[] IntersectLocal(in Ray r)
+        public override List<Intersection> IntersectLocal(in Ray r)
         {
             SavedRay = r;
-            return Array.Empty<Intersection>();
+            return new List<Intersection>();
         }
 
         /// <inheritdoc />

@@ -5,7 +5,6 @@ using RayTracer.Materials;
 using RayTracer.Shapes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using static RayTracer.Extension.MatrixExtension;
@@ -114,13 +113,13 @@ namespace RayTracer.Tests
             var floorMaterial = new PhongMaterial(new Color(.7f, .7f, .8f)) { Specular = 0f };
             var left = new Plane(Translation(0f, 0f, 10f) * RotationY(MathF.PI / -4f) * RotationX(MathF.PI / 2f)) { Material = wallMaterial };
             var right = new Plane(Translation(0f, 0f, 10f) * RotationY(MathF.PI / 4f) * RotationX(MathF.PI / 2f)) { Material = wallMaterial };
-            var floor = new Plane(Translation(0f, -7f,0f)) {Material = floorMaterial};
+            var floor = new Plane(Translation(0f, -7f, 0f)) { Material = floorMaterial };
             var mescho = Util.LoadMesitaldehydeAtoms();
             var w = new World
             {
-                Objects = new List<Entity> {floor, left, right},
+                Objects = new List<Entity> { floor, left, right },
             };
-            w.Lights.Add(new PointLight(Point(-7f, 15f, -7f), new Color(1f,1f,1.05f)));
+            w.Lights.Add(new PointLight(Point(-7f, 15f, -7f), new Color(1f, 1f, 1.05f)));
             w.Objects.AddRange(mescho);
             var cam = new Camera(100, 100, MathF.PI / 3f)
             {

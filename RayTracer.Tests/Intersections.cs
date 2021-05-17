@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Shapes;
+using System.Collections.Generic;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
@@ -23,8 +24,8 @@ namespace RayTracer.Tests
             var s = new Sphere();
             var i1 = new Intersection(1f, s);
             var i2 = new Intersection(2f, s);
-            var xs = new[] { i1, i2 };
-            Assert.AreEqual(xs.Length, 2);
+            var xs = new List<Intersection> { i1, i2 };
+            Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0], i1);
             Assert.AreEqual(xs[1], i2);
         }
@@ -35,7 +36,7 @@ namespace RayTracer.Tests
             var s = new Sphere();
             var i1 = new Intersection(1, s);
             var i2 = new Intersection(2, s);
-            var xs = new[] { i1, i2 };
+            var xs = new List<Intersection> { i1, i2 };
             var i = Intersection.Hit(xs);
             Assert.AreEqual(i, i1);
         }
@@ -46,7 +47,7 @@ namespace RayTracer.Tests
             var s = new Sphere();
             var i1 = new Intersection(-1, s);
             var i2 = new Intersection(1, s);
-            var xs = new[] { i1, i2 };
+            var xs = new List<Intersection> { i1, i2 };
             var i = Intersection.Hit(xs);
             Assert.AreEqual(i, i2);
         }
@@ -57,7 +58,7 @@ namespace RayTracer.Tests
             var s = new Sphere();
             var i1 = new Intersection(-1, s);
             var i2 = new Intersection(-2, s);
-            var xs = new[] { i1, i2 };
+            var xs = new List<Intersection> { i1, i2 };
             var i = Intersection.Hit(xs);
             Assert.AreEqual(i, null);
         }
@@ -70,7 +71,7 @@ namespace RayTracer.Tests
             var i2 = new Intersection(7, s);
             var i3 = new Intersection(-3, s);
             var i4 = new Intersection(2, s);
-            var xs = new[] { i1, i2, i3, i4 };
+            var xs = new List<Intersection> { i1, i2, i3, i4 };
             var i = Intersection.Hit(xs);
             Assert.AreEqual(i, i4);
         }

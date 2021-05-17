@@ -1,5 +1,6 @@
 ﻿using RayTracer.Materials;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -14,27 +15,23 @@ namespace RayTracer.Shapes
         }
         protected Entity() : this(Transform.Identity) { }
 
-        /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Intersection[] Intersect(in Ray r)
+        public List<Intersection> Intersect(in Ray r)
         {
             var localRay = r.Transform(Transform.Inverse);
             return IntersectLocal(localRay);
         }
 
-        public abstract Intersection[] IntersectLocal(in Ray r);
+        public abstract List<Intersection> IntersectLocal(in Ray r);
 
-        /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Intersection? Hit(in Ray r)
         {
             var xs = Intersect(r);
             return Intersection.Hit(xs);
         }
-        /// <inheritdoc />
         public abstract Vector4 LocalNormal(in Vector4 at);
 
-        /// <inheritdoc />
         public Vector4 Normal(in Vector4 at)
         {
             var obj = Transform.WorldToObject(at);
