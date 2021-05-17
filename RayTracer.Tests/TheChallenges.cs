@@ -65,7 +65,8 @@ namespace RayTracer.Tests
                     var hit = shape.Hit(ray);
                     if (hit == null) continue;
                     var point = ray.PointByDistance(hit.Distance);
-                    canvas[x, y] = shape.Material.Shade(l, point, -ray.Direction, hit.Object.Normal(point));
+                    var comps = new IntersectionState { Point = point, Eye = -ray.Direction, Normal = hit.Object.Normal(point) };
+                    canvas[x, y] = shape.Material.Shade(l, comps);
                 }
             });
         }

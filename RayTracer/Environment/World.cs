@@ -40,7 +40,7 @@ namespace RayTracer.Environment
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Color ShadeHit(IntersectionState comps) => comps.Object.Material.Shade(Lights[0], comps.Point, comps.Eye, comps.Normal, InShadow(comps.OverPoint));
+        public Color ShadeHit(IntersectionState comps) => comps.Object.Material.Shade(Lights[0], comps, InShadow(comps.OverPoint));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Color ColorAt(in Ray ray)

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace RayTracer.Shapes
 {
-    public abstract class Entity : IEquatable<Sphere>
+    public abstract class Entity : IEquatable<Entity>
     {
         protected Entity(Transform transform)
         {
@@ -47,14 +47,14 @@ namespace RayTracer.Shapes
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(Sphere? other)
+        public bool Equals(Entity? other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
             return Transform.Equals(other.Transform) && Material.Equals(other.Material);
         }
         /// <inheritdoc />
-        public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj is Sphere other && Equals(other);
+        public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj is Entity other && Equals(other);
         /// <inheritdoc />
         public override int GetHashCode() => HashCode.Combine(Transform, Material);
     }
