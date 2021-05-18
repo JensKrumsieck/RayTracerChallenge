@@ -37,7 +37,7 @@ namespace RayTracer.Environment
             var worldY = HalfHeight - yOff;
 
             var px = Transform.Inverse.Multiply(Point(worldX, worldY, -1f));
-            var origin = Transform.Inverse.Multiply(Point(0f, 0f, 0f));
+            var origin = Transform.Inverse.Multiply(Vector4.UnitW);
             origin.W = 1f;
             var dir = Vector4.Normalize(px - origin);
             return new Ray(origin, dir);
@@ -65,9 +65,9 @@ namespace RayTracer.Environment
         public Canvas Render(World world)
         {
             var c = new Canvas(Resolution);
-            for (var y = 0; y < Resolution.Y; y++)
+            for (var y = Resolution.Y -1; y >= 0; y--)
             {
-                for (var x = 0; x < Resolution.X; x++)
+                for (var x = Resolution.X-1; x >= 0; x--)
                 {
                     var r = RayTo(x, y);
                     c[x, y] = world.ColorAt(ref r);
