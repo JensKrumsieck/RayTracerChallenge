@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Environment;
 using RayTracer.Materials;
 using RayTracer.Shapes;
@@ -39,7 +40,8 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var ray = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
-            var xs = w.Intersect(ref ray);
+            var xs = new List<Intersection>();
+            w.Intersect(ref ray, ref xs);
             Assert.AreEqual(xs.Count, 4);
             Assert.AreEqual(xs[0].Distance, 4f);
             Assert.AreEqual(xs[1].Distance, 4.5f);

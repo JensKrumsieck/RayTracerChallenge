@@ -22,7 +22,7 @@ namespace RayTracer.Materials
             BaseColor = baseColor;
         }
 
-        public Color Shade(in PointLight l, in IntersectionState c, bool inShadow = false)
+        public Color Shade(in PointLight l, ref IntersectionState c, bool inShadow = false)
         {
             var effCol = (Pattern?.ColorAtEntity(c.Object, c.Point) ?? BaseColor) * l.Intensity;
             var lightV = Vector4.Normalize(l.Position - c.Point);

@@ -25,23 +25,22 @@ namespace RayTracer.Environment
         public List<PointLight> Lights = new();
         public List<Entity> Objects = new();
 
-        public List<Intersection> Intersect(ref Ray ray)
+        public void Intersect(ref Ray ray, ref List<Intersection> hits)
         {
-            var hits = new List<Intersection>();
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var entity in Objects)
             {
                 entity.Intersect(ref ray, ref hits);
             }
             hits.Sort();
-            return hits;
         }
 
-        public Color ShadeHit(ref IntersectionState comps) => comps.Object.Material.Shade(Lights[0], in comps, InShadow(comps.OverPoint));
+        public Color ShadeHit(ref IntersectionState comps) => comps.Object.Material.Shade(Lights[0], ref comps, InShadow(comps.OverPoint));
 
         public Color ColorAt(ref Ray ray)
         {
-            var xs = Intersect(ref ray);
+            var xs = new List<Intersection>();
+            Intersect(ref ray, ref xs);
             var hit = Intersection.Hit(ref xs);
             if (hit == null)
                 return Color.Black;
@@ -51,13 +50,16 @@ namespace RayTracer.Environment
 
         public bool InShadow(Vector4 point)
         {
+            var xs = new List<Intersection>();
             var v = Lights[0].Position - point;
-            var dis = v.Length();
             var dir = Vector4.Normalize(v);
+
             var r = new Ray(point, dir);
-            var xs = Intersect(ref r);
+            Intersect(ref r, ref xs);
             var hit = Intersection.Hit(ref xs);
-            return hit != null && hit.Distance < dis;
+
+            var dis = v.LengthSquared();
+            return hit != null && hit.Distance * hit.Distance < dis;
         }
     }
 }

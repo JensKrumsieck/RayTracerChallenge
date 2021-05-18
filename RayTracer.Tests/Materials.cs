@@ -32,7 +32,7 @@ namespace RayTracer.Tests
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 0f, -10f), Color.White);
             var comps = new IntersectionState(_position, eye, normal);
-            var res = _m.Shade(l, comps);
+            var res = _m.Shade(l, ref comps);
             Assert.That.VectorsAreEqual(res, new Color(1.9f, 1.9f, 1.9f));
         }
 
@@ -44,7 +44,7 @@ namespace RayTracer.Tests
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 0f, -10f), Color.White);
             var comps = new IntersectionState(_position, eye, normal);
-            var res = _m.Shade(l, comps);
+            var res = _m.Shade(l, ref comps);
             Assert.That.VectorsAreEqual(res, Color.White);
         }
 
@@ -55,7 +55,7 @@ namespace RayTracer.Tests
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 10f, -10f), Color.White);
             var comps = new IntersectionState(_position, eye, normal);
-            var res = _m.Shade(l, comps);
+            var res = _m.Shade(l, ref comps);
             Assert.That.VectorsAreEqual(res, new Color(.7364f, .7364f, .7364f));
         }
 
@@ -67,7 +67,7 @@ namespace RayTracer.Tests
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 10f, -10f), Color.White);
             var comps = new IntersectionState(_position, eye, normal);
-            var res = _m.Shade(l, comps);
+            var res = _m.Shade(l, ref comps);
             Assert.That.VectorsAreEqual(res, new Color(1.6364f, 1.6364f, 1.6364f), 1e-4f);
         }
 
@@ -78,7 +78,7 @@ namespace RayTracer.Tests
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 0, 10f), Color.White);
             var comps = new IntersectionState(_position, eye, normal);
-            var res = _m.Shade(l, comps);
+            var res = _m.Shade(l, ref comps);
             Assert.That.VectorsAreEqual(res, new Color(.1f, .1f, .1f));
         }
 
@@ -89,7 +89,7 @@ namespace RayTracer.Tests
             var normal = Direction(0f, 0f, -1f);
             var l = new PointLight(Point(0f, 0f, -10f), Color.White);
             var comps = new IntersectionState(_position, eye, normal);
-            var res = _m.Shade(l, comps, true);
+            var res = _m.Shade(l, ref comps, true);
             Assert.That.VectorsAreEqual(res, new Color(.1f, .1f, .1f));
         }
 
@@ -105,8 +105,8 @@ namespace RayTracer.Tests
             var light = new PointLight(Point(0f, 0f, -10f), Color.White);
             var comps1 = new IntersectionState(Point(.9f, 0f, 0f), eye, eye);
             var comps2 = new IntersectionState(Point(1.1f, 0f, 0f), eye, eye);
-            var c1 = m.Shade(light, comps1, false);
-            var c2 = m.Shade(light, comps2, false);
+            var c1 = m.Shade(light, ref comps1, false);
+            var c2 = m.Shade(light, ref comps2, false);
             Assert.That.VectorsAreEqual(c1, Color.White);
             Assert.That.VectorsAreEqual(c2, Color.Black);
         }

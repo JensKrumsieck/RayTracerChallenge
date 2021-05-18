@@ -66,7 +66,7 @@ namespace RayTracer.Tests
                     var hit = shape.Hit(ref ray);
                     if (hit == null) continue;
                     var comps = IntersectionState.Prepare(ref hit, ref ray);
-                    canvas[x, y] = shape.Material.Shade(in l, in comps);
+                    canvas[x, y] = shape.Material.Shade(in l, ref comps);
                 }
             });
         }
