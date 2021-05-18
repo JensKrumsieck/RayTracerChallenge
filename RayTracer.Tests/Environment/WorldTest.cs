@@ -114,7 +114,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(0f, 10f, 0f);
-            Assert.IsFalse(w.InShadow(p));
+            Assert.IsFalse(w.InShadow(w.Lights[0], p));
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(10f, -10f, 10f);
-            Assert.IsTrue(w.InShadow(p));
+            Assert.IsTrue(w.InShadow(w.Lights[0], p));
         }
 
         [TestMethod]
@@ -130,7 +130,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(-2f, 2f, -2f);
-            Assert.IsFalse(w.InShadow(p));
+            Assert.IsFalse(w.InShadow(w.Lights[0], p));
         }
     }
 }

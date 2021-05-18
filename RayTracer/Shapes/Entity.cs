@@ -17,7 +17,8 @@ namespace RayTracer.Shapes
         public void Intersect(ref Ray r, ref List<Intersection> xs)
         {
             var localRay = r.Transform(Transform.Inverse);
-            xs.AddRange(IntersectLocal(localRay));
+            var items = IntersectLocal(localRay);
+            xs.AddRange(items);
         }
 
         public abstract List<Intersection> IntersectLocal(in Ray r);

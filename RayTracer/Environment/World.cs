@@ -35,7 +35,7 @@ namespace RayTracer.Environment
             hits.Sort();
         }
 
-        public Color ShadeHit(ref IntersectionState comps) => comps.Object.Material.Shade(Lights[0], ref comps, InShadow(comps.OverPoint));
+        public Color ShadeHit(ref IntersectionState comps) => comps.Object.Material.Shade(Lights[0], ref comps, InShadow(Lights[0], comps.OverPoint));
 
         public Color ColorAt(ref Ray ray)
         {
@@ -48,18 +48,21 @@ namespace RayTracer.Environment
             return ShadeHit(ref comp);
         }
 
-        public bool InShadow(Vector4 point)
+        public bool InShadow(PointLight l, Vector4 point)
         {
             var xs = new List<Intersection>();
-            var v = Lights[0].Position - point;
+            var v = l.Position - point;
             var dir = Vector4.Normalize(v);
-
-            var r = new Ray(point, dir);
-            Intersect(ref r, ref xs);
-            var hit = Intersection.Hit(ref xs);
-
             var dis = v.LengthSquared();
-            return hit != null && hit.Distance * hit.Distance < dis;
+            var r = new Ray(point, dir);
+            foreach (var obj in Objects)
+            {
+                xs.Clear();
+                obj.Intersect(ref r, ref xs);
+                var hit = Intersection.Hit(ref xs);
+                if (hit != null && hit.Distance * hit.Distance < dis) return true;
+            }
+            return false;
         }
     }
 }
