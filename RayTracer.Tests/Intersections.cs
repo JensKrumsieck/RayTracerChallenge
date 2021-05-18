@@ -37,7 +37,7 @@ namespace RayTracer.Tests
             var i1 = new Intersection(1, s);
             var i2 = new Intersection(2, s);
             var xs = new List<Intersection> { i1, i2 };
-            var i = Intersection.Hit(xs);
+            var i = Intersection.Hit(ref xs);
             Assert.AreEqual(i, i1);
         }
 
@@ -48,7 +48,7 @@ namespace RayTracer.Tests
             var i1 = new Intersection(-1, s);
             var i2 = new Intersection(1, s);
             var xs = new List<Intersection> { i1, i2 };
-            var i = Intersection.Hit(xs);
+            var i = Intersection.Hit(ref xs);
             Assert.AreEqual(i, i2);
         }
 
@@ -59,7 +59,7 @@ namespace RayTracer.Tests
             var i1 = new Intersection(-1, s);
             var i2 = new Intersection(-2, s);
             var xs = new List<Intersection> { i1, i2 };
-            var i = Intersection.Hit(xs);
+            var i = Intersection.Hit(ref xs);
             Assert.AreEqual(i, null);
         }
 
@@ -72,7 +72,7 @@ namespace RayTracer.Tests
             var i3 = new Intersection(-3, s);
             var i4 = new Intersection(2, s);
             var xs = new List<Intersection> { i1, i2, i3, i4 };
-            var i = Intersection.Hit(xs);
+            var i = Intersection.Hit(ref xs);
             Assert.AreEqual(i, i4);
         }
 

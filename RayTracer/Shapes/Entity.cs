@@ -14,18 +14,19 @@ namespace RayTracer.Shapes
         }
         protected Entity() : this(Transform.Identity) { }
 
-        public List<Intersection> Intersect(ref Ray r)
+        public void Intersect(ref Ray r, ref List<Intersection> xs)
         {
             var localRay = r.Transform(Transform.Inverse);
-            return IntersectLocal(localRay);
+            xs.AddRange(IntersectLocal(localRay));
         }
 
         public abstract List<Intersection> IntersectLocal(in Ray r);
 
         public Intersection? Hit(ref Ray r)
         {
-            var xs = Intersect(ref r);
-            return Intersection.Hit(xs);
+            var xs = new List<Intersection>();
+            Intersect(ref r, ref xs);
+            return Intersection.Hit(ref xs);
         }
         public abstract Vector4 LocalNormal(Vector4 at);
 

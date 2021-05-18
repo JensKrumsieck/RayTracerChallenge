@@ -31,20 +31,22 @@ namespace RayTracer.Environment
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var entity in Objects)
             {
-                var xs = entity.Intersect(ref ray);
-                if (xs.Count > 0) hits.AddRange(xs);
+                entity.Intersect(ref ray, ref hits);
             }
             hits.Sort();
             return hits;
         }
 
-        public Color ShadeHit(IntersectionState comps) => comps.Object.Material.Shade(Lights[0], in comps, InShadow(comps.OverPoint));
+        public Color ShadeHit(ref IntersectionState comps) => comps.Object.Material.Shade(Lights[0], in comps, InShadow(comps.OverPoint));
 
         public Color ColorAt(ref Ray ray)
         {
             var xs = Intersect(ref ray);
-            var hit = Intersection.Hit(xs);
-            return hit == null ? Color.Black : ShadeHit(IntersectionState.Prepare(ref hit, ref ray));
+            var hit = Intersection.Hit(ref xs);
+            if (hit == null)
+                return Color.Black;
+            var comp = IntersectionState.Prepare(ref hit, ref ray);
+            return ShadeHit(ref comp);
         }
 
         public bool InShadow(Vector4 point)
@@ -54,7 +56,7 @@ namespace RayTracer.Environment
             var dir = Vector4.Normalize(v);
             var r = new Ray(point, dir);
             var xs = Intersect(ref r);
-            var hit = Intersection.Hit(xs);
+            var hit = Intersection.Hit(ref xs);
             return hit != null && hit.Distance < dis;
         }
     }

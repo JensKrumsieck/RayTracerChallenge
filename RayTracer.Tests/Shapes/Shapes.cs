@@ -2,6 +2,7 @@
 using RayTracer.Materials;
 using RayTracer.Tests.TestObjects;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
@@ -42,7 +43,8 @@ namespace RayTracer.Tests.Shapes
         {
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new TestShape(Scale(2f, 2f, 2f));
-            s.Intersect(ref r);
+            var xs = new List<Intersection>();
+            s.Intersect(ref r, ref xs);
             Assert.AreEqual(s.SavedRay.Origin, Point(0f, 0f, -2.5f));
             Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, .5f));
         }
@@ -52,7 +54,8 @@ namespace RayTracer.Tests.Shapes
         {
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new TestShape(Translation(5f, 0f, 0f));
-            var xs = s.Intersect(ref r);
+            var xs = new List<Intersection>();
+            s.Intersect(ref r, ref xs);
             Assert.AreEqual(xs.Count, 0);
             Assert.AreEqual(s.SavedRay.Origin, Point(-5f, 0f, -5f));
             Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, 1f));

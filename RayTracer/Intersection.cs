@@ -15,7 +15,7 @@ namespace RayTracer
             Object = hitObject;
         }
 
-        public static Intersection? Hit(List<Intersection> intersections)
+        public static Intersection? Hit(ref List<Intersection> intersections)
         {
             if (intersections.Count == 0 || intersections.TrueForAll(i => i.Distance < 0f)) return null;
             Intersection? lowest = null;

@@ -55,7 +55,7 @@ namespace RayTracer.Tests.Environment
             var s = w.Objects[0];
             var i = new Intersection(4f, s);
             var comps = IntersectionState.Prepare(ref i, ref r);
-            var c = w.ShadeHit(comps);
+            var c = w.ShadeHit(ref comps);
             Assert.That.VectorsAreEqual(c, new Color(.38066f, .47583f, .2855f));
         }
 
@@ -68,7 +68,7 @@ namespace RayTracer.Tests.Environment
             w.Lights[0] = new PointLight(Point(0f, .25f, 0f), Color.White);
             var i = new Intersection(.5f, s);
             var comps = IntersectionState.Prepare(ref i, ref r);
-            var c = w.ShadeHit(comps);
+            var c = w.ShadeHit(ref comps);
             Assert.That.VectorsAreEqual(c, new Color(.90498f, .90498f, .90498f));
         }
 
