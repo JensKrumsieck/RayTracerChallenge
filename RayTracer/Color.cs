@@ -19,7 +19,7 @@ namespace RayTracer
         public float G => _storage.Y;
         public float B => _storage.Z;
 
-        public Color(float x, float y, float z) => _storage = new Vector3(x, y, z);
+        public Color(float r, float g, float b) => _storage = new Vector3(r, g, b);
 
         #region Converters
         public override string ToString() => $"Color: R{R} G{G} B{B}";

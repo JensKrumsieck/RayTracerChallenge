@@ -24,7 +24,7 @@ namespace RayTracer.ConsoleDemo
             };
             w.Lights.Add(new PointLight(Point(-7f, 15f, -7f), new Color(1f, 1f, 1.05f)));
             w.Objects.AddRange(mescho);
-            var cam = new Camera(1000, 1000, MathF.PI / 3f)
+            var cam = new Camera(1500, 1500, MathF.PI / 3f)
             {
                 Transform = Camera.ViewTransform(Point(1f, .5f, -12f), Point(0f, .5f, 0f), Direction(0f, 1f, 0f))
             };
