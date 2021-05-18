@@ -2,6 +2,7 @@
 using RayTracer.Extension;
 using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
@@ -62,18 +63,18 @@ namespace RayTracer.Environment
             return orientation * Translation(-from.X, -from.Y, -from.Z);
         }
 
-        public Canvas Render(World world)
+        public readonly Canvas Render(World world)
         {
             var c = new Canvas(Resolution);
-            for (var y = Resolution.Y -1; y >= 0; y--)
+            var self = this;
+            Parallel.For(0, self.Resolution.Y, new ParallelOptions{ MaxDegreeOfParallelism = System.Environment.ProcessorCount}, y =>
             {
-                for (var x = Resolution.X-1; x >= 0; x--)
+                for (var x = self.Resolution.X - 1; x >= 0; x--)
                 {
-                    var r = RayTo(x, y);
+                    var r = self.RayTo(x, y);
                     c[x, y] = world.ColorAt(ref r);
                 }
-            }
-
+            });
             return c;
         }
     }
