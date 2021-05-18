@@ -22,6 +22,6 @@ namespace RayTracer.Tests.TestObjects
         }
 
         /// <inheritdoc />
-        public override Vector4 LocalNormal(in Vector4 at) => new(at.X, at.Y, at.Z, 0f);
+        public override Vector4 LocalNormal(Vector4 at) => new(at.X, at.Y, at.Z, 0f);
     }
 }

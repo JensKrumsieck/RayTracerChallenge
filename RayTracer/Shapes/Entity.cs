@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace RayTracer.Shapes
 {
@@ -15,8 +14,7 @@ namespace RayTracer.Shapes
         }
         protected Entity() : this(Transform.Identity) { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public List<Intersection> Intersect(in Ray r)
+        public List<Intersection> Intersect(ref Ray r)
         {
             var localRay = r.Transform(Transform.Inverse);
             return IntersectLocal(localRay);
@@ -24,15 +22,14 @@ namespace RayTracer.Shapes
 
         public abstract List<Intersection> IntersectLocal(in Ray r);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Intersection? Hit(in Ray r)
+        public Intersection? Hit(ref Ray r)
         {
-            var xs = Intersect(r);
+            var xs = Intersect(ref r);
             return Intersection.Hit(xs);
         }
-        public abstract Vector4 LocalNormal(in Vector4 at);
+        public abstract Vector4 LocalNormal(Vector4 at);
 
-        public Vector4 Normal(in Vector4 at)
+        public Vector4 Normal(Vector4 at)
         {
             var obj = Transform.WorldToObject(at);
             var localNormal = LocalNormal(obj);
@@ -46,7 +43,6 @@ namespace RayTracer.Shapes
         public Transform Transform;
 
         /// <inheritdoc />
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(Entity? other)
         {
             if (other is null) return false;

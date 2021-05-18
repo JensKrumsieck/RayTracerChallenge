@@ -2,7 +2,6 @@
 using RayTracer.Shapes;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using static RayTracer.Extension.MatrixExtension;
 
 namespace RayTracer.Environment
@@ -26,28 +25,26 @@ namespace RayTracer.Environment
         public List<PointLight> Lights = new();
         public List<Entity> Objects = new();
 
-        public List<Intersection> Intersect(in Ray ray)
+        public List<Intersection> Intersect(ref Ray ray)
         {
             var hits = new List<Intersection>();
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var entity in Objects)
             {
-                var xs = entity.Intersect(in ray);
+                var xs = entity.Intersect(ref ray);
                 if (xs.Count > 0) hits.AddRange(xs);
             }
             hits.Sort();
             return hits;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Color ShadeHit(IntersectionState comps) => comps.Object.Material.Shade(Lights[0], in comps, InShadow(comps.OverPoint));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Color ColorAt(in Ray ray)
+        public Color ColorAt(ref Ray ray)
         {
-            var xs = Intersect(in ray);
+            var xs = Intersect(ref ray);
             var hit = Intersection.Hit(xs);
-            return hit == null ? Color.Black : ShadeHit(IntersectionState.Prepare(ref hit, ray));
+            return hit == null ? Color.Black : ShadeHit(IntersectionState.Prepare(ref hit, ref ray));
         }
 
         public bool InShadow(Vector4 point)
@@ -56,7 +53,7 @@ namespace RayTracer.Environment
             var dis = v.Length();
             var dir = Vector4.Normalize(v);
             var r = new Ray(point, dir);
-            var xs = Intersect(in r);
+            var xs = Intersect(ref r);
             var hit = Intersection.Hit(xs);
             return hit != null && hit.Distance < dis;
         }

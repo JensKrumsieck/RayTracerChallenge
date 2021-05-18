@@ -38,7 +38,7 @@ namespace RayTracer.Tests
                     var wx = -half + pxSize * x;
                     var pos = Point(wx, wY, wallZ);
                     var ray = new Ray(rayOrigin, Vector4.Normalize(pos - rayOrigin));
-                    if (shape.Hit(ray) != null) canvas[x, y] = col;
+                    if (shape.Hit(ref ray) != null) canvas[x, y] = col;
                 }
             });
         }
@@ -63,9 +63,9 @@ namespace RayTracer.Tests
                     var wx = -half + pxSize * x;
                     var pos = Point(wx, wY, wallZ);
                     var ray = new Ray(rayOrigin, Vector4.Normalize(pos - rayOrigin));
-                    var hit = shape.Hit(ray);
+                    var hit = shape.Hit(ref ray);
                     if (hit == null) continue;
-                    var comps = IntersectionState.Prepare(ref hit, in ray);
+                    var comps = IntersectionState.Prepare(ref hit, ref ray);
                     canvas[x, y] = shape.Material.Shade(in l, in comps);
                 }
             });

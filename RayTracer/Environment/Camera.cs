@@ -68,7 +68,10 @@ namespace RayTracer.Environment
             for (var y = 0; y < Resolution.Y; y++)
             {
                 for (var x = 0; x < Resolution.X; x++)
-                    c[x, y] = world.ColorAt(RayTo(x, y));
+                {
+                    var r = RayTo(x, y);
+                    c[x, y] = world.ColorAt(ref r);
+                }
             }
 
             return c;

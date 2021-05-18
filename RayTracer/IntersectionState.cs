@@ -1,6 +1,5 @@
 ﻿using RayTracer.Shapes;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace RayTracer
 {
@@ -42,8 +41,7 @@ namespace RayTracer
             Distance = 0f;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntersectionState Prepare(ref Intersection i, in Ray r)
+        public static IntersectionState Prepare(ref Intersection i, ref Ray r)
         {
             var point = r.PointByDistance(i.Distance);
             return new IntersectionState(i.Object, i.Distance, point, -r.Direction, i.Object.Normal(point));

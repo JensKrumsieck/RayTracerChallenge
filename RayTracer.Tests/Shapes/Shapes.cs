@@ -42,7 +42,7 @@ namespace RayTracer.Tests.Shapes
         {
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new TestShape(Scale(2f, 2f, 2f));
-            s.Intersect(r);
+            s.Intersect(ref r);
             Assert.AreEqual(s.SavedRay.Origin, Point(0f, 0f, -2.5f));
             Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, .5f));
         }
@@ -52,7 +52,7 @@ namespace RayTracer.Tests.Shapes
         {
             var r = new Ray(Point(0f, 0f, -5f), Direction(0f, 0f, 1f));
             var s = new TestShape(Translation(5f, 0f, 0f));
-            var xs = s.Intersect(r);
+            var xs = s.Intersect(ref r);
             Assert.AreEqual(xs.Count, 0);
             Assert.AreEqual(s.SavedRay.Origin, Point(-5f, 0f, -5f));
             Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, 1f));

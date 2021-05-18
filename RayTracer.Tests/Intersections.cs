@@ -82,7 +82,7 @@ namespace RayTracer.Tests
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var s = new Sphere();
             var i = new Intersection(4f, s);
-            var comps = IntersectionState.Prepare(ref i, in r);
+            var comps = IntersectionState.Prepare(ref i, ref r);
             Assert.AreEqual(comps.Distance, i.Distance);
             Assert.AreEqual(comps.Object, i.Object);
             Assert.That.VectorsAreEqual(comps.Point, Point(0f, 0f, -1f));
@@ -96,7 +96,7 @@ namespace RayTracer.Tests
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var s = new Sphere();
             var i = new Intersection(4f, s);
-            var comps = IntersectionState.Prepare(ref i, in r);
+            var comps = IntersectionState.Prepare(ref i, ref r);
             Assert.IsFalse(comps.IsInside);
         }
 
@@ -106,7 +106,7 @@ namespace RayTracer.Tests
             var r = new Ray(0f, 0f, 0f, 0f, 0f, 1f);
             var s = new Sphere();
             var i = new Intersection(1f, s);
-            var comps = IntersectionState.Prepare(ref i, in r);
+            var comps = IntersectionState.Prepare(ref i, ref r);
             Assert.IsTrue(comps.IsInside);
             Assert.That.VectorsAreEqual(comps.Point, Point(0f, 0f, 1f));
             Assert.That.VectorsAreEqual(comps.Eye, Direction(0f, 0f, -1f));
@@ -119,7 +119,7 @@ namespace RayTracer.Tests
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var s = new Sphere(Translation(0f, 0f, 1f));
             var i = new Intersection(5f, s);
-            var c = IntersectionState.Prepare(ref i, in r);
+            var c = IntersectionState.Prepare(ref i, ref r);
             Assert.IsTrue(c.OverPoint.Z < -Constants.Epsilon / 2f);
             Assert.IsTrue(c.Point.Z > c.OverPoint.Z);
         }

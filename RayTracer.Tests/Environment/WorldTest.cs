@@ -39,7 +39,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var ray = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
-            var xs = w.Intersect(ray);
+            var xs = w.Intersect(ref ray);
             Assert.AreEqual(xs.Count, 4);
             Assert.AreEqual(xs[0].Distance, 4f);
             Assert.AreEqual(xs[1].Distance, 4.5f);
@@ -54,7 +54,7 @@ namespace RayTracer.Tests.Environment
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
             var s = w.Objects[0];
             var i = new Intersection(4f, s);
-            var comps = IntersectionState.Prepare(ref i, in r);
+            var comps = IntersectionState.Prepare(ref i, ref r);
             var c = w.ShadeHit(comps);
             Assert.That.VectorsAreEqual(c, new Color(.38066f, .47583f, .2855f));
         }
@@ -67,7 +67,7 @@ namespace RayTracer.Tests.Environment
             var s = w.Objects[1];
             w.Lights[0] = new PointLight(Point(0f, .25f, 0f), Color.White);
             var i = new Intersection(.5f, s);
-            var comps = IntersectionState.Prepare(ref i, in r);
+            var comps = IntersectionState.Prepare(ref i, ref r);
             var c = w.ShadeHit(comps);
             Assert.That.VectorsAreEqual(c, new Color(.90498f, .90498f, .90498f));
         }
@@ -77,7 +77,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var r = new Ray(0f, 0f, -5f, 0f, 1f, 0f);
-            var c = w.ColorAt(r);
+            var c = w.ColorAt(ref r);
             Assert.That.VectorsAreEqual(c, Color.Black);
         }
 
@@ -86,7 +86,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var r = new Ray(0f, 0f, -5f, 0f, 0f, 1f);
-            var c = w.ColorAt(r);
+            var c = w.ColorAt(ref r);
             Assert.That.VectorsAreEqual(c, new Color(.38066f, .47583f, .2855f));
         }
 
@@ -103,7 +103,7 @@ namespace RayTracer.Tests.Environment
             mat2.Ambient = 1f;
             inner.Material = mat2;
             var r = new Ray(0f, 0f, .75f, 0f, 0f, -1f);
-            var c = w.ColorAt(r);
+            var c = w.ColorAt(ref r);
             Assert.That.VectorsAreEqual(c, inner.Material.BaseColor);
         }
 

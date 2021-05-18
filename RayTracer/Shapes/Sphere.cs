@@ -27,6 +27,6 @@ namespace RayTracer.Shapes
         }
 
         /// <inheritdoc />
-        public override Vector4 LocalNormal(in Vector4 at) => Vector4.Normalize(at - Point(0f, 0f, 0f));
+        public override Vector4 LocalNormal(Vector4 at) => Vector4.Normalize(at - Point(0f, 0f, 0f));
     }
 }
