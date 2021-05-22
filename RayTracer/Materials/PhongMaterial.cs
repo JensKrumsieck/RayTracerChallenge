@@ -6,13 +6,14 @@ using System.Numerics;
 
 namespace RayTracer.Materials
 {
-    public class PhongMaterial : IMaterial, IEquatable<PhongMaterial>
+    public class PhongMaterial : IEquatable<PhongMaterial>
     {
         public Color BaseColor;
         public float Ambient = .1f;
         public float Diffuse = .9f;
         public float Specular = .9f;
         public float Shininess = 200f;
+        public float Reflectivity = 0f;
         public Pattern? Pattern;
 
         public static PhongMaterial Default => new(Color.White);

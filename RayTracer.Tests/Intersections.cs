@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Shapes;
+using System;
 using System.Collections.Generic;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
@@ -122,6 +123,16 @@ namespace RayTracer.Tests
             var c = IntersectionState.Prepare(ref i, ref r);
             Assert.IsTrue(c.OverPoint.Z < -Constants.Epsilon / 2f);
             Assert.IsTrue(c.Point.Z > c.OverPoint.Z);
+        }
+
+        [TestMethod]
+        public void PrecomputingReflectionVector()
+        {
+            var s = new Plane();
+            var r = new Ray(0f, 1f, -1f, 0f, -MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
+            var i = new Intersection(MathF.Sqrt(2f), s);
+            var comps = IntersectionState.Prepare(ref i, ref r);
+            Assert.AreEqual(comps.Reflect, Direction(0f, MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f));
         }
     }
 }

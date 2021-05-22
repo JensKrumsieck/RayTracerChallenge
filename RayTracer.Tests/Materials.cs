@@ -11,8 +11,8 @@ namespace RayTracer.Tests
     [TestClass]
     public class Materials
     {
-        PhongMaterial _m = PhongMaterial.Default;
-        private Vector4 _position = Vector4.UnitW;
+        private readonly PhongMaterial _m = PhongMaterial.Default;
+        private readonly Vector4 _position = Vector4.UnitW;
 
         [TestMethod]
         public void DefaultMaterial()
@@ -109,6 +109,13 @@ namespace RayTracer.Tests
             var c2 = m.Shade(light, ref comps2, false);
             Assert.That.VectorsAreEqual(c1, Color.White);
             Assert.That.VectorsAreEqual(c2, Color.Black);
+        }
+
+        [TestMethod]
+        public void ReflectivityForDefaultMaterial()
+        {
+            var m = PhongMaterial.Default;
+            Assert.AreEqual(m.Reflectivity, 0f);
         }
     }
 }

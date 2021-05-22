@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using static System.MathF;
 
 namespace RayTracer.Extension
@@ -23,7 +22,7 @@ namespace RayTracer.Extension
                 throw new NotSupportedException($"Matrix is not Invertible, Determinant is {m.GetDeterminant()}");
             return result;
         }
-        
+
         public static Matrix4x4 Translation(float x, float y, float z) =>
             new(
                 1f, 0f, 0f, x,
@@ -32,7 +31,7 @@ namespace RayTracer.Extension
                 0f, 0f, 0f, 1f);
 
         public static Matrix4x4 Translation(Vector3 v) => Translation(v.X, v.Y, v.Z);
-        
+
         public static Matrix4x4 Scale(float x, float y, float z) =>
             new(
                 x, 0f, 0f, 0f,
@@ -41,28 +40,28 @@ namespace RayTracer.Extension
                 0f, 0f, 0f, 1f);
 
         public static Matrix4x4 Scale(float f) => Scale(f, f, f);
-        
+
         public static Matrix4x4 RotationX(float r) =>
             new(
                 1f, 0f, 0f, 0f,
                 0f, Cos(r), -Sin(r), 0f,
                 0f, Sin(r), Cos(r), 0f,
                 0f, 0f, 0f, 1f);
-        
+
         public static Matrix4x4 RotationY(float r) =>
             new(
                 Cos(r), 0f, Sin(r), 0f,
                 0f, 1f, 0f, 0f,
                 -Sin(r), 0f, Cos(r), 0f,
                 0f, 0f, 0f, 1f);
-        
+
         public static Matrix4x4 RotationZ(float r) =>
             new(
                 Cos(r), -Sin(r), 0f, 0f,
                 Sin(r), Cos(r), 0f, 0f,
                 0f, 0f, 1f, 0f,
                 0f, 0f, 0f, 1f);
-        
+
         public static Matrix4x4 Shear(float xy, float xz, float yx, float yz, float zx, float zy) =>
             new(
                 1f, xy, xz, 0f,

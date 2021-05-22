@@ -63,18 +63,18 @@ namespace RayTracer.Environment
             return orientation * Translation(-from.X, -from.Y, -from.Z);
         }
 
-        public readonly Canvas Render(World world)
+        public readonly Canvas Render(World world, int maxReflections = 5)
         {
             var c = new Canvas(Resolution);
             var self = this;
-            Parallel.For(0, self.Resolution.Y, new ParallelOptions{ MaxDegreeOfParallelism = System.Environment.ProcessorCount}, y =>
-            {
-                for (var x = self.Resolution.X - 1; x >= 0; x--)
-                {
-                    var r = self.RayTo(x, y);
-                    c[x, y] = world.ColorAt(ref r);
-                }
-            });
+            Parallel.For(0, self.Resolution.Y, new ParallelOptions { MaxDegreeOfParallelism = System.Environment.ProcessorCount }, y =>
+              {
+                  for (var x = self.Resolution.X - 1; x >= 0; x--)
+                  {
+                      var r = self.RayTo(x, y);
+                      c[x, y] = world.ColorAt(ref r, maxReflections);
+                  }
+              });
             return c;
         }
     }

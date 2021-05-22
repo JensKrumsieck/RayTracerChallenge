@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Environment;
 using RayTracer.Materials;
 using RayTracer.Shapes;
+using System;
+using System.Collections.Generic;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
@@ -131,6 +132,79 @@ namespace RayTracer.Tests.Environment
             var w = World.Default;
             var p = Point(-2f, 2f, -2f);
             Assert.IsFalse(w.InShadow(w.Lights[0], p));
+        }
+
+        [TestMethod]
+        public void ReflectedColorForNonReflectiveMaterial()
+        {
+            var w = World.Default;
+            var r = new Ray(0f, 0f, 0f, 0f, 0f, 1f);
+            var s = w.Objects[1];
+            s.Material.Ambient = 1;
+            var i = new Intersection(1, s);
+            var comps = IntersectionState.Prepare(ref i, ref r);
+            var col = w.ReflectedColor(ref comps);
+            Assert.That.VectorsAreEqual(col, Color.Black);
+        }
+
+        [TestMethod]
+        public void ReflectedColorReflectiveMaterial()
+        {
+            var w = World.Default;
+            var s = new Plane(Translation(0, -1, 0)) { Material = { Reflectivity = .5f } };
+            w.Objects.Add(s);
+            var r = new Ray(0, 0, -3, 0, -MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
+            var i = new Intersection(MathF.Sqrt(2f), s);
+            var comps = IntersectionState.Prepare(ref i, ref r);
+            var col = w.ReflectedColor(ref comps, 1);
+            Assert.That.VectorsAreEqual(col, new Color(.19032f, .2379f, .14274f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void ShadeHitWithReflective()
+        {
+            var w = World.Default;
+            var s = new Plane(Translation(0f, -1f, 0f)) { Material = { Reflectivity = .5f } };
+            w.Objects.Add(s);
+            var r = new Ray(0, 0, -3, 0, -MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
+            var i = new Intersection(MathF.Sqrt(2f), s);
+            var comps = IntersectionState.Prepare(ref i, ref r);
+            var col = w.ShadeHit(ref comps, 5);
+            Assert.That.VectorsAreEqual(col, new Color(.87677f, .92436f, .82918f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void AvoidInfiniteLoop()
+        {
+            var w = new World
+            {
+                Lights = new List<PointLight> { new(Point(0, 0, 0), Color.White) }
+            };
+            var lower = new Plane(Translation(0, -1, 0))
+            {
+                Material = { Reflectivity = 1 }
+            };
+            var upper = new Plane(Translation(0, 1, 0))
+            {
+                Material = { Reflectivity = 1 }
+            };
+            w.Objects.AddRange(new[] { lower, upper });
+            var r = new Ray(0, 0, 0, 0, 1, 0);
+            Assert.AreNotEqual(w.ColorAt(ref r, 100), Color.Black);
+        }
+
+        [TestMethod]
+        public void LimitRecursion()
+        {
+            var w = World.Default;
+            var s = new Plane(Translation(0, -1, 0))
+            { Material = { Reflectivity = .5f } };
+            w.Objects.Add(s);
+            var r = new Ray(0, 0, -3, 0, -MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
+            var i = new Intersection(MathF.Sqrt(2f), s);
+            var comps = IntersectionState.Prepare(ref i, ref r);
+            var col = w.ReflectedColor(ref comps, 0);
+            Assert.That.VectorsAreEqual(col, Color.Black);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using RayTracer.Shapes;
+﻿using RayTracer.Extension;
+using RayTracer.Shapes;
 using System.Numerics;
 
 namespace RayTracer
@@ -10,12 +11,12 @@ namespace RayTracer
 
         public readonly Vector4 Point;
         public readonly Vector4 Eye;
+        public readonly Vector4 Reflect;
+        public readonly Vector4 Normal;
 
-        private readonly Vector4 _normal;
-        public Vector4 Normal => IsInside ? -_normal : _normal;
-
-        public Vector4 OverPoint => Point + Normal * 5e-3f;
-        public bool IsInside => Vector4.Dot(_normal, Eye) < 0;
+        public Vector4 OverPoint => Point + Normal * Constants.Epsilon;
+        public Vector4 FarOverPoint => Point + Normal * 5e-3f;
+        public readonly bool IsInside;
 
         private IntersectionState(Entity o, float distance, Vector4 point, Vector4 eye, Vector4 normal)
         {
@@ -23,7 +24,9 @@ namespace RayTracer
             Distance = distance;
             Point = point;
             Eye = eye;
-            _normal = normal;
+            IsInside = Vector4.Dot(normal, Eye) < 0;
+            Normal = IsInside ? -normal : normal;
+            Reflect = (-Eye).Reflect(Normal);
         }
 
         /// <summary>
@@ -36,9 +39,11 @@ namespace RayTracer
         {
             Point = point;
             Eye = eye;
-            _normal = normal;
+            IsInside = Vector4.Dot(normal, Eye) < 0;
+            Normal = IsInside ? -normal : normal;
             Object = null!;
             Distance = 0f;
+            Reflect = (-Eye).Reflect(Normal);
         }
 
         public static IntersectionState Prepare(ref Intersection i, ref Ray r)

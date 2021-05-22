@@ -35,9 +35,14 @@ namespace RayTracer.Environment
             hits.Sort();
         }
 
-        public Color ShadeHit(ref IntersectionState comps) => comps.Object.Material.Shade(Lights[0], ref comps, InShadow(Lights[0], comps.OverPoint));
+        public Color ShadeHit(ref IntersectionState comps, int remainingReflections = 0)
+        {
+            var surfaceColor = comps.Object.Material.Shade(Lights[0], ref comps, InShadow(Lights[0], comps.FarOverPoint));
+            var reflectedColor = ReflectedColor(ref comps, remainingReflections);
+            return surfaceColor + reflectedColor;
+        }
 
-        public Color ColorAt(ref Ray ray)
+        public Color ColorAt(ref Ray ray, int remainingReflections = 0)
         {
             var xs = new List<Intersection>();
             Intersect(ref ray, ref xs);
@@ -45,7 +50,7 @@ namespace RayTracer.Environment
             if (hit == null)
                 return Color.Black;
             var comp = IntersectionState.Prepare(ref hit, ref ray);
-            return ShadeHit(ref comp);
+            return ShadeHit(ref comp, remainingReflections);
         }
 
         public bool InShadow(PointLight l, Vector4 point)
@@ -63,6 +68,14 @@ namespace RayTracer.Environment
                 if (hit != null && hit.Distance * hit.Distance < dis) return true;
             }
             return false;
+        }
+
+        public Color ReflectedColor(ref IntersectionState comps, int remainingReflections = 0)
+        {
+            if (comps.Object.Material.Reflectivity == 0f || remainingReflections == 0) return Color.Black;
+            var refRay = new Ray(comps.OverPoint, comps.Reflect);
+            var col = ColorAt(ref refRay, remainingReflections - 1);
+            return col * comps.Object.Material.Reflectivity;
         }
     }
 }

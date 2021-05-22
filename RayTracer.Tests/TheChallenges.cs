@@ -155,5 +155,30 @@ namespace RayTracer.Tests
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
+
+        [TestMethod]
+        public void Chapter_XI_a()
+        {
+            var floorMaterial = PhongMaterial.Default;
+            floorMaterial.Pattern = new CheckerPattern(Util.FromHex("#393e46"), Util.FromHex("#222831"), RotationY(MathF.PI / 4f));
+            floorMaterial.Specular = 0f;
+            floorMaterial.Reflectivity = 1f;
+
+            var sphereMaterial = PhongMaterial.Default;
+            sphereMaterial.Pattern = new StripePattern(Util.FromHex("#7bc74d"), Util.FromHex("#eeeeee"))
+            { Transform = Scale(.1f) * RotationY(MathF.PI / 2f) };
+            sphereMaterial.Diffuse = 1f;
+            var floor = new Plane { Material = floorMaterial };
+            var s = new Sphere(Translation(0f, 1f, 2f) * RotationY(MathF.PI / 4f)) { Material = sphereMaterial };
+
+            var w = new World
+            {
+                Objects = new List<Entity> { floor, s },
+            };
+            w.Lights.Add(PointLight.Default);
+            var cam = new Camera(1000, 1000, MathF.PI / 3f)
+            { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
+            cam.Render(w).Save();
+        }
     }
 }
