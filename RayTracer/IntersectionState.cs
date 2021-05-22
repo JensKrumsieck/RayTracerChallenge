@@ -1,6 +1,6 @@
-﻿using System;
-using RayTracer.Extension;
+﻿using RayTracer.Extension;
 using RayTracer.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -91,7 +91,7 @@ namespace RayTracer
                 if (containers.Contains(x.Object)) containers.Remove(x.Object);
                 else containers.Add(x.Object);
 
-                if (x.Equals(i))  n2 = containers.Count == 0 ? 1f : containers[^1].Material.IOR;
+                if (x.Equals(i)) n2 = containers.Count == 0 ? 1f : containers[^1].Material.IOR;
             }
 
             var point = r.PointByDistance(i.Distance);

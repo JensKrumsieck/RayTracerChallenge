@@ -176,7 +176,7 @@ namespace RayTracer.Tests
                 Objects = new List<Entity> { floor, s },
             };
             w.Lights.Add(PointLight.Default);
-            var cam = new Camera(2000, 1000, MathF.PI / 2f)
+            var cam = new Camera(200, 100, MathF.PI / 2f)
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
@@ -184,7 +184,37 @@ namespace RayTracer.Tests
         [TestMethod]
         public void Chapter_XI_b()
         {
+            var floorMaterial = new PhongMaterial(Color.White)
+            {
+                IOR = Constants.GlassIOR,
+                Reflectivity = 1f
+            };
+            var skyMaterial = new PhongMaterial(Color.White) { Pattern = new RingPattern(Util.FromHex("#0092ca"), Util.FromHex("#00adb5")) };
+            var sky = new Plane(Translation(0, 5, 0)) { Material = skyMaterial };
+            var floor = new Plane { Material = floorMaterial };
 
+            var w = new World
+            {
+                Objects = new List<Entity> { floor, sky }
+            };
+
+            for (var i = 0; i < 20; i++)
+            {
+                var rnd = new Random();
+                var x = (float)rnd.NextDouble();
+                var y = (float)rnd.NextDouble();
+                var z = (float)rnd.NextDouble();
+                var col = new Color(x, y, z);
+                var mat = new PhongMaterial(col) { IOR = Constants.GlassIOR, Transparency = y, Reflectivity = x, Specular = z };
+                var s = new Sphere(Translation((x * 10f) - 5f, y, z * 10f) * Scale(y)) { Material = mat };
+                w.Objects.Add(s);
+            }
+            var l = PointLight.Default;
+            l.Intensity *= 2f;
+            w.Lights.Add(l);
+            var cam = new Camera(200, 100, MathF.PI / 1.5f)
+            { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
+            cam.Render(w);
         }
     }
 }

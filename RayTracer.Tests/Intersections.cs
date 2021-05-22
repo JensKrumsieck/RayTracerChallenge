@@ -2,8 +2,6 @@
 using RayTracer.Shapes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using MathNet.Numerics.LinearAlgebra.Complex.Solvers;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
@@ -160,8 +158,8 @@ namespace RayTracer.Tests
                 new(5.25f, c),
                 new(6, a)
             };
-            var n1 = new [] {1, 1.5f, 2, 2.5f, 2.5f, 1.5f};
-            var n2 = new [] {1.5f, 2, 2.5f, 2.5f, 1.5f, 1};
+            var n1 = new[] { 1, 1.5f, 2, 2.5f, 2.5f, 1.5f };
+            var n2 = new[] { 1.5f, 2, 2.5f, 2.5f, 1.5f, 1 };
             for (var i = 0; i <= 5; i++)
             {
                 var hit = xs[i];

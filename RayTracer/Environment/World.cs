@@ -1,6 +1,6 @@
-﻿using System;
-using RayTracer.Materials;
+﻿using RayTracer.Materials;
 using RayTracer.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
