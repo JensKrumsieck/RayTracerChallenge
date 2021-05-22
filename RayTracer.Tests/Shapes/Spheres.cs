@@ -187,5 +187,14 @@ namespace RayTracer.Tests.Shapes
             Assert.AreEqual(s.Material, mat);
             Assert.AreEqual(s.Material.Ambient, 1.0f);
         }
+
+        [TestMethod]
+        public void GlassySphere()
+        {
+            var s = Sphere.GlassSphere;
+            Assert.AreEqual(s.Transform, Transform.Identity);
+            Assert.AreEqual(s.Material.Transparency, 1f);
+            Assert.AreEqual(s.Material.IOR, 1.5f);
+        }
     }
 }

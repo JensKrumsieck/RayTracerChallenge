@@ -2,6 +2,8 @@
 using RayTracer.Shapes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using MathNet.Numerics.LinearAlgebra.Complex.Solvers;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
 
@@ -133,6 +135,92 @@ namespace RayTracer.Tests
             var i = new Intersection(MathF.Sqrt(2f), s);
             var comps = IntersectionState.Prepare(ref i, ref r);
             Assert.AreEqual(comps.Reflect, Direction(0f, MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f));
+        }
+
+        [TestMethod]
+        public void FindingN1AndN2()
+        {
+            var a = Sphere.GlassSphere;
+            a.Transform = Scale(2f);
+
+            var b = Sphere.GlassSphere;
+            b.Transform = Translation(0, 0, -.25f);
+            b.Material.IOR = 2f;
+
+            var c = Sphere.GlassSphere;
+            c.Transform = Translation(0, 0, .25f);
+            c.Material.IOR = 2.5f;
+            var r = new Ray(0, 0, -4, 0, 0, 1);
+            var xs = new List<Intersection>
+            {
+                new(2f, a),
+                new(2.75f, b),
+                new(3.25f, c),
+                new(4.75f, b),
+                new(5.25f, c),
+                new(6, a)
+            };
+            var n1 = new [] {1, 1.5f, 2, 2.5f, 2.5f, 1.5f};
+            var n2 = new [] {1.5f, 2, 2.5f, 2.5f, 1.5f, 1};
+            for (var i = 0; i <= 5; i++)
+            {
+                var hit = xs[i];
+                var comps = IntersectionState.Prepare(ref hit, ref r, xs);
+                Assert.AreEqual(comps.N1, n1[i]);
+                Assert.AreEqual(comps.N2, n2[i]);
+            }
+        }
+
+        [TestMethod]
+        public void UnderPointIstBelowSurf()
+        {
+            var r = new Ray(0, 0, -5, 0, 0, 1);
+            var s = Sphere.GlassSphere;
+            s.Transform = Translation(0, 0, 1);
+            var i = new Intersection(5, s);
+            var comps = IntersectionState.Prepare(ref i, ref r); //third argument is list of i
+            Assert.IsTrue(comps.UnderPoint.Z > Constants.Epsilon / 2f);
+            Assert.IsTrue(comps.Point.Z < comps.UnderPoint.Z);
+        }
+
+        [TestMethod]
+        public void SchlickTotalReflection()
+        {
+            var s = Sphere.GlassSphere;
+            var r = new Ray(0, 0, MathF.Sqrt(2f) / 2f, 0, 1, 0);
+            var xs = new List<Intersection>
+            {
+                new(-MathF.Sqrt(2f) / 2f, s),
+                new(MathF.Sqrt(2f) / 2f, s)
+            };
+            var hit = xs[1];
+            var comps = IntersectionState.Prepare(ref hit, ref r, xs);
+            Assert.AreEqual(comps.Schlick(), 1f);
+        }
+
+        [TestMethod]
+        public void SchlickPerpendicular()
+        {
+            var s = Sphere.GlassSphere;
+            var r = new Ray(0, 0, 0, 0, 1, 0);
+            var xs = new List<Intersection>
+            {
+                new(-1, s),
+                new(1, s)
+            };
+            var hit = xs[1];
+            var comps = IntersectionState.Prepare(ref hit, ref r, xs);
+            Assert.That.FloatsAreEqual(comps.Schlick(), .04f);
+        }
+
+        [TestMethod]
+        public void SchlickN2GreaterN1()
+        {
+            var s = Sphere.GlassSphere;
+            var r = new Ray(0, .99f, -2, 0, 0, 1);
+            var xs = new Intersection(1.8589f, s);
+            var comps = IntersectionState.Prepare(ref xs, ref r);
+            Assert.That.FloatsAreEqual(comps.Schlick(), .48873f);
         }
     }
 }

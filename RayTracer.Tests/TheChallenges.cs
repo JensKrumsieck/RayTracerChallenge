@@ -180,5 +180,11 @@ namespace RayTracer.Tests
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
+
+        [TestMethod]
+        public void Chapter_XI_b()
+        {
+
+        }
     }
 }

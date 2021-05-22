@@ -28,5 +28,7 @@ namespace RayTracer.Shapes
 
         /// <inheritdoc />
         public override Vector4 LocalNormal(Vector4 at) => Vector4.Normalize(at - Point(0f, 0f, 0f));
+
+        public static Sphere GlassSphere => new() {Material = {Transparency = 1, IOR = 1.5f}};
     }
 }

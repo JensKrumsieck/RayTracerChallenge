@@ -117,5 +117,13 @@ namespace RayTracer.Tests
             var m = PhongMaterial.Default;
             Assert.AreEqual(m.Reflectivity, 0f);
         }
+
+        [TestMethod]
+        public void RefractionAndTransparency()
+        {
+            var m = PhongMaterial.Default;
+            Assert.AreEqual(m.Transparency, 0f);
+            Assert.AreEqual(m.IOR, 1f);
+        }
     }
 }

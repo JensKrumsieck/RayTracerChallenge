@@ -2,6 +2,7 @@
 using RayTracer.Environment;
 using RayTracer.Materials;
 using RayTracer.Shapes;
+using RayTracer.Tests.TestObjects;
 using System;
 using System.Collections.Generic;
 using static RayTracer.Extension.MatrixExtension;
@@ -205,6 +206,132 @@ namespace RayTracer.Tests.Environment
             var comps = IntersectionState.Prepare(ref i, ref r);
             var col = w.ReflectedColor(ref comps, 0);
             Assert.That.VectorsAreEqual(col, Color.Black);
+        }
+
+        [TestMethod]
+        public void RefractedColorOpaque()
+        {
+            var w = World.Default;
+            var s = w.Objects[0];
+            var r = new Ray(0, 0, -5, 0, 0, 1);
+            var xs = new List<Intersection>
+            {
+                new(4, s),
+                new(6, s)
+            };
+            var hit = xs[0];
+            var comps = IntersectionState.Prepare(ref hit, ref r, xs);
+            Assert.AreEqual(w.RefractedColor(ref comps, 5), Color.Black);
+        }
+
+        [TestMethod]
+        public void RefractedColorLimit()
+        {
+            var w = World.Default;
+            var s = w.Objects[0];
+            s.Material.Transparency = 1;
+            s.Material.IOR = 1.5f;
+            var r = new Ray(0, 0, -5, 0, 0, 1);
+            var xs = new List<Intersection>
+            {
+                new(4, s),
+                new(6, s)
+            };
+            var hit = xs[0];
+            var comps = IntersectionState.Prepare(ref hit, ref r, xs);
+            Assert.AreEqual(w.RefractedColor(ref comps, 0), Color.Black);
+        }
+
+        [TestMethod]
+        public void RefractedColorUnterTotalReflection()
+        {
+            var w = World.Default;
+            var s = w.Objects[0];
+            s.Material.Transparency = 1;
+            s.Material.IOR = 1.5f;
+            var r = new Ray(0, 0, MathF.Sqrt(2f) / 2f, 0, 1, 0);
+            var xs = new List<Intersection>
+            {
+                new(-MathF.Sqrt(2f) / 2f, s),
+                new(MathF.Sqrt(2f) / 2f, s)
+            };
+            var hit = xs[1];
+            var comps = IntersectionState.Prepare(ref hit, ref r, xs);
+            Assert.AreEqual(w.RefractedColor(ref comps, 5), Color.Black);
+        }
+
+        [TestMethod]
+        public void RefractedColorWithRay()
+        {
+            var w = World.Default;
+            var s = w.Objects[0];
+            s.Material.Ambient = 1f;
+            s.Material.Pattern = new TestPattern();
+            var b = w.Objects[1];
+            b.Material.Transparency = 1;
+            b.Material.IOR = 1.5f;
+            var r = new Ray(0, 0, .1f, 0, 1, 0);
+            var xs = new List<Intersection>
+            {
+                new(-.9899f, s),
+                new(-.4899f, b),
+                new(.4899f, b),
+                new(.9899f, s)
+            };
+            var hit = xs[2];
+            var comps = IntersectionState.Prepare(ref hit, ref r, xs);
+            var c = w.RefractedColor(ref comps, 5);
+            Assert.That.VectorsAreEqual(c, new Color(0, .99888f, .04725f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void ShadeHitRefraction()
+        {
+            var w = World.Default;
+            var floor = new Plane(Translation(0, -1, 0))
+            {
+                Material = { Transparency = .5f, IOR = 1.5f }
+            };
+            w.Objects.Add(floor);
+            var s = new Sphere(Translation(0, -3.5f, -.5f))
+            {
+                Material =
+                {
+                    BaseColor = new Color(1, 0, 0),
+                    Ambient = .5f
+                }
+            };
+            w.Objects.Add(s);
+            var r = new Ray(0, 0, -3, 0, -MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
+            var xs = new Intersection(MathF.Sqrt(2f), floor);
+            var comps = IntersectionState.Prepare(ref xs, ref r);
+            var color = w.ShadeHit(ref comps, 5);
+            Assert.That.VectorsAreEqual(color, new Color(.93642f, .68642f, .68642f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void ShadeHitSchlick()
+        {
+            var w = World.Default;
+            var floor = new Plane(Translation(0, -1, 0))
+            {
+                Material = { Transparency = .5f, IOR = 1.5f, Reflectivity = .5f }
+            };
+            w.Objects.Add(floor);
+            var s = new Sphere(Translation(0, -3.5f, -.5f))
+            {
+                Material =
+                {
+                    BaseColor = new Color(1, 0, 0),
+                    Ambient = .5f
+                }
+            };
+            w.Objects.Add(s);
+            var r = new Ray(0, 0, -3, 0, -MathF.Sqrt(2f) / 2f, MathF.Sqrt(2f) / 2f);
+            var xs = new Intersection(MathF.Sqrt(2f), floor);
+            var comps = IntersectionState.Prepare(ref xs, ref r);
+            var color = w.ShadeHit(ref comps, 5);
+            Assert.That.VectorsAreEqual(color, new Color(.93391f, .69643f, .69243f), 1e-4f);
         }
     }
 }

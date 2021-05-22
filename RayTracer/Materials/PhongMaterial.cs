@@ -14,6 +14,8 @@ namespace RayTracer.Materials
         public float Specular = .9f;
         public float Shininess = 200f;
         public float Reflectivity = 0f;
+        public float IOR = 1.0f;
+        public float Transparency = 0f;
         public Pattern? Pattern;
 
         public static PhongMaterial Default => new(Color.White);
