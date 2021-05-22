@@ -176,9 +176,9 @@ namespace RayTracer.Tests
                 Objects = new List<Entity> { floor, s },
             };
             w.Lights.Add(PointLight.Default);
-            var cam = new Camera(1000, 1000, MathF.PI / 3f)
+            var cam = new Camera(2000, 1000, MathF.PI / 2f)
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
-            cam.Render(w).Save();
+            cam.Render(w);
         }
     }
 }
