@@ -51,7 +51,8 @@ namespace RayTracer.Tests.Shapes
                 new(0, 0, -2, .5345f, .8018f, .2673f),
                 new(2, 0, 2, 0, 0, -1),
                 new(0, 2, 2, 0, -1, 0),
-                new(2, 2, 0, -1, 0, 0)
+                new(2, 2, 0, -1, 0, 0),
+                new(0, 0, 2, 0, 0, 1)
             };
             foreach (var t in rays)
             {

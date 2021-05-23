@@ -18,7 +18,7 @@ namespace RayTracer.Shapes
 
             var tMin = MathF.Max(MathF.Max(xtMin, ytMin), ztMin);
             var tMax = MathF.Min(MathF.Min(xtMax, ytMax), ztMax);
-            if (tMin > tMax) return new List<Intersection>();
+            if (tMin > tMax || tMax < 0) return new List<Intersection>();
             return new List<Intersection>
             {
                 new(tMin, this),
