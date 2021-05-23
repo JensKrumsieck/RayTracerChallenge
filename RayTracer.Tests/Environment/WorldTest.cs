@@ -158,7 +158,7 @@ namespace RayTracer.Tests.Environment
             var i = new Intersection(MathF.Sqrt(2f), s);
             var comps = IntersectionState.Prepare(ref i, ref r);
             var col = w.ReflectedColor(ref comps, 1);
-            Assert.That.VectorsAreEqual(col, new Color(.19032f, .2379f, .14274f), 1e-4f);
+            Assert.That.VectorsAreEqual(col, new Color(.19032f, .2379f, .14274f), 1e-3f);
         }
 
         [TestMethod]

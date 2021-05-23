@@ -10,7 +10,7 @@ namespace RayTracer.Shapes
         public Plane(Transform transform) : base(transform) { }
         public Plane() { }
 
-        public override List<Intersection> IntersectLocal(in Ray r)
+        public override List<Intersection> IntersectLocal(ref Ray r)
         {
             if (MathF.Abs(r.Direction.Y) < Constants.Epsilon) return new List<Intersection>();
             var t = -r.Origin.Y / r.Direction.Y;

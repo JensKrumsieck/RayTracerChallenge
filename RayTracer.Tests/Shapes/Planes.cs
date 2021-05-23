@@ -25,7 +25,7 @@ namespace RayTracer.Tests.Shapes
         {
             var p = new Plane();
             var r = new Ray(0f, 10f, 0f, 0f, 0f, 1f);
-            var xs = p.IntersectLocal(r);
+            var xs = p.IntersectLocal(ref r);
             Assert.AreEqual(xs.Count, 0);
         }
 
@@ -34,7 +34,7 @@ namespace RayTracer.Tests.Shapes
         {
             var p = new Plane();
             var r = new Ray(0f, 0f, 0f, 0f, 0f, 1f);
-            var xs = p.IntersectLocal(r);
+            var xs = p.IntersectLocal(ref r);
             Assert.AreEqual(xs.Count, 0);
         }
 
@@ -43,7 +43,7 @@ namespace RayTracer.Tests.Shapes
         {
             var p = new Plane();
             var r = new Ray(0f, 1f, 0f, 0f, -1f, 0f);
-            var xs = p.IntersectLocal(r);
+            var xs = p.IntersectLocal(ref r);
             Assert.AreEqual(xs.Count, 1);
             Assert.AreEqual(xs[0].Distance, 1f);
             Assert.AreEqual(xs[0].Object, p);
@@ -54,7 +54,7 @@ namespace RayTracer.Tests.Shapes
         {
             var p = new Plane();
             var r = new Ray(0f, -1f, 0f, 0f, 1f, 0f);
-            var xs = p.IntersectLocal(r);
+            var xs = p.IntersectLocal(ref r);
             Assert.AreEqual(xs.Count, 1);
             Assert.AreEqual(xs[0].Distance, 1f);
             Assert.AreEqual(xs[0].Object, p);

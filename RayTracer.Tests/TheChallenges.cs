@@ -216,5 +216,40 @@ namespace RayTracer.Tests
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
+
+        [TestMethod]
+        public void ChapterXII()
+        {
+            var cube1 = new Cube(Translation(-8f, 4, 8) * Scale(30, 5, 30))
+            {
+                Material = new PhongMaterial(Color.White) { Pattern = new CheckerPattern(Util.FromHex("#222831"), Util.FromHex("#d72323"), Scale(.2f)), Specular = .1f }
+            };
+            var cube2 = new Cube(Translation(-8, 4, 8) * Scale(28, 6, 28))
+            {
+                Material = new PhongMaterial(Color.White * .4f)
+            };
+
+            var sphere1 = new Sphere(Translation(-8f, 2.7f, 8.1f) * Scale(4))
+            {
+                Material = new PhongMaterial(Util.FromHex("#d72323")) { Reflectivity = 1 }
+            };
+            var sphere2 = new Sphere(Translation(.9f, 1f, 8f) * Scale(2))
+            {
+                Material = new PhongMaterial(Color.White) { Transparency = 1f, IOR = Constants.GlassIOR, Reflectivity = .5f }
+            };
+
+            var w = new World();
+            w.Objects.Add(cube1);
+            w.Objects.Add(cube2);
+            w.Objects.Add(sphere1);
+            w.Objects.Add(sphere2);
+            var l = new PointLight(Point(-12, 8, -10), Color.White);
+            w.Lights.Add(l);
+            var cam = new Camera(192, 108, MathF.PI / 180 * 50)
+            {
+                Transform = Camera.ViewTransform(Point(19f, 6f, -14f), Point(-8f, 2.7f, 8f), Direction(0f, 1f, 0f))
+            };
+            cam.Render(w).Save();
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace RayTracer.Environment
 
         public Color ShadeHit(ref IntersectionState comps, int limit = 0)
         {
-            var surfaceColor = comps.Object.Material.Shade(Lights[0], ref comps, InShadow(Lights[0], comps.FarOverPoint));
+            var surfaceColor = comps.Object.Material.Shade(Lights[0], ref comps, InShadow(Lights[0], comps.OverPoint));
             var reflectedColor = ReflectedColor(ref comps, limit);
             var refractedColor = RefractedColor(ref comps, limit);
 

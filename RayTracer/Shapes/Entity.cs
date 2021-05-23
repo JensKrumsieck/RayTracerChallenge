@@ -17,11 +17,11 @@ namespace RayTracer.Shapes
         public void Intersect(ref Ray r, ref List<Intersection> xs)
         {
             var localRay = r.Transform(Transform.Inverse);
-            var items = IntersectLocal(localRay);
+            var items = IntersectLocal(ref localRay);
             xs.AddRange(items);
         }
 
-        public abstract List<Intersection> IntersectLocal(in Ray r);
+        public abstract List<Intersection> IntersectLocal(ref Ray r);
 
         public Intersection? Hit(ref Ray r)
         {

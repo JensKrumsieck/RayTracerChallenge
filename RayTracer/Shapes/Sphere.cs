@@ -11,7 +11,7 @@ namespace RayTracer.Shapes
         public Sphere() { }
 
         /// <inheritdoc />
-        public override List<Intersection> IntersectLocal(in Ray r)
+        public override List<Intersection> IntersectLocal(ref Ray r)
         {
             var str = r.Origin - Vector4.UnitW;
             var a = Vector4.Dot(r.Direction, r.Direction);

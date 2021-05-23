@@ -15,7 +15,7 @@ namespace RayTracer.Tests.TestObjects
         public Ray SavedRay;
 
         /// <inheritdoc />
-        public override List<Intersection> IntersectLocal(in Ray r)
+        public override List<Intersection> IntersectLocal(ref Ray r)
         {
             SavedRay = r;
             return new List<Intersection>();
