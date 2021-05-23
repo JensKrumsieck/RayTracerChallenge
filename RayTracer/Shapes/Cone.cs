@@ -49,12 +49,9 @@ namespace RayTracer.Shapes
             var dist = at.X * at.X + at.Z * at.Z;
             var y = MathF.Sqrt(dist);
             if (at.Y > 0) y = -y;
-            return dist switch
-            {
-                < 1 when at.Y >= Maximum - Constants.Epsilon => Vector4.UnitY,
-                < 1 when at.Y <= Minimum + Constants.Epsilon => -Vector4.UnitY,
-                _ => Direction(at.X, y, at.Z)
-            };
+            if (dist < Maximum * Maximum && at.Y >= Maximum + Constants.Epsilon) return Vector4.UnitY;
+            if (dist < Minimum * Minimum && at.Y <= Minimum + Constants.Epsilon) return -Vector4.UnitY;
+            return Direction(at.X, y, at.Z);
         }
     }
 }

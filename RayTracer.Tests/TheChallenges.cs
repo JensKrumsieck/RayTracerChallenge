@@ -249,7 +249,83 @@ namespace RayTracer.Tests
             {
                 Transform = Camera.ViewTransform(Point(19f, 6f, -14f), Point(-8f, 2.7f, 8f), Direction(0f, 1f, 0f))
             };
-            cam.Render(w).Save();
+            cam.Render(w);
+        }
+
+        [TestMethod]
+        public void ChapterXIII()
+        {
+            var w = new World();
+            var p = new Plane()
+            {
+                Material = new PhongMaterial(Util.FromHex("#393e46")) { Reflectivity = .1f }
+            };
+            w.Objects.Add(p);
+            var boostMat = new PhongMaterial(Util.FromHex("#222831")) { Specular = 0 };
+            var c1 = new Cone(Translation(0.363811f, 0.47248f, 0) * RotationZ(MathF.PI) * Scale(.202f, .367f, .202f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = boostMat };
+            var c2 = new Cone(Translation(0f, 0.47248f, -0.386016f) * RotationZ(MathF.PI) * Scale(.202f, .367f, .202f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = boostMat };
+            var c3 = new Cone(Translation(-0.363811f, 0.47248f, 0) * RotationZ(MathF.PI) * Scale(.202f, .367f, .202f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = boostMat };
+            var c4 = new Cone(Translation(0f, 0.47248f, 0.386016f) * RotationZ(MathF.PI) * Scale(.202f, .367f, .202f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = boostMat };
+            w.Objects.Add(c1);
+            w.Objects.Add(c2);
+            w.Objects.Add(c3);
+            w.Objects.Add(c4);
+
+            var baseMat = new PhongMaterial(Color.White)
+            {
+                Pattern = new StripePattern(Color.White, Color.Black, Scale(.05f) * RotationZ(MathF.PI / 2f)),
+                Reflectivity = .7f
+            };
+            var cyl = new Cylinder(Translation(0, 4.23516f, 0) * Scale(.596f, 3.782f, .596f)) { Minimum = -1f, Maximum = 0f, IsClosed = true, Material = baseMat };
+            var con = new Cone(Translation(0f, 4.8f, 0f) * RotationZ(MathF.PI) * Scale(.596f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = baseMat };
+            w.Objects.Add(cyl);
+            w.Objects.Add(con);
+
+            var cyl1 = new Cylinder(Translation(0, 5.15554f, 0) * Scale(.411f, 1.104f, .411f)) { Minimum = -1f, Maximum = 0f, IsClosed = true, Material = baseMat };
+            var con1 = new Cone(Translation(0f, 5.55f, 0f) * RotationZ(MathF.PI) * Scale(.411f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = baseMat };
+            w.Objects.Add(cyl1);
+            w.Objects.Add(con1);
+
+            var cyl2 = new Cylinder(Translation(0, 5.7f, 0) * Scale(.211f, .345f, .211f)) { Minimum = -1f, Maximum = 0f, IsClosed = true, Material = baseMat };
+            var con2 = new Cone(Translation(0f, 5.9f, 0f) * RotationZ(MathF.PI) * Scale(.211f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = baseMat };
+            w.Objects.Add(cyl2);
+            w.Objects.Add(con2);
+
+            var cyl3 = new Cylinder(Translation(0, 6f, 0) * Scale(.092f, .151f, .092f)) { Minimum = -1f, Maximum = 0f, IsClosed = true, Material = baseMat };
+            var con3 = new Cone(Translation(0f, 6.1f, 0f) * RotationZ(MathF.PI) * Scale(.092f)) { Minimum = 0, Maximum = 1, IsClosed = true, Material = baseMat };
+            w.Objects.Add(cyl3);
+            w.Objects.Add(con3);
+            var topMat = new PhongMaterial(Color.White);
+            var cyl4 = new Cylinder(Translation(0, 7f, 0) * Scale(.04f, 3f, .04f)) { Minimum = -1f, Maximum = 0f, IsClosed = true, Material = topMat };
+            w.Objects.Add(cyl4);
+
+            var cube = new Cube(Translation(-5, 1, -2))
+            {
+                Material = new PhongMaterial(Color.White)
+                { Transparency = 1f, IOR = Constants.GlassIOR, Reflectivity = 0f }
+            };
+            var s = new Sphere(Translation(-5, .5f, -2) * Scale(.5f)) { Material = new PhongMaterial(Color.Red) { Reflectivity = 1 } };
+            var s2 = new Sphere(Translation(5, 1.5f, 2) * Scale(1.5f)) { Material = new PhongMaterial(Color.Red) { Reflectivity = 1 } };
+            var cube2 = new Cube(Translation(7, .7f, -2) * Scale(.7f))
+            {
+                Material = new PhongMaterial(Color.White)
+                { Transparency = 1f, IOR = Constants.GlassIOR, Reflectivity = 0f }
+            };
+            var s3 = new Sphere(Translation(5, 1, -2)) { Material = new PhongMaterial(Color.Blue) { Reflectivity = 1 } };
+            var s4 = new Sphere(Translation(-8, 1, 3)) { Material = new PhongMaterial(Color.Green) { Reflectivity = 1 } };
+            w.Objects.Add(cube);
+            w.Objects.Add(cube2);
+            w.Objects.Add(s);
+            w.Objects.Add(s2);
+            w.Objects.Add(s3);
+            w.Objects.Add(s4);
+            var l = new PointLight(Point(1.4122f, 10.242f, -10f), Color.White);
+            w.Lights.Add(l);
+            var cam = new Camera(100, 100, 50 * MathF.PI / 180)
+            {
+                Transform = Camera.ViewTransform(Point(15.548f, 5f, 0f), Point(0, 1, 0), Vector4.UnitY)
+            };
+            cam.Render(w);
         }
     }
 }
