@@ -337,11 +337,11 @@ namespace RayTracer.Tests
             w.Lights.Add(new PointLight(Point(-5f, 5f, -5f), new Color(1f, 1f, 1.05f)));
             w.Objects.AddRange(mescho);
             w.Objects.Add(room);
-            var cam = new Camera(2000, 1000, MathF.PI / 3f)
+            var cam = new Camera(200, 100, MathF.PI / 3f)
             {
                 Transform = Camera.ViewTransform(Point(-7f, 1f, -11f), Point(0f, .5f, 0f), Direction(0f, 1f, 0f))
             };
-            cam.Render(w).Save();
+            cam.Render(w);
         }
     }
 }
