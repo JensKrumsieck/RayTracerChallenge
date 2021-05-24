@@ -10,6 +10,13 @@ namespace RayTracer.Shapes
         public Cylinder() { }
 
         public Cylinder(Transform transform) : base(transform) { }
+
+        public override Bounds BoundingBox
+        {
+            get => new() { Min = Point(-1, Minimum, -1), Max = Point(1, Maximum, 1) };
+            set { }
+        }
+
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
             var xs = new List<Intersection>();

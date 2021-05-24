@@ -7,6 +7,7 @@ namespace RayTracer.Shapes
 {
     public abstract class Entity : IEquatable<Entity>
     {
+        protected Entity() : this(Transform.Identity) { }
         protected Entity(Transform transform)
         {
             Transform = transform;
@@ -15,7 +16,23 @@ namespace RayTracer.Shapes
 
         public Entity? Parent;
 
-        protected Entity() : this(Transform.Identity) { }
+        public PhongMaterial Material { get; set; }
+
+        private Transform _transform;
+        public Transform Transform
+        {
+            get => _transform;
+            set
+            {
+                _transform = value;
+                //reset transformed box
+                TransformedBoundingBox = BoundingBox.Transform(_transform);
+            }
+        }
+
+        public abstract Bounds BoundingBox { get; set; }
+
+        public Bounds TransformedBoundingBox { get; set; }
 
         public void Intersect(ref Ray r, ref List<Intersection> xs)
         {
@@ -42,10 +59,6 @@ namespace RayTracer.Shapes
             worldNormal.W = 0f;
             return Vector4.Normalize(worldNormal);
         }
-
-        public PhongMaterial Material { get; set; }
-
-        public Transform Transform;
 
         public Vector4 WorldToObject(Vector4 point)
         {

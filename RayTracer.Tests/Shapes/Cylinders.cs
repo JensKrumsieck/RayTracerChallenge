@@ -134,5 +134,23 @@ namespace RayTracer.Tests.Shapes
                 Assert.AreEqual(c.LocalNormal(point), normal);
             }
         }
+
+        [TestMethod]
+        public void BoundingBox()
+        {
+            var s = new Cylinder();
+            var b = s.BoundingBox;
+            Assert.AreEqual(b.Min, Point(-1, float.NegativeInfinity, -1));
+            Assert.AreEqual(b.Max, Point(1, float.PositiveInfinity, 1));
+        }
+
+        [TestMethod]
+        public void BoundingBoxConstrained()
+        {
+            var s = new Cylinder { Minimum = -5, Maximum = 3 };
+            var b = s.BoundingBox;
+            Assert.AreEqual(b.Min, Point(-1, -5, -1));
+            Assert.AreEqual(b.Max, Point(1, 3, 1));
+        }
     }
 }

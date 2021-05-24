@@ -46,8 +46,8 @@ namespace RayTracer.Tests.Shapes
             var s = new TestShape(Scale(2f, 2f, 2f));
             var xs = new List<Intersection>();
             s.Intersect(ref r, ref xs);
-            Assert.AreEqual(s.SavedRay.Origin, Point(0f, 0f, -2.5f));
-            Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, .5f));
+            Assert.AreEqual(s.SavedRay.GetValueOrDefault().Origin, Point(0f, 0f, -2.5f));
+            Assert.AreEqual(s.SavedRay.GetValueOrDefault().Direction, Direction(0f, 0f, .5f));
         }
 
         [TestMethod]
@@ -58,8 +58,8 @@ namespace RayTracer.Tests.Shapes
             var xs = new List<Intersection>();
             s.Intersect(ref r, ref xs);
             Assert.AreEqual(xs.Count, 0);
-            Assert.AreEqual(s.SavedRay.Origin, Point(-5f, 0f, -5f));
-            Assert.AreEqual(s.SavedRay.Direction, Direction(0f, 0f, 1f));
+            Assert.AreEqual(s.SavedRay.GetValueOrDefault().Origin, Point(-5f, 0f, -5f));
+            Assert.AreEqual(s.SavedRay.GetValueOrDefault().Direction, Direction(0f, 0f, 1f));
         }
 
 
@@ -120,6 +120,23 @@ namespace RayTracer.Tests.Shapes
             var s = new Sphere(Translation(5, 0, 0));
             g2.AddChild(s);
             Assert.That.VectorsAreEqual(s.Normal(Point(1.7321f, 1.1547f, -5.5774f)), Direction(.2857f, .4286f, -.8571f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void TestHasBoundingBox()
+        {
+            var s = new TestShape();
+            var b = s.BoundingBox;
+            Assert.AreEqual(b, Bounds.DefaultBox);
+        }
+
+        [TestMethod]
+        public void QueryBoxInParentSpace()
+        {
+            var s = new Sphere(Translation(1, -3, 5) * Scale(.5f, 2, 4));
+            var b = s.TransformedBoundingBox;
+            Assert.AreEqual(b.Min, Point(.5f, -5f, 1f));
+            Assert.AreEqual(b.Max, Point(1.5f, -1f, 9));
         }
     }
 }

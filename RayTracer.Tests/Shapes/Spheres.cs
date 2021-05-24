@@ -196,5 +196,14 @@ namespace RayTracer.Tests.Shapes
             Assert.AreEqual(s.Material.Transparency, 1f);
             Assert.AreEqual(s.Material.IOR, 1.5f);
         }
+
+        [TestMethod]
+        public void BoundingBox()
+        {
+            var s = new Sphere();
+            var b = s.BoundingBox;
+            Assert.AreEqual(b.Min, PointMinusOne);
+            Assert.AreEqual(b.Max, PointOne);
+        }
     }
 }

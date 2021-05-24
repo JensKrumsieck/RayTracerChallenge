@@ -15,6 +15,7 @@ namespace RayTracer.Shapes
         {
             _children.Add(e);
             e.Parent = this;
+            BoundingBox = ComputeBounds();
         }
 
         public void AddChildren(params Entity[] entities)
@@ -26,9 +27,12 @@ namespace RayTracer.Shapes
 
         public bool Contains(Entity e) => _children.Contains(e);
 
+        public override Bounds BoundingBox { get; set; }
+
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
             var xs = new List<Intersection>();
+            if (!BoundingBox.IntersectLocal(ref r)) return xs;
             foreach (var e in _children)
             {
                 e.Intersect(ref r, ref xs);
@@ -38,5 +42,15 @@ namespace RayTracer.Shapes
         }
 
         public override Vector4 LocalNormal(Vector4 at) => throw new InvalidOperationException();
+
+        public Bounds ComputeBounds()
+        {
+            var b = Bounds.Empty;
+            foreach (var e in _children)
+            {
+                b.Add(e.TransformedBoundingBox);
+            }
+            return b;
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using static RayTracer.Extension.GeometricExtension;
 
 namespace RayTracer.Shapes
 {
@@ -9,6 +10,12 @@ namespace RayTracer.Shapes
     {
         public Cube(Transform transform) : base(transform) { }
         public Cube() { }
+
+        public override Bounds BoundingBox
+        {
+            get => Bounds.DefaultBox;
+            set { }
+        }
 
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
@@ -33,26 +40,6 @@ namespace RayTracer.Shapes
             if (maxC.Equal(n.X)) return Vector4.UnitX * at.X;
             if (maxC.Equal(n.Y)) return Vector4.UnitY * at.Y;
             return Vector4.UnitZ * at.Z;
-        }
-
-        private static (float, float) CheckAxis(float origin, float direction)
-        {
-            var tMinNum = -1 - origin;
-            var tMaxNum = 1 - origin;
-            float tMin;
-            float tMax;
-            if (MathF.Abs(direction) >= Constants.Epsilon)
-            {
-                tMin = tMinNum / direction;
-                tMax = tMaxNum / direction;
-            }
-            else
-            {
-                tMin = tMinNum * float.PositiveInfinity;
-                tMax = tMaxNum * float.PositiveInfinity;
-            }
-
-            return tMin > tMax ? (tMax, tMin) : (tMin, tMax);
         }
     }
 }

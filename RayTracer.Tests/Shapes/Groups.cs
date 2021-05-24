@@ -3,6 +3,7 @@ using RayTracer.Shapes;
 using RayTracer.Tests.TestObjects;
 using System.Collections.Generic;
 using static RayTracer.Extension.MatrixExtension;
+using static RayTracer.Extension.VectorExtension;
 
 namespace RayTracer.Tests.Shapes
 {
@@ -65,6 +66,44 @@ namespace RayTracer.Tests.Shapes
             var xs = new List<Intersection>();
             g.Intersect(ref r, ref xs);
             Assert.AreEqual(xs.Count, 2);
+        }
+
+        [TestMethod]
+        public void GroupHasBoxContainingChildren()
+        {
+            var s = new Sphere(Translation(2, 5, -3) * Scale(2));
+            var c = new Cylinder(Translation(-4, -1, 4) * Scale(.5f, 1, .5f)) { Minimum = -2, Maximum = 2 };
+            var g = new Group();
+            g.AddChildren(s, c);
+            var b = g.BoundingBox;
+            Assert.AreEqual(b.Min, Point(-4.5f, -3, -5));
+            Assert.AreEqual(b.Max, Point(4, 7, 4.5f));
+        }
+
+        [TestMethod]
+        public void IntersectDoesNotTestChildIfMissed()
+        {
+            var c = new TestShape();
+            var s = new Group();
+            s.AddChild(c);
+            var r = new Ray(0, 0, -5, 0, 1, 0);
+            var xs = new List<Intersection>();
+            s.Intersect(ref r, ref xs);
+            Assert.AreNotEqual(c.SavedRay, r);
+            Assert.IsNull(c.SavedRay);
+        }
+
+        [TestMethod]
+        public void SavedRayIsSetIfHit()
+        {
+            var c = new TestShape();
+            var s = new Group();
+            s.AddChild(c);
+            var r = new Ray(0, 0, -5, 0, 0, 1);
+            var xs = new List<Intersection>();
+            s.Intersect(ref r, ref xs);
+            Assert.IsNotNull(c.SavedRay);
+            Assert.AreEqual(c.SavedRay, r);
         }
     }
 }

@@ -5,6 +5,10 @@ namespace RayTracer.Extension
 {
     public static class VectorExtension
     {
+        public static Vector4 PointOne => Vector4.One;
+        public static Vector4 PointMinusOne = Point(-1, -1, -1);
+        public static Vector4 PointZero => Point(0, 0, 0);
+
         public static bool IsPoint(this Vector4 v) => !IsVector(v);
         public static bool IsVector(this Vector4 v) => v.W < Constants.EpsilonHigh;
 

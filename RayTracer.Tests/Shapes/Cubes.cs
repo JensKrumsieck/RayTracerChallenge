@@ -82,5 +82,13 @@ namespace RayTracer.Tests.Shapes
                 Assert.That.VectorsAreEqual(c.LocalNormal(point), normal);
             }
         }
+
+        [TestMethod]
+        public void BoundingBox()
+        {
+            var s = new Cube();
+            var b = s.BoundingBox;
+            Assert.AreEqual(b, Bounds.DefaultBox);
+        }
     }
 }

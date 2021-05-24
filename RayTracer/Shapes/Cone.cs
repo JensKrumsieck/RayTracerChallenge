@@ -10,6 +10,13 @@ namespace RayTracer.Shapes
     {
         public Cone() { }
         public Cone(Transform transform) : base(transform) { }
+
+        public override Bounds BoundingBox
+        {
+            get => BoundsOfCone();
+            set { }
+        }
+
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
             var xs = new List<Intersection>();
@@ -52,6 +59,14 @@ namespace RayTracer.Shapes
             if (dist < Maximum * Maximum && at.Y >= Maximum + Constants.Epsilon) return Vector4.UnitY;
             if (dist < Minimum * Minimum && at.Y <= Minimum + Constants.Epsilon) return -Vector4.UnitY;
             return Direction(at.X, y, at.Z);
+        }
+
+        public Bounds BoundsOfCone()
+        {
+            var a = MathF.Abs(Minimum);
+            var b = MathF.Abs(Maximum);
+            var lim = MathF.Max(a, b);
+            return new Bounds { Min = Point(-lim, Minimum, -lim), Max = Point(lim, Maximum, lim) };
         }
     }
 }

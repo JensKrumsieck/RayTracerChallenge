@@ -12,7 +12,13 @@ namespace RayTracer.Tests.TestObjects
         /// <summary>
         /// The Last Ray fired onto TestSpheres IntersectLocal Method
         /// </summary>
-        public Ray SavedRay;
+        public Ray? SavedRay;
+
+        public override Bounds BoundingBox
+        {
+            get => Bounds.DefaultBox;
+            set { }
+        }
 
         /// <inheritdoc />
         public override List<Intersection> IntersectLocal(ref Ray r)

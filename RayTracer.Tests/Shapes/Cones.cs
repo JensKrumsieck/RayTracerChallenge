@@ -78,6 +78,24 @@ namespace RayTracer.Tests.Shapes
                 Assert.AreEqual(c.LocalNormal(point), normal);
             }
         }
+
+        [TestMethod]
+        public void BoundingBox()
+        {
+            var s = new Cone();
+            var b = s.BoundingBox;
+            Assert.AreEqual(b.Min, Point(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity));
+            Assert.AreEqual(b.Max, Point(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity));
+        }
+
+        [TestMethod]
+        public void BoundingBoxConstrained()
+        {
+            var s = new Cone { Minimum = -5, Maximum = 3 };
+            var b = s.BoundingBox;
+            Assert.AreEqual(b.Min, Point(-5, -5, -5));
+            Assert.AreEqual(b.Max, Point(5, 3, 5));
+        }
     }
 
 }

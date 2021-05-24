@@ -59,5 +59,14 @@ namespace RayTracer.Tests.Shapes
             Assert.AreEqual(xs[0].Distance, 1f);
             Assert.AreEqual(xs[0].Object, p);
         }
+
+        [TestMethod]
+        public void BoundingBox()
+        {
+            var s = new Plane();
+            var b = s.BoundingBox;
+            Assert.AreEqual(b.Min, Point(float.NegativeInfinity, 0, float.NegativeInfinity));
+            Assert.AreEqual(b.Max, Point(float.PositiveInfinity, 0, float.PositiveInfinity));
+        }
     }
 }

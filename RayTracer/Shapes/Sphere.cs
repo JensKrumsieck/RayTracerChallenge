@@ -10,6 +10,12 @@ namespace RayTracer.Shapes
         public Sphere(Transform transform) : base(transform) { }
         public Sphere() { }
 
+        public override Bounds BoundingBox
+        {
+            get => Bounds.DefaultBox;
+            set { }
+        }
+
         /// <inheritdoc />
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
