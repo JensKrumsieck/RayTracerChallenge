@@ -171,7 +171,7 @@ namespace RayTracer.Tests.Environment
             var i = new Intersection(MathF.Sqrt(2f), s);
             var comps = IntersectionState.Prepare(ref i, ref r);
             var col = w.ShadeHit(ref comps, 5);
-            Assert.That.VectorsAreEqual(col, new Color(.87677f, .92436f, .82918f), 1e-4f);
+            Assert.That.VectorsAreEqual(col, new Color(.87677f, .92436f, .82918f), 1e-3f);
         }
 
         [TestMethod]
@@ -281,7 +281,7 @@ namespace RayTracer.Tests.Environment
             var hit = xs[2];
             var comps = IntersectionState.Prepare(ref hit, ref r, xs);
             var c = w.RefractedColor(ref comps, 5);
-            Assert.That.VectorsAreEqual(c, new Color(0, .99888f, .04725f), 1e-4f);
+            Assert.That.VectorsAreEqual(c, new Color(0, .99888f, .04725f), 1e-3f);
         }
 
         [TestMethod]
