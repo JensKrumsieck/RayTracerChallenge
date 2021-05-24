@@ -253,7 +253,7 @@ namespace RayTracer.Tests
         }
 
         [TestMethod]
-        public void ChapterXIII()
+        public void ChapterXIII_a()
         {
             var w = new World();
             var p = new Plane()
@@ -326,6 +326,22 @@ namespace RayTracer.Tests
                 Transform = Camera.ViewTransform(Point(15.548f, 5f, 0f), Point(0, 1, 0), Vector4.UnitY)
             };
             cam.Render(w);
+        }
+
+        [TestMethod]
+        public void Chapter_XIII_b()
+        {
+            var room = new Cube(RotationY(MathF.PI / 3.5f) * Scale(15f, 7f, 15f)) { Material = new PhongMaterial(Util.FromHex("#393e46")) { Reflectivity = 1 } };
+            var mescho = Util.LoadMesitaldehydeAtoms();
+            var w = new World();
+            w.Lights.Add(new PointLight(Point(-5f, 5f, -5f), new Color(1f, 1f, 1.05f)));
+            w.Objects.AddRange(mescho);
+            w.Objects.Add(room);
+            var cam = new Camera(2000, 1000, MathF.PI / 3f)
+            {
+                Transform = Camera.ViewTransform(Point(-7f, 1f, -11f), Point(0f, .5f, 0f), Direction(0f, 1f, 0f))
+            };
+            cam.Render(w).Save();
         }
     }
 }

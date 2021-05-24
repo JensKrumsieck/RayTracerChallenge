@@ -10,6 +10,7 @@ namespace RayTracer.Extension
 
         public static Vector4 Point(float x, float y, float z) => new(x, y, z, 1.0f);
         public static Vector4 Direction(float x, float y, float z) => new(x, y, z, 0.0f);
+        public static Vector4 Direction(Vector3 v) => Direction(v.X, v.Y, v.Z);
 
         public static Vector4 Cross(this Vector4 a, Vector4 b)
         {

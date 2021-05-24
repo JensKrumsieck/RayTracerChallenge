@@ -19,8 +19,8 @@ namespace RayTracer
         public readonly float N1;
         public readonly float N2;
 
-        public Vector4 OverPoint => Point + Normal * 1e-4f;
-        public Vector4 UnderPoint => Point - Normal * 1e-4f;
+        public Vector4 OverPoint => Point + Normal * 1e-3f;
+        public Vector4 UnderPoint => Point - Normal * 1e-3f;
 
         public readonly bool IsInside;
 
