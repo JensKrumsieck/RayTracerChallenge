@@ -6,19 +6,21 @@ namespace RayTracer.Tests.TestObjects
 {
     public sealed class TestShape : Entity
     {
-        public TestShape(Transform tr) : base(tr) { }
-        public TestShape() { }
+        public TestShape(Transform tr) : base(tr)
+        {
+            BoundingBox = Bounds.DefaultBox;
+        }
+
+        public TestShape()
+        {
+            BoundingBox = Bounds.DefaultBox;
+        }
 
         /// <summary>
         /// The Last Ray fired onto TestSpheres IntersectLocal Method
         /// </summary>
         public Ray? SavedRay;
 
-        public override Bounds BoundingBox
-        {
-            get => Bounds.DefaultBox;
-            set { }
-        }
 
         /// <inheritdoc />
         public override List<Intersection> IntersectLocal(ref Ray r)

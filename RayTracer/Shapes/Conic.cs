@@ -5,9 +5,15 @@ namespace RayTracer.Shapes
 {
     public abstract class Conic : Entity
     {
-        protected Conic(Transform transform) : base(transform) { }
+        protected Conic(Transform transform) : base(transform)
+        {
+            ComputeBounds();
+        }
 
-        protected Conic() { }
+        protected Conic()
+        {
+            ComputeBounds();
+        }
 
         public float Maximum
         {
@@ -15,6 +21,7 @@ namespace RayTracer.Shapes
             set
             {
                 _maximum = value;
+                ComputeBounds();
                 TransformedBoundingBox = BoundingBox.Transform(Transform);
             }
         }
@@ -25,6 +32,7 @@ namespace RayTracer.Shapes
             set
             {
                 _minimum = value;
+                ComputeBounds();
                 TransformedBoundingBox = BoundingBox.Transform(Transform);
             }
         }
@@ -32,6 +40,8 @@ namespace RayTracer.Shapes
         public bool IsClosed = false;
         private float _maximum = float.PositiveInfinity;
         private float _minimum = float.NegativeInfinity;
+
+        protected abstract void ComputeBounds();
 
         private static bool CheckCap(ref Ray ray, float t, float rad = 1f)
         {

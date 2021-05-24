@@ -7,14 +7,11 @@ namespace RayTracer.Shapes
 {
     public sealed class Sphere : Entity
     {
-        public Sphere(Transform transform) : base(transform) { }
-        public Sphere() { }
-
-        public override Bounds BoundingBox
+        public Sphere(Transform transform) : base(transform)
         {
-            get => Bounds.DefaultBox;
-            set { }
+            BoundingBox = Bounds.DefaultBox;
         }
+        public Sphere() { BoundingBox = Bounds.DefaultBox; }
 
         /// <inheritdoc />
         public override List<Intersection> IntersectLocal(ref Ray r)

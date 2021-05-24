@@ -9,7 +9,7 @@ namespace RayTracer.Shapes
         public Group(Transform t) : base(t) { }
         public Group() { }
 
-        private readonly HashSet<Entity> _children = new();
+        private readonly List<Entity> _children = new();
 
         public void AddChild(Entity e)
         {
@@ -26,9 +26,7 @@ namespace RayTracer.Shapes
         public int Count => _children.Count;
 
         public bool Contains(Entity e) => _children.Contains(e);
-
-        public override Bounds BoundingBox { get; set; }
-
+        
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
             var xs = new List<Intersection>();

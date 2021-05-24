@@ -8,15 +8,16 @@ namespace RayTracer.Shapes
 {
     public class Cube : Entity
     {
-        public Cube(Transform transform) : base(transform) { }
-        public Cube() { }
-
-        public override Bounds BoundingBox
+        public Cube(Transform transform) : base(transform)
         {
-            get => Bounds.DefaultBox;
-            set { }
+            BoundingBox = Bounds.DefaultBox;
         }
 
+        public Cube()
+        {
+            BoundingBox = Bounds.DefaultBox;
+        }
+        
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
             var (xtMin, xtMax) = CheckAxis(r.Origin.X, r.Direction.X);

@@ -19,6 +19,7 @@ namespace RayTracer.Shapes
         public PhongMaterial Material { get; set; }
 
         private Transform _transform;
+
         public Transform Transform
         {
             get => _transform;
@@ -30,9 +31,18 @@ namespace RayTracer.Shapes
             }
         }
 
-        public abstract Bounds BoundingBox { get; set; }
+        private Bounds _boundingBox;
+        public Bounds BoundingBox
+        {
+            get => _boundingBox;
+            set
+            {
+                _boundingBox = value;
+                TransformedBoundingBox = _boundingBox.Transform(Transform);
+            }
+        }
 
-        public Bounds TransformedBoundingBox { get; set; }
+        public Bounds TransformedBoundingBox { get; protected set; }
 
         public void Intersect(ref Ray r, ref List<Intersection> xs)
         {

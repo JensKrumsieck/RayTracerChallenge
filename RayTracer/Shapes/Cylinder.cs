@@ -5,17 +5,11 @@ using static RayTracer.Extension.VectorExtension;
 
 namespace RayTracer.Shapes
 {
-    public class Cylinder : Conic
+    public sealed class Cylinder : Conic
     {
         public Cylinder() { }
 
         public Cylinder(Transform transform) : base(transform) { }
-
-        public override Bounds BoundingBox
-        {
-            get => new() { Min = Point(-1, Minimum, -1), Max = Point(1, Maximum, 1) };
-            set { }
-        }
 
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
@@ -60,6 +54,15 @@ namespace RayTracer.Shapes
                 < 1 when at.Y >= Maximum - Constants.Epsilon => Vector4.UnitY,
                 < 1 when at.Y <= Minimum + Constants.Epsilon => -Vector4.UnitY,
                 _ => Direction(at.X, 0, at.Z)
+            };
+        }
+
+        protected override void ComputeBounds()
+        {
+            BoundingBox = new Bounds
+            {
+                Min = Point(-1, Minimum, -1),
+                Max = Point(1, Maximum, 1)
             };
         }
     }

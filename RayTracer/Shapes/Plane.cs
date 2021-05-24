@@ -14,8 +14,6 @@ namespace RayTracer.Shapes
             BoundingBox = new Bounds { Min = Point(float.NegativeInfinity, 0, float.NegativeInfinity), Max = Point(float.PositiveInfinity, 0, float.PositiveInfinity) };
         }
 
-        public override Bounds BoundingBox { get; set; }
-
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
             if (MathF.Abs(r.Direction.Y) < Constants.Epsilon) return new List<Intersection>();

@@ -6,16 +6,11 @@ using static RayTracer.Extension.VectorExtension;
 
 namespace RayTracer.Shapes
 {
-    public class Cone : Conic
+    public sealed class Cone : Conic
     {
         public Cone() { }
-        public Cone(Transform transform) : base(transform) { }
 
-        public override Bounds BoundingBox
-        {
-            get => BoundsOfCone();
-            set { }
-        }
+        public Cone(Transform transform) : base(transform) { }
 
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
@@ -61,12 +56,12 @@ namespace RayTracer.Shapes
             return Direction(at.X, y, at.Z);
         }
 
-        public Bounds BoundsOfCone()
+        protected override void ComputeBounds()
         {
             var a = MathF.Abs(Minimum);
             var b = MathF.Abs(Maximum);
             var lim = MathF.Max(a, b);
-            return new Bounds { Min = Point(-lim, Minimum, -lim), Max = Point(lim, Maximum, lim) };
+            BoundingBox = new Bounds { Min = Point(-lim, Minimum, -lim), Max = Point(lim, Maximum, lim) };
         }
     }
 }

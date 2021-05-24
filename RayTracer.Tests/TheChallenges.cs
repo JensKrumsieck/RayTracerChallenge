@@ -343,5 +343,36 @@ namespace RayTracer.Tests
             };
             cam.Render(w);
         }
+
+        [TestMethod]
+        public void Chapter_XIV_a()
+        {
+            var g = new Group();
+            var withBoundingBoxes = new World();
+            withBoundingBoxes.Objects.Add(g);
+            for (var z = 0; z < 10; z++)
+            {
+                var gy = new Group();
+                for (var y = 0; y < 10; y++)
+                {
+                    var gx = new Group();
+                    for (var x = 0; x < 10; x++)
+                    {
+                        var s = new Sphere(Translation(x, y, z) * Scale(.5f)) { Material = new PhongMaterial(new Color(x, y, z)) { Reflectivity = x / 10f, Transparency = y / 10f, Specular = z / 10f } };
+                        gx.AddChild(s);
+                    }
+                    gy.AddChild(gx);
+                }
+                g.AddChild(gy);
+            }
+
+            var l = PointLight.Default;
+            withBoundingBoxes.Lights.Add(l);
+            var cam = new Camera(1000, 1000, MathF.PI / 180 * 60)
+            {
+                Transform = Camera.ViewTransform(Point(-8, .1f, -5), Point(0, 5, 0), Vector4.UnitY)
+            };
+            cam.Render(withBoundingBoxes).Save();
+        }
     }
 }
