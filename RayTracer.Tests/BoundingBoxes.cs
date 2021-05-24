@@ -145,5 +145,52 @@ namespace RayTracer.Tests
                 Assert.AreEqual(b.IntersectLocal(ref ray), res);
             }
         }
+
+        [TestMethod]
+        public void SplittingPerfectCube()
+        {
+            var b = new Bounds { Min = Point(-1, -4, -5), Max = Point(9, 6, 5) };
+            var (left, right) = b.Split();
+            Assert.AreEqual(left.Min, Point(-1, -4, -5));
+            Assert.AreEqual(left.Max, Point(4, 6, 5));
+            Assert.AreEqual(right.Min, Point(4, -4, -5));
+            Assert.AreEqual(right.Max, Point(9, 6, 5));
+        }
+
+        [TestMethod]
+        public void SplittingXWideBox()
+        {
+            var b = new Bounds { Min = Point(-1, -2, -3), Max = Point(9, 5.5f, 3) };
+            var (left, right) = b.Split();
+
+            Assert.AreEqual(left.Min, Point(-1, -2, -3));
+            Assert.AreEqual(left.Max, Point(4, 5.5f, 3));
+            Assert.AreEqual(right.Min, Point(4, -2, -3));
+            Assert.AreEqual(right.Max, Point(9, 5.5f, 3));
+        }
+
+        [TestMethod]
+        public void SplittingYWideBox()
+        {
+            var b = new Bounds { Min = Point(-1, -2, -3), Max = Point(5, 8, 3) };
+            var (left, right) = b.Split();
+
+            Assert.AreEqual(left.Min, Point(-1, -2, -3));
+            Assert.AreEqual(left.Max, Point(5, 3, 3));
+            Assert.AreEqual(right.Min, Point(-1, 3, -3));
+            Assert.AreEqual(right.Max, Point(5, 8, 3));
+        }
+
+        [TestMethod]
+        public void SplittingZWideBox()
+        {
+            var b = new Bounds { Min = Point(-1, -2, -3), Max = Point(5, 3, 7) };
+            var (left, right) = b.Split();
+
+            Assert.AreEqual(left.Min, Point(-1, -2, -3));
+            Assert.AreEqual(left.Max, Point(5, 3, 2));
+            Assert.AreEqual(right.Min, Point(-1, -2, 2));
+            Assert.AreEqual(right.Max, Point(5, 3, 7));
+        }
     }
 }

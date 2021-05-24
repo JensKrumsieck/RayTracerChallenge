@@ -7,11 +7,13 @@ namespace RayTracer.Shapes
 {
     public abstract class Entity : IEquatable<Entity>
     {
+        public readonly Guid Id;
         protected Entity() : this(Transform.Identity) { }
         protected Entity(Transform transform)
         {
             Transform = transform;
             Material = PhongMaterial.Default;
+            Id = Guid.NewGuid();
         }
 
         public Entity? Parent;
@@ -85,6 +87,8 @@ namespace RayTracer.Shapes
             return point;
         }
 
+        public virtual void Divide(int threshold = 1) { }
+
         /// <inheritdoc />
         public bool Equals(Entity? other)
         {
@@ -95,6 +99,6 @@ namespace RayTracer.Shapes
         /// <inheritdoc />
         public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj is Entity other && Equals(other);
         /// <inheritdoc />
-        public override int GetHashCode() => HashCode.Combine(Transform, Material);
+        public override int GetHashCode() => HashCode.Combine(Id);
     }
 }

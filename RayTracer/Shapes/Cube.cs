@@ -17,7 +17,7 @@ namespace RayTracer.Shapes
         {
             BoundingBox = Bounds.DefaultBox;
         }
-        
+
         public override List<Intersection> IntersectLocal(ref Ray r)
         {
             var (xtMin, xtMax) = CheckAxis(r.Origin.X, r.Direction.X);

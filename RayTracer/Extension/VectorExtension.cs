@@ -27,5 +27,12 @@ namespace RayTracer.Extension
         public static Vector4 Reflect(this Vector4 a, Vector4 normal) => a - normal * 2 * Vector4.Dot(a, normal);
 
         private static Vector3 ToVector3(this Vector4 v) => new(v.X, v.Y, v.Z);
+
+        public static void Deconstruct(this Vector4 v, out float x, out float y, out float z)
+        {
+            x = v.X;
+            y = v.Y;
+            z = v.Z;
+        }
     }
 }

@@ -365,14 +365,14 @@ namespace RayTracer.Tests
                 }
                 g.AddChild(gy);
             }
-
+            g.Divide();
             var l = PointLight.Default;
             withBoundingBoxes.Lights.Add(l);
-            var cam = new Camera(1000, 1000, MathF.PI / 180 * 60)
+            var cam = new Camera(100, 100, MathF.PI / 180 * 60)
             {
                 Transform = Camera.ViewTransform(Point(-8, .1f, -5), Point(0, 5, 0), Vector4.UnitY)
             };
-            cam.Render(withBoundingBoxes).Save();
+            cam.Render(withBoundingBoxes);
         }
     }
 }

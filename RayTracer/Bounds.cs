@@ -12,9 +12,9 @@ namespace RayTracer
         public Vector4 Min;
         public Vector4 Max;
 
-        public static Bounds DefaultBox = new() { Min = PointMinusOne, Max = PointOne };
+        public static readonly Bounds DefaultBox = new() { Min = PointMinusOne, Max = PointOne };
 
-        public static Bounds Empty = new()
+        public static readonly Bounds Empty = new()
         {
             Min = Point(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity),
             Max = Point(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity)
@@ -78,6 +78,24 @@ namespace RayTracer
             var b = Empty;
             foreach (var p in new[] { p1, p2, p3, p4, p5, p6, p7, p8 }) b.Add(t.Multiply(p));
             return b;
+        }
+
+        public readonly (Bounds left, Bounds right) Split()
+        {
+            var dx = MathF.Abs(Min.X - Max.X);
+            var dy = MathF.Abs(Min.Y - Max.Y);
+            var dz = MathF.Abs(Min.Z - Max.Z);
+            var greatest = MathF.Max(MathF.Max(dx, dy), dz);
+            var (x0, y0, z0) = Min;
+            var (x1, y1, z1) = Max;
+            if (greatest.Equals(dx)) x0 = x1 = x0 + dx / 2f;
+            else if (greatest.Equals(dy)) y0 = y1 = y0 + dy / 2f;
+            else if (greatest.Equals(dz)) z0 = z1 = z0 + dz / 2f;
+            var minMin = Point(x0, y0, z0);
+            var midMax = Point(x1, y1, z1);
+            var left = new Bounds { Min = Min, Max = midMax };
+            var right = new Bounds { Min = minMin, Max = Max };
+            return (left, right);
         }
     }
 }
