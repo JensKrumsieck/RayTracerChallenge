@@ -374,5 +374,41 @@ namespace RayTracer.Tests
             };
             cam.Render(withBoundingBoxes);
         }
+
+        [TestMethod]
+        public void Chapter_XIV_b()
+        {
+            var floor = new PhongMaterial(Util.FromHex("#222831"))
+            { Reflectivity = .9f, Specular = .5f, Shininess = 300 };
+            var p = new Plane(Translation(0, -.25f, 0)) { Material = floor };
+            static Group HexagonSide()
+            {
+                var mat = new PhongMaterial(Util.FromHex("#7bc74d")) { Specular = .5f, Shininess = 800 };
+                var edge = new Cylinder(Translation(0, 0, -1) * RotationY(-MathF.PI / 6f) * RotationZ(-MathF.PI / 2f) *
+                                        Scale(.25f, 1, .25f))
+                { Minimum = 0, Maximum = 1, Material = mat };
+                var s = new Sphere(Translation(0, 0, -1) * Scale(.25f)) { Material = mat };
+                var side = new Group();
+                side.AddChildren(edge, s);
+                return side;
+            }
+            var hex = new Group();
+            for (var n = 0; n < 6; n++)
+            {
+                var side = HexagonSide();
+                side.Transform = RotationY(n * MathF.PI / 3f);
+                hex.AddChild(side);
+            }
+            var w = new World();
+            w.Objects.Add(hex);
+            w.Objects.Add(p);
+            var l = PointLight.Default;
+            w.Lights.Add(l);
+            var cam = new Camera(100, 100, MathF.PI / 180 * 40)
+            {
+                Transform = Camera.ViewTransform(Point(-2, 3, -2), Point(0, 0, 0), Vector4.UnitY)
+            };
+            cam.Render(w);
+        }
     }
 }
