@@ -12,6 +12,9 @@ namespace RayTracer.Shapes
             Transform = transform;
             Material = PhongMaterial.Default;
         }
+
+        public Entity? Parent;
+
         protected Entity() : this(Transform.Identity) { }
 
         public void Intersect(ref Ray r, ref List<Intersection> xs)
@@ -33,9 +36,9 @@ namespace RayTracer.Shapes
 
         public Vector4 Normal(Vector4 at)
         {
-            var obj = Transform.WorldToObject(at);
+            var obj = WorldToObject(at);
             var localNormal = LocalNormal(obj);
-            var worldNormal = Transform.ObjectToWorld(localNormal);
+            var worldNormal = NormalToWorld(localNormal);
             worldNormal.W = 0f;
             return Vector4.Normalize(worldNormal);
         }
@@ -43,6 +46,21 @@ namespace RayTracer.Shapes
         public PhongMaterial Material { get; set; }
 
         public Transform Transform;
+
+        public Vector4 WorldToObject(Vector4 point)
+        {
+            if (Parent != null) point = Parent.WorldToObject(point);
+            return Transform.WorldToObject(point);
+        }
+
+        public Vector4 NormalToWorld(Vector4 point)
+        {
+            point = Transform.ObjectToWorld(point);
+            point.W = 0;
+            point = Vector4.Normalize(point);
+            if (Parent != null) point = Parent.NormalToWorld(point);
+            return point;
+        }
 
         /// <inheritdoc />
         public bool Equals(Entity? other)

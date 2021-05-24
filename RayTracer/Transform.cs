@@ -39,7 +39,7 @@ namespace RayTracer
         public static implicit operator Matrix4x4(Transform t) => t.Matrix;
         public static implicit operator Transform(Matrix4x4 m) => new(m);
 
-        public Vector4 ObjectToWorld(in Vector4 objectV) => TransposeInverse.Multiply(objectV);
-        public Vector4 WorldToObject(in Vector4 worldV) => Inverse.Multiply(worldV);
+        public readonly Vector4 ObjectToWorld(in Vector4 objectV) => TransposeInverse.Multiply(objectV);
+        public readonly Vector4 WorldToObject(in Vector4 worldV) => Inverse.Multiply(worldV);
     }
 }

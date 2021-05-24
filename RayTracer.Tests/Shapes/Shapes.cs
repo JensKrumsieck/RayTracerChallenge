@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Materials;
+using RayTracer.Shapes;
 using RayTracer.Tests.TestObjects;
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,48 @@ namespace RayTracer.Tests.Shapes
             var val = MathF.Sqrt(2f) / 2f;
             var n = s.Normal(Point(0f, val, -val));
             Assert.That.VectorsAreEqual(n, Direction(0f, .97014f, -.24254f));
+        }
+
+        [TestMethod]
+        public void ShapeHasParent()
+        {
+            var s = new TestShape();
+            Assert.IsNull(s.Parent);
+        }
+
+        [TestMethod]
+        public void PointFromWorldToObject()
+        {
+            var g1 = new Group(RotationY(MathF.PI / 2));
+            var g2 = new Group(Scale(2));
+            g1.AddChild(g2);
+            var s = new Sphere(Translation(5, 0, 0));
+            g2.AddChild(s);
+            var p = s.WorldToObject(Point(-2, 0, -10));
+            Assert.That.VectorsAreEqual(p, Point(0, 0, -1));
+        }
+
+        [TestMethod]
+        public void ConvertNormalToWorld()
+        {
+            var g1 = new Group(RotationY(MathF.PI / 2));
+            var g2 = new Group(Scale(1, 2, 3));
+            g1.AddChild(g2);
+            var s = new Sphere(Translation(5, 0, 0));
+            g2.AddChild(s);
+            var n = s.NormalToWorld(Direction(MathF.Sqrt(3) / 3, MathF.Sqrt(3) / 3, MathF.Sqrt(3) / 3));
+            Assert.That.VectorsAreEqual(n, Direction(.2857f, .4286f, -.8571f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void FindNormalOnChild()
+        {
+            var g1 = new Group(RotationY(MathF.PI / 2));
+            var g2 = new Group(Scale(1, 2, 3));
+            g1.AddChild(g2);
+            var s = new Sphere(Translation(5, 0, 0));
+            g2.AddChild(s);
+            Assert.That.VectorsAreEqual(s.Normal(Point(1.7321f, 1.1547f, -5.5774f)), Direction(.2857f, .4286f, -.8571f), 1e-4f);
         }
     }
 }

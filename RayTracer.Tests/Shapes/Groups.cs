@@ -1,0 +1,70 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RayTracer.Shapes;
+using RayTracer.Tests.TestObjects;
+using System.Collections.Generic;
+using static RayTracer.Extension.MatrixExtension;
+
+namespace RayTracer.Tests.Shapes
+{
+    [TestClass]
+    public class Groups
+    {
+        [TestMethod]
+        public void CreateGroup()
+        {
+            var g = new Group();
+            Assert.AreEqual(g.Transform, Transform.Identity);
+            Assert.AreEqual(g.Count, 0);
+        }
+
+        [TestMethod]
+        public void AddChild()
+        {
+            var g = new Group();
+            var t = new TestShape();
+            g.AddChild(t);
+            Assert.AreEqual(g.Count, 1);
+            Assert.IsTrue(g.Contains(t));
+            Assert.AreEqual(t.Parent, g);
+        }
+
+        [TestMethod]
+        public void IntersectRayEmptyGroup()
+        {
+            var g = new Group();
+            var r = new Ray(0, 0, 0, 0, 0, 1);
+            var xs = g.IntersectLocal(ref r);
+            Assert.AreEqual(xs.Count, 0);
+        }
+
+        [TestMethod]
+        public void IntersectingWithNonEmptyGroup()
+        {
+            var g = new Group();
+            var s1 = new Sphere();
+            var s2 = new Sphere(Translation(0, 0, -3));
+            var s3 = new Sphere(Translation(5, 0, 0));
+            g.AddChildren(s1, s2, s3);
+            var r = new Ray(0, 0, -5, 0, 0, 1);
+            var xs = g.IntersectLocal(ref r);
+            xs.Sort(); //do not sort in groups as world does already do that
+            Assert.AreEqual(xs.Count, 4);
+            Assert.AreEqual(xs[0].Object, s2);
+            Assert.AreEqual(xs[1].Object, s2);
+            Assert.AreEqual(xs[2].Object, s1);
+            Assert.AreEqual(xs[3].Object, s1);
+        }
+
+        [TestMethod]
+        public void IntersectTransformedGroup()
+        {
+            var g = new Group(Scale(2));
+            var s = new Sphere(Translation(5, 0, 0));
+            g.AddChild(s);
+            var r = new Ray(10, 0, -10, 0, 0, 1);
+            var xs = new List<Intersection>();
+            g.Intersect(ref r, ref xs);
+            Assert.AreEqual(xs.Count, 2);
+        }
+    }
+}
