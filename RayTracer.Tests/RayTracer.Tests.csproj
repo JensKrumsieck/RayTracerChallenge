@@ -25,6 +25,9 @@
     <None Update="files\mescho.xyz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="files\suzanne.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="files\teapot.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
