@@ -46,7 +46,7 @@ namespace RayTracer.Shapes
             return xs;
         }
 
-        public override Vector4 LocalNormal(Vector4 at)
+        public override Vector4 LocalNormal(Vector4 at, Intersection? i = null)
         {
             var dist = at.X * at.X + at.Z * at.Z;
             var y = MathF.Sqrt(dist);

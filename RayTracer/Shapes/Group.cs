@@ -46,7 +46,7 @@ namespace RayTracer.Shapes
             return xs;
         }
 
-        public override Vector4 LocalNormal(Vector4 at) => throw new InvalidOperationException();
+        public override Vector4 LocalNormal(Vector4 at, Intersection? i = null) => throw new InvalidOperationException();
 
         public Bounds ComputeBounds()
         {

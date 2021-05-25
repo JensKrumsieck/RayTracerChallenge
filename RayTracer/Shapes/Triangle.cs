@@ -10,9 +10,15 @@ namespace RayTracer.Shapes
         public readonly Vector4 V1;
         public readonly Vector4 V2;
         public readonly Vector4 V3;
+
+        public readonly Vector4 N1;
+        public readonly Vector4 N2;
+        public readonly Vector4 N3;
+
         public readonly Vector4 E1;
         public readonly Vector4 E2;
         private readonly Vector4 _normal;
+        private bool _isSmooth;
 
         public Triangle(Vector4 v1, Vector4 v2, Vector4 v3)
         {
@@ -22,6 +28,25 @@ namespace RayTracer.Shapes
             E1 = V2 - V1;
             E2 = V3 - V1;
             _normal = Vector4.Normalize(E2.Cross(E1));
+            SetUpBounds();
+        }
+
+        public Triangle(Vector4 v1, Vector4 v2, Vector4 v3, Vector4 n1, Vector4 n2, Vector4 n3)
+        {
+            V1 = v1;
+            V2 = v2;
+            V3 = v3;
+            N1 = n1;
+            N2 = n2;
+            N3 = n3;
+            E1 = V2 - V1;
+            E2 = V3 - V1;
+            _isSmooth = true;
+            SetUpBounds();
+        }
+
+        private void SetUpBounds()
+        {
             var bounds = Bounds.Empty;
             bounds.Add(V1, V2, V3);
             BoundingBox = bounds;
@@ -43,9 +68,9 @@ namespace RayTracer.Shapes
 
             var t = f * Vector4.Dot(E2, orCrossE1);
 
-            return new List<Intersection> { new(t, this) };
+            return new List<Intersection> { new(t, this, u, v) };
         }
 
-        public override Vector4 LocalNormal(Vector4 at) => _normal;
+        public override Vector4 LocalNormal(Vector4 at, Intersection? i = null) => i == null || !_isSmooth ? _normal : N2 * i.U + N3 * i.V + N1 * (1 - i.U - i.V);
     }
 }

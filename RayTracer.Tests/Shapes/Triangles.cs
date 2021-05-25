@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RayTracer.Shapes;
+using System.Collections.Generic;
 using System.Numerics;
 using static RayTracer.Extension.VectorExtension;
 
@@ -9,7 +10,11 @@ namespace RayTracer.Tests.Shapes
     public class Triangles
     {
         private static readonly Triangle DefaultTriangle = new(Point(0, 1, 0), Point(-1, 0, 0), Point(1, 0, 0));
-        
+
+        private static readonly Triangle DefaultSmoothTriangle =
+            new(Point(0, 1, 0), Point(-1, 0, 0), Point(1, 0, 0), Direction(0, 1, 0), Direction(-1, 0, 0), Direction(1,
+                0, 0));
+
         [TestMethod]
         public void FindNormal()
         {
@@ -78,6 +83,57 @@ namespace RayTracer.Tests.Shapes
             var b = s.BoundingBox;
             Assert.AreEqual(b.Min, Point(-3, -1, -4));
             Assert.AreEqual(b.Max, Point(6, 7, 2));
+        }
+
+        [TestMethod]
+        public void SmoothTriangle()
+        {
+            var t = DefaultSmoothTriangle;
+            Assert.AreEqual(t.V1, Point(0, 1, 0));
+            Assert.AreEqual(t.V2, Point(-1, 0, 0));
+            Assert.AreEqual(t.V3, Point(1, 0, 0));
+            Assert.AreEqual(t.N1, Direction(0, 1, 0));
+            Assert.AreEqual(t.N2, Direction(-1, 0, 0));
+            Assert.AreEqual(t.N3, Direction(1, 0, 0));
+        }
+
+        [TestMethod]
+        public void IntersectionCanEncapsulateUV()
+        {
+            var s = DefaultTriangle;
+            var i = new Intersection(3.5f, s, .2f, .4f);
+            Assert.AreEqual(i.U, .2f);
+            Assert.AreEqual(i.V, .4f);
+        }
+
+        [TestMethod]
+        public void SmoothTriangleSavesUV()
+        {
+            var t = DefaultSmoothTriangle;
+            var r = new Ray(-.2f, .3f, -2, 0, 0, 1);
+            var xs = t.IntersectLocal(ref r);
+            Assert.AreEqual(xs[0].U, .45f);
+            Assert.AreEqual(xs[0].V, .25f);
+        }
+
+        [TestMethod]
+        public void SmoothTriUsesInterpolationNormal()
+        {
+            var t = DefaultSmoothTriangle;
+            var i = new Intersection(1, t, .45f, .25f);
+            var n = t.Normal(PointZero, i);
+            Assert.That.VectorsAreEqual(n, Direction(-.5547f, .83205f, 0), 1e-4f);
+        }
+
+        [TestMethod]
+        public void PrepareNormalOnSmooth()
+        {
+            var t = DefaultSmoothTriangle;
+            var i = new Intersection(1, t, .45f, .25f);
+            var r = new Ray(-.2f, .3f, -2, 0, 0, 1);
+            var xs = new List<Intersection> { i };
+            var comps = IntersectionState.Prepare(ref i, ref r, xs);
+            Assert.That.VectorsAreEqual(comps.Normal, Direction(-.5547f, .83205f, 0));
         }
     }
 }

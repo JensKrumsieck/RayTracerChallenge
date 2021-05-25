@@ -92,5 +92,20 @@ f 1 3 4";
             Assert.AreEqual(parser.Vertices.Count, 4);
             Assert.AreEqual(parser.Group.Count, 2);
         }
+
+        [TestMethod]
+        public void ParseVertexNormals()
+        {
+            const string obj = @"
+vn 0 0 1
+vn 0.707 0 -0.707
+vn 1 2 3 ";
+            var parser = new ObjParser(obj);
+            parser.Parse();
+            Assert.AreEqual(parser.Normals[0], Direction(0, 0, 1));
+            Assert.AreEqual(parser.Normals[1], Direction(0.707f, 0, -0.707f));
+            Assert.AreEqual(parser.Normals[2], Direction(1, 2, 3));
+        }
     }
+
 }

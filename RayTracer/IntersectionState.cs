@@ -94,7 +94,7 @@ namespace RayTracer
             }
 
             var point = r.PointByDistance(i.Distance);
-            return new IntersectionState(i.Object, i.Distance, point, -r.Direction, i.Object.Normal(point), n1, n2);
+            return new IntersectionState(i.Object, i.Distance, point, -r.Direction, i.Object.Normal(point, i), n1, n2);
         }
     }
 }

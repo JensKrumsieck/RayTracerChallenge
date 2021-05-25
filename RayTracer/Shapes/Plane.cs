@@ -21,6 +21,6 @@ namespace RayTracer.Shapes
             return new List<Intersection>() { new(t, this) };
         }
 
-        public override Vector4 LocalNormal(Vector4 at) => Direction(0f, 1f, 0f);
+        public override Vector4 LocalNormal(Vector4 at, Intersection? i = null) => Direction(0f, 1f, 0f);
     }
 }

@@ -61,12 +61,12 @@ namespace RayTracer.Shapes
             Intersect(ref r, ref xs);
             return Intersection.Hit(ref xs);
         }
-        public abstract Vector4 LocalNormal(Vector4 at);
+        public abstract Vector4 LocalNormal(Vector4 at, Intersection? i = null);
 
-        public Vector4 Normal(Vector4 at)
+        public Vector4 Normal(Vector4 at, Intersection? i = null)
         {
             var obj = WorldToObject(at);
-            var localNormal = LocalNormal(obj);
+            var localNormal = LocalNormal(obj, i);
             var worldNormal = NormalToWorld(localNormal);
             worldNormal.W = 0f;
             return Vector4.Normalize(worldNormal);

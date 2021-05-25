@@ -8,11 +8,15 @@ namespace RayTracer
     {
         public readonly float Distance;
         public readonly Entity Object;
+        public float U;
+        public float V;
 
-        public Intersection(float distance, Entity hitObject)
+        public Intersection(float distance, Entity hitObject, float u = float.NaN, float v = float.NaN)
         {
             Distance = distance;
             Object = hitObject;
+            U = u;
+            V = v;
         }
 
         public static Intersection? Hit(ref List<Intersection> intersections)

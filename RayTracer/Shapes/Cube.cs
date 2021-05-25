@@ -6,7 +6,7 @@ using static RayTracer.Extension.GeometricExtension;
 
 namespace RayTracer.Shapes
 {
-    public class Cube : Entity
+    public sealed class Cube : Entity
     {
         public Cube(Transform transform) : base(transform)
         {
@@ -34,7 +34,7 @@ namespace RayTracer.Shapes
             };
         }
 
-        public override Vector4 LocalNormal(Vector4 at)
+        public override Vector4 LocalNormal(Vector4 at, Intersection? i = null)
         {
             var n = Vector4.Abs(at);
             var maxC = MathF.Max(MathF.Max(n.X, n.Y), n.Z);

@@ -100,7 +100,7 @@ namespace RayTracer.Tests
             w.Objects.Add(right);
             w.Objects.Add(left);
             w.Lights.Add(new PointLight(Point(-10f, 10f, -10f), Color.White));
-            var cam = new Camera(100, 50, MathF.PI / 3f)
+            var cam = new Camera(10, 5, MathF.PI / 3f)
             {
                 Transform = Camera.ViewTransform(Point(0f, 1.5f, -5f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f))
             };
@@ -122,7 +122,7 @@ namespace RayTracer.Tests
             };
             w.Lights.Add(new PointLight(Point(-7f, 15f, -7f), new Color(1f, 1f, 1.05f)));
             w.Objects.AddRange(mescho);
-            var cam = new Camera(100, 100, MathF.PI / 3f)
+            var cam = new Camera(10, 10, MathF.PI / 3f)
             {
                 Transform = Camera.ViewTransform(Point(1f, .5f, -12f), Point(0f, .5f, 0f), Direction(0f, 1f, 0f))
             };
@@ -151,7 +151,7 @@ namespace RayTracer.Tests
                 Objects = new List<Entity> { floor, s, backDrop },
             };
             w.Lights.Add(PointLight.Default);
-            var cam = new Camera(100, 100, MathF.PI / 3f)
+            var cam = new Camera(10, 10, MathF.PI / 3f)
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
@@ -176,7 +176,7 @@ namespace RayTracer.Tests
                 Objects = new List<Entity> { floor, s },
             };
             w.Lights.Add(PointLight.Default);
-            var cam = new Camera(200, 100, MathF.PI / 2f)
+            var cam = new Camera(20, 10, MathF.PI / 2f)
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
@@ -212,7 +212,7 @@ namespace RayTracer.Tests
             var l = PointLight.Default;
             l.Intensity *= 2f;
             w.Lights.Add(l);
-            var cam = new Camera(200, 100, MathF.PI / 1.5f)
+            var cam = new Camera(20, 10, MathF.PI / 1.5f)
             { Transform = Camera.ViewTransform(Point(0f, 1f, -2f), Point(0f, 1f, 0f), Direction(0f, 1f, 0f)) };
             cam.Render(w);
         }
@@ -321,7 +321,7 @@ namespace RayTracer.Tests
             w.Objects.Add(s4);
             var l = new PointLight(Point(1.4122f, 10.242f, -10f), Color.White);
             w.Lights.Add(l);
-            var cam = new Camera(100, 100, 50 * MathF.PI / 180)
+            var cam = new Camera(10, 10, 50 * MathF.PI / 180)
             {
                 Transform = Camera.ViewTransform(Point(15.548f, 5f, 0f), Point(0, 1, 0), Vector4.UnitY)
             };
@@ -337,7 +337,7 @@ namespace RayTracer.Tests
             w.Lights.Add(new PointLight(Point(-5f, 5f, -5f), new Color(1f, 1f, 1.05f)));
             w.Objects.AddRange(mescho);
             w.Objects.Add(room);
-            var cam = new Camera(200, 100, MathF.PI / 3f)
+            var cam = new Camera(20, 10, MathF.PI / 3f)
             {
                 Transform = Camera.ViewTransform(Point(-7f, 1f, -11f), Point(0f, .5f, 0f), Direction(0f, 1f, 0f))
             };
@@ -368,7 +368,7 @@ namespace RayTracer.Tests
             g.Divide();
             var l = PointLight.Default;
             withBoundingBoxes.Lights.Add(l);
-            var cam = new Camera(100, 100, MathF.PI / 180 * 60)
+            var cam = new Camera(10, 10, MathF.PI / 180 * 60)
             {
                 Transform = Camera.ViewTransform(Point(-8, .1f, -5), Point(0, 5, 0), Vector4.UnitY)
             };
@@ -404,7 +404,7 @@ namespace RayTracer.Tests
             w.Objects.Add(p);
             var l = PointLight.Default;
             w.Lights.Add(l);
-            var cam = new Camera(100, 100, MathF.PI / 180 * 40)
+            var cam = new Camera(10, 10, MathF.PI / 180 * 40)
             {
                 Transform = Camera.ViewTransform(Point(-2, 3, -2), Point(0, 0, 0), Vector4.UnitY)
             };
@@ -426,11 +426,11 @@ namespace RayTracer.Tests
             w.Objects.Add(parser.Group);
             var floor = new Plane { Material = new PhongMaterial(Color.White) { Pattern = new CheckerPattern(Util.FromHex("#002651"), Util.FromHex("#775ada")), Reflectivity = .4f } };
             w.Objects.Add(floor);
-            var cam = new Camera(100, 100, MathF.PI / 180 * 55)
+            var cam = new Camera(10, 10, MathF.PI / 180 * 55)
             {
                 Transform = Camera.ViewTransform(Point(0, 3, -7), Point(0, 2, 0), Vector4.UnitY)
             };
-            cam.Render(w).Save();
+            cam.Render(w);
         }
     }
 }
