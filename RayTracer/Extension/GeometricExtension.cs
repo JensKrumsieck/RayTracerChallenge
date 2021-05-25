@@ -27,10 +27,16 @@ namespace RayTracer.Extension
             return tMin > tMax ? (tMax, tMin) : (tMin, tMax);
         }
 
-        public static Triangle[] FanTriangulation(this List<Vector4> vertices)
+        public static Triangle[] FanTriangulation(this List<Vector4> vertices, List<Vector4> normals)
         {
             var tris = new Triangle[vertices.Count - 2];
-            for (var i = 2; i < vertices.Count; i++) tris[i - 2] = new Triangle(vertices[0], vertices[i], vertices[i - 1]);
+            for (var i = 2; i < vertices.Count; i++)
+            {
+                if (normals.Count == 0) tris[i - 2] = new Triangle(vertices[0], vertices[i], vertices[i - 1]);
+                else
+                    tris[i - 2] = new Triangle(vertices[0], vertices[i], vertices[i - 1], normals[0], normals[i],
+                        normals[i - 1]);
+            }
             return tris;
         }
     }

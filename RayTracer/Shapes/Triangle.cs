@@ -18,7 +18,7 @@ namespace RayTracer.Shapes
         public readonly Vector4 E1;
         public readonly Vector4 E2;
         private readonly Vector4 _normal;
-        private bool _isSmooth;
+        private readonly bool _isSmooth;
 
         public Triangle(Vector4 v1, Vector4 v2, Vector4 v3)
         {

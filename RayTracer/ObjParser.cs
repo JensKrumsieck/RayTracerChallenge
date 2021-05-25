@@ -22,7 +22,7 @@ namespace RayTracer
         public ObjParser(string dataOrPath)
         {
             var content = Path.GetExtension(dataOrPath) == ".obj" ? File.ReadAllText(dataOrPath) : dataOrPath;
-            _lines = content.Split(System.Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            _lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public void Parse()
@@ -48,13 +48,7 @@ namespace RayTracer
                     _currentGroup = new Group();
                 }
                 if (items[0] != "f") continue;
-                var res = ParsePolygons(items);
-                List<Vector4> polygon = new();
-                // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach (var index in res) polygon.Add(Vertices[index - 1]);
-                var tris = polygon.FanTriangulation();
-                // ReSharper disable once CoVariantArrayConversion
-                if (tris != null) _currentGroup.AddChildrenWithoutRefresh(tris);
+                ParseFace(items);
             }
             Group.BoundingBox = Group.ComputeBounds();
         }
@@ -71,6 +65,46 @@ namespace RayTracer
             return new Vector4(x, y, z, w);
         }
 
+        private void ParseFace(string[] items)
+        {
+            List<Vector4> polygon = new();
+            List<Vector4> polygonNormals = new();
+            //decide if normals are used for face
+            if (items[2].Split('/').Length > 1)
+            {
+                var res = ParseSmoothPolygons(items);
+                foreach (var (v, _, vn) in res)
+                {
+                    polygon.Add(Vertices[v - 1]);
+                    polygonNormals.Add(Normals[vn - 1]);
+                }
+            }
+            else
+            {
+                var res = ParsePolygons(items);
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var index in res) polygon.Add(Vertices[index - 1]);
+            }
+
+            var tris = polygon.FanTriangulation(polygonNormals);
+            // ReSharper disable once CoVariantArrayConversion
+            if (tris != null) _currentGroup.AddChildrenWithoutRefresh(tris);
+        }
+
         private static int[] ParsePolygons(string[] items) => items.Skip(1).Select(int.Parse).ToArray();
+
+        private static (int v, int vt, int vn)[] ParseSmoothPolygons(string[] items)
+        {
+            var list = new List<(int v, int vt, int vn)>();
+            foreach (var item in items.Skip(1))
+            {
+                var split = item.Split('/');
+                int v = int.TryParse(split[0], out v) ? v : int.MaxValue;
+                int vt = int.TryParse(split[1], out vt) ? vt : int.MaxValue;
+                int vn = int.TryParse(split[2], out vn) ? vn : int.MaxValue;
+                list.Add((v, vt, vn));
+            }
+            return list.ToArray();
+        }
     }
 }

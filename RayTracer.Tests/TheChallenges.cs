@@ -432,5 +432,46 @@ namespace RayTracer.Tests
             };
             cam.Render(w);
         }
+
+        [TestMethod]
+        public void Chapter_XV_b()
+        {
+            //SUZANNE!!!
+            const string monkey = "files/suzanne.obj";
+            var parser = new ObjParser(monkey);
+            parser.Parse();
+            parser.Group.Divide();
+            parser.Group.Transform = Translation(-2, 0, 0) * RotationY(MathF.PI / 180 * 170);
+            parser.Group.Fill(new PhongMaterial(Util.FromHex("#fc5185")) { Reflectivity = .2f });
+
+            //Smooth Suzanne :)
+            const string monkeySmooth = "files/suzanne_smooth.obj";
+            var parser2 = new ObjParser(monkeySmooth);
+            parser2.Parse();
+            parser2.Group.Divide();
+            parser2.Group.Transform = Translation(2, 1, 0) * RotationY(MathF.PI / 180 * 10);
+            parser2.Group.Fill(new PhongMaterial(Util.FromHex("#364f6b")) { Reflectivity = .4f });
+
+            //Subdivided SMOOTH Suzanne :)
+            const string monkeySubdiv = "files/suzanne_subdiv.obj";
+            var parser3 = new ObjParser(monkeySubdiv);
+            parser3.Parse();
+            parser3.Group.Divide();
+            parser3.Group.Transform = Translation(0, 0, 5) * Scale(3);
+            parser3.Group.Fill(new PhongMaterial(Util.FromHex("#43dde6")) { Reflectivity = .8f });
+
+            var w = World.Default;
+            w.Objects.Clear();
+            w.Objects.Add(parser.Group);
+            w.Objects.Add(parser2.Group);
+            w.Objects.Add(parser3.Group);
+            var floor = new Plane { Material = new PhongMaterial(Util.FromHex("#f0f0f0")) { Reflectivity = .4f } };
+            w.Objects.Add(floor);
+            var cam = new Camera(10, 10, MathF.PI / 180 * 55)
+            {
+                Transform = Camera.ViewTransform(Point(0, 1, -7), Point(0, 3, 5), Vector4.UnitY)
+            };
+            cam.Render(w);
+        }
     }
 }

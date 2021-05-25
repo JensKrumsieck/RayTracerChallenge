@@ -28,6 +28,12 @@
     <None Update="files\suzanne.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="files\suzanne_smooth.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="files\suzanne_subdiv.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="files\teapot.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
