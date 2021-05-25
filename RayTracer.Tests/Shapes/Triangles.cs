@@ -8,7 +8,7 @@ namespace RayTracer.Tests.Shapes
     [TestClass]
     public class Triangles
     {
-        public static Triangle DefaultTriangle = new Triangle(Point(0, 1, 0), Point(-1, 0, 0), Point(1, 0, 0));
+        public static Triangle DefaultTriangle = new(Point(0, 1, 0), Point(-1, 0, 0), Point(1, 0, 0));
         [TestMethod]
         public void FindNormal()
         {

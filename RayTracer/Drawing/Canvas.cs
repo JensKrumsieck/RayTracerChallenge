@@ -9,7 +9,7 @@ namespace RayTracer.Drawing
     {
         public Vector2Int Size;
 
-        private Color[,] _pixels;
+        private readonly Color[,] _pixels;
 
         public Canvas(Vector2Int size)
         {

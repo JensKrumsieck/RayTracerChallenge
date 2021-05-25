@@ -1,4 +1,5 @@
-﻿using RayTracer.Extension;
+﻿#nullable disable
+using RayTracer.Extension;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -50,7 +51,7 @@ namespace RayTracer
                 var res = ParsePolygons(items);
                 List<Vector4> polygon = new();
                 // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach (var index in res) polygon.Add(Vertices[index-1]);
+                foreach (var index in res) polygon.Add(Vertices[index - 1]);
                 var tris = polygon.FanTriangulation();
                 // ReSharper disable once CoVariantArrayConversion
                 if (tris != null) _currentGroup.AddChildrenWithoutRefresh(tris);

@@ -16,7 +16,7 @@ namespace RayTracer.Shapes
         {
             _children.Add(e);
             e.Parent = this;
-            if(computeBounds) BoundingBox = ComputeBounds();
+            if (computeBounds) BoundingBox = ComputeBounds();
         }
 
         public void AddChildrenWithoutRefresh(params Entity[] entities)
@@ -50,8 +50,8 @@ namespace RayTracer.Shapes
 
         public Bounds ComputeBounds()
         {
-            var b =  Bounds.Empty;
-            foreach (var e in _children)  b.Add(e.TransformedBoundingBox);
+            var b = Bounds.Empty;
+            foreach (var e in _children) b.Add(e.TransformedBoundingBox);
             return b;
         }
 
@@ -77,8 +77,8 @@ namespace RayTracer.Shapes
             if (threshold < Count)
             {
                 var (left, right) = Partition();
-                if (left.Count != 0) AddChild(left,false);
-                if (right.Count != 0) AddChild(right,false);
+                if (left.Count != 0) AddChild(left, false);
+                if (right.Count != 0) AddChild(right, false);
             }
             foreach (var c in _children) c.Divide(threshold);
             BoundingBox = ComputeBounds();

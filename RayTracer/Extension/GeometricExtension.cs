@@ -29,8 +29,8 @@ namespace RayTracer.Extension
 
         public static Triangle[] FanTriangulation(this List<Vector4> vertices)
         {
-            var tris = new Triangle[vertices.Count-2];
-            for (var i = 2; i < vertices.Count; i++) tris[i-2] = new Triangle(vertices[0], vertices[i], vertices[i - 1]);
+            var tris = new Triangle[vertices.Count - 2];
+            for (var i = 2; i < vertices.Count; i++) tris[i - 2] = new Triangle(vertices[0], vertices[i], vertices[i - 1]);
             return tris;
         }
     }
