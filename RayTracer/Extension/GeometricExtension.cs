@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RayTracer.Shapes;
+using System;
+using System.Collections.Generic;
+using System.Numerics;
 
 namespace RayTracer.Extension
 {
@@ -22,6 +25,13 @@ namespace RayTracer.Extension
             }
 
             return tMin > tMax ? (tMax, tMin) : (tMin, tMax);
+        }
+
+        public static Triangle[] FanTriangulation(this List<Vector4> vertices)
+        {
+            var tris = new Triangle[vertices.Count-2];
+            for (var i = 2; i < vertices.Count; i++) tris[i-2] = new Triangle(vertices[0], vertices[i], vertices[i - 1]);
+            return tris;
         }
     }
 }

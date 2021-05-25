@@ -410,5 +410,27 @@ namespace RayTracer.Tests
             };
             cam.Render(w);
         }
+
+        [TestMethod]
+        public void Chapter_XV_a()
+        {
+            //THE TEAPOT!!!
+            const string tea = "files/teapot.obj";
+            var parser = new ObjParser(tea);
+            var mat = new PhongMaterial(Util.FromHex("#ff304f")) { Reflectivity = .1f };
+            parser.Parse();
+            parser.Group.Fill(mat);
+            parser.Group.Divide();
+            var w = World.Default;
+            w.Objects.Clear();
+            w.Objects.Add(parser.Group);
+            var floor = new Plane { Material = new PhongMaterial(Color.White) { Pattern = new CheckerPattern(Util.FromHex("#002651"), Util.FromHex("#775ada")), Reflectivity = .4f } };
+            w.Objects.Add(floor);
+            var cam = new Camera(100, 100, MathF.PI / 180 * 55)
+            {
+                Transform = Camera.ViewTransform(Point(0, 3, -7), Point(0, 2, 0), Vector4.UnitY)
+            };
+            cam.Render(w).Save();
+        }
     }
 }

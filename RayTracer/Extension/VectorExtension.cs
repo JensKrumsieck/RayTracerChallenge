@@ -34,5 +34,12 @@ namespace RayTracer.Extension
             y = v.Y;
             z = v.Z;
         }
+
+        public static void Deconstruct(this Vector3 v, out float x, out float y, out float z)
+        {
+            x = v.X;
+            y = v.Y;
+            z = v.Z;
+        }
     }
 }
