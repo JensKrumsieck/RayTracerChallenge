@@ -181,7 +181,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = new World
             {
-                Lights = new List<PointLight> { new(Point(0, 0, 0), Color.White) }
+                Lights = new List<ILight> { new PointLight(Point(0, 0, 0), Color.White) }
             };
             var lower = new Plane(Translation(0, -1, 0))
             {
