@@ -489,13 +489,47 @@ namespace RayTracer.Tests
             w.Objects.Add(parser.Group);
             var floor = new Plane { Material = new PhongMaterial(Util.FromHex("#f0f0f0")) { Reflectivity = .4f } };
             w.Objects.Add(floor);
-            var l = new AreaLight(Point(-1, 2, 4), Direction(4, 0, 4), 2, Direction(0, 4, 0), 2, Color.White);
+            var l = new AreaLight(Point(-1, 2, 4), Direction(4, 0, 4), 4, Direction(0, 4, 0), 4,Color.White);
             w.Lights.Add(l);
             var cam = new Camera(10, 10, MathF.PI / 180 * 75)
             {
                 Transform = Camera.ViewTransform(Point(-3, 1, 2.5f), Point(0, .5f, 0), Vector4.UnitY)
             };
             cam.Render(w);
+        }
+
+        [TestMethod]
+        public void ShadowGlamour()
+        {
+            var cam = new Camera(800, 320, .7854f)
+            {
+                Transform = Camera.ViewTransform(Point(-3, 1, 2.5f), Point(0, .5f, 0), Vector4.UnitY)
+            };
+            var l = new AreaLight(Point(-1, 2, 4), Direction(2, 0, 0), 10, Direction(0, 2, 0),10, Color.White * 1.5f);
+            var cube = new Cube(Translation(0, 3, 4) * Scale(1, 1, .01f))
+            {
+                Material = new PhongMaterial(Color.White * 1.5f) {Ambient = 1, Diffuse = 0, Specular = 0},
+                Shadow = false
+            };
+            var plane = new Plane
+            {
+                Material = new PhongMaterial(Color.White) {Ambient = .025f, Diffuse = .67f, Specular = 0f}
+            };
+            var sphere1 = new Sphere(Translation(.5f, .5f, 0) * Scale(.5f))
+            {
+                Material = new PhongMaterial(Color.Red) {Specular = 0, Reflectivity = .3f, Diffuse = .6f, Ambient = .1f}
+            };
+            var sphere2 = new Sphere(Translation(-.25f, .33f, 0) * Scale(.33f))
+            {
+                Material = new PhongMaterial(new Color(.5f, .5f, 1))
+                {
+                    Ambient = .1f, Specular = 0, Diffuse = .6f, Reflectivity = .3f
+                }
+            };
+            var w = new World();
+            w.Objects.AddRange(new Entity[] {plane, cube, sphere2, sphere1});
+            w.Lights.Add(l);
+            cam.Render(w).Save();
         }
     }
 }

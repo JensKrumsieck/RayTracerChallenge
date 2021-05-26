@@ -28,20 +28,25 @@ namespace RayTracer.Materials
         public Color Shade(in ILight l, ref IntersectionState c, float intensity)
         {
             var effCol = (Pattern?.ColorAtEntity(c.Object, c.Point) ?? BaseColor) * l.Intensity;
-            var lightV = Vector4.Normalize(l.Position - c.Point);
             var ambient = effCol * Ambient;
+            var diffuseColor = effCol * Diffuse;
+            var specularColor = l.Intensity * Specular;
+            var diffuse = Color.Black;
+            var specular = Color.Black;
+            foreach (var sample in l.GetSamples())
+            {
+                var lightV = Vector4.Normalize(sample - c.Point);
+                var lightDotNormal = Vector4.Dot(lightV, c.Normal);
+                if (lightDotNormal < 0) continue;
 
-            var lightDotNormal = Vector4.Dot(lightV, c.Normal);
-            if (lightDotNormal < 0) return ambient;
-
-            var diffuse = effCol * Diffuse * lightDotNormal * intensity;
-            var reflect = (-lightV).Reflect(c.Normal);
-            var reflectDotEye = Vector4.Dot(reflect, c.Eye);
-            if (reflectDotEye <= 0) return ambient + diffuse;
-
-            var pow = MathF.Pow(reflectDotEye, Shininess);
-            var specular = l.Intensity * Specular * pow * intensity;
-            return ambient + diffuse + specular;
+                diffuse += diffuseColor * lightDotNormal * intensity;
+                var reflect = (-lightV).Reflect(c.Normal);
+                var reflectDotEye = Vector4.Dot(reflect, c.Eye);
+                if (reflectDotEye <= 0) continue;
+                var pow = MathF.Pow(reflectDotEye, Shininess);
+                specular += specularColor * pow * intensity;
+            }
+            return ambient + diffuse/l.Samples + specular/l.Samples;
         }
 
         /// <inheritdoc />

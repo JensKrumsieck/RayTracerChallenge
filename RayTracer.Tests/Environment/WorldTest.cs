@@ -5,6 +5,7 @@ using RayTracer.Shapes;
 using RayTracer.Tests.TestObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
@@ -118,7 +119,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(0f, 10f, 0f);
-            Assert.IsFalse(w.InShadow(w.Lights[0].Position, p));
+            Assert.IsFalse(w.InShadow(w.Lights[0].GetSamples().First(), p));
         }
 
         [TestMethod]
@@ -126,7 +127,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(10f, -10f, 10f);
-            Assert.IsTrue(w.InShadow(w.Lights[0].Position, p));
+            Assert.IsTrue(w.InShadow(w.Lights[0].GetSamples().First(), p));
         }
 
         [TestMethod]
@@ -134,7 +135,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(-2f, 2f, -2f);
-            Assert.IsFalse(w.InShadow(w.Lights[0].Position, p));
+            Assert.IsFalse(w.InShadow(w.Lights[0].GetSamples().First(), p));
         }
 
         [TestMethod]

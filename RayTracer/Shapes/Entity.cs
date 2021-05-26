@@ -20,6 +20,8 @@ namespace RayTracer.Shapes
 
         public PhongMaterial Material { get; set; }
 
+        public bool Shadow = true;
+
         private Transform _transform;
 
         public Transform Transform

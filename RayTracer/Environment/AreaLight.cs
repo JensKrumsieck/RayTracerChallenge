@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace RayTracer.Environment
@@ -12,8 +14,9 @@ namespace RayTracer.Environment
         public int USteps;
         public int VSteps;
         public Vector4 Position { get; set; }
+
         public Color Intensity { get; set; }
-        public float Samples;
+        public int Samples { get; set; }
         public bool Jitter;
         private readonly Random rnd;
 
@@ -41,15 +44,24 @@ namespace RayTracer.Environment
         public readonly float IntensityAt(Vector4 point, World w)
         {
             var total = 0f;
+            var m = GetSamples().ToList();
+            foreach (var sample in m)
+            {
+                if (!w.InShadow(sample, point)) total += 1f;
+            }
+            return total / Samples;
+        }
+
+
+        public readonly IEnumerable<Vector4> GetSamples()
+        {
             for (var v = 0; v < VSteps; v++)
             {
                 for (var u = 0; u < USteps; u++)
                 {
-                    var pos = PointAt(u, v);
-                    if (!w.InShadow(pos, point)) total += 1f;
+                   yield return PointAt(u, v);
                 }
             }
-            return total / Samples;
         }
 
     }
