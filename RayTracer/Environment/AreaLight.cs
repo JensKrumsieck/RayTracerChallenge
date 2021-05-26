@@ -31,14 +31,14 @@ namespace RayTracer.Environment
             Samples = USteps * VSteps;
             Position = uVec / 2f + vVec / 2f;
             Jitter = true;
-            rnd = new Random(int.MaxValue/2);
+            rnd = new Random(int.MaxValue / 2);
         }
 
         public readonly Vector4 PointAt(int u, int v)
         {
             var jit1 = (float)(Jitter ? rnd.NextDouble() : .5);
             var jit2 = (float)(Jitter ? rnd.NextDouble() : .5);
-            return Corner + UVec * (u + jit1 ) + VVec * (v + jit2);
+            return Corner + UVec * (u + jit1) + VVec * (v + jit2);
         }
 
         public readonly float IntensityAt(Vector4 point, World w)
@@ -59,7 +59,7 @@ namespace RayTracer.Environment
             {
                 for (var u = 0; u < USteps; u++)
                 {
-                   yield return PointAt(u, v);
+                    yield return PointAt(u, v);
                 }
             }
         }

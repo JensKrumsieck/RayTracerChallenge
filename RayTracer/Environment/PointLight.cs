@@ -21,7 +21,7 @@ namespace RayTracer.Environment
         }
 
         public readonly float IntensityAt(Vector4 point, World w) => w.InShadow(Position, point) ? 0f : 1f;
-        
+
         public readonly IEnumerable<Vector4> GetSamples()
         {
             yield return Position;

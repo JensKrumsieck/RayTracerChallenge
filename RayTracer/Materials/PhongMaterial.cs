@@ -46,7 +46,7 @@ namespace RayTracer.Materials
                 var pow = MathF.Pow(reflectDotEye, Shininess);
                 specular += specularColor * pow * intensity;
             }
-            return ambient + diffuse/l.Samples + specular/l.Samples;
+            return ambient + diffuse / l.Samples + specular / l.Samples;
         }
 
         /// <inheritdoc />
