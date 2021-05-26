@@ -25,22 +25,22 @@ namespace RayTracer.Materials
             BaseColor = baseColor;
         }
 
-        public Color Shade(in PointLight l, ref IntersectionState c, bool inShadow = false)
+        public Color Shade(in PointLight l, ref IntersectionState c, float intensity)
         {
             var effCol = (Pattern?.ColorAtEntity(c.Object, c.Point) ?? BaseColor) * l.Intensity;
             var lightV = Vector4.Normalize(l.Position - c.Point);
             var ambient = effCol * Ambient;
 
             var lightDotNormal = Vector4.Dot(lightV, c.Normal);
-            if (lightDotNormal < 0 || inShadow) return ambient;
+            if (lightDotNormal < 0) return ambient;
 
-            var diffuse = effCol * Diffuse * lightDotNormal;
+            var diffuse = effCol * Diffuse * lightDotNormal * intensity;
             var reflect = (-lightV).Reflect(c.Normal);
             var reflectDotEye = Vector4.Dot(reflect, c.Eye);
             if (reflectDotEye <= 0) return ambient + diffuse;
 
             var pow = MathF.Pow(reflectDotEye, Shininess);
-            var specular = l.Intensity * Specular * pow;
+            var specular = l.Intensity * Specular * pow * intensity;
             return ambient + diffuse + specular;
         }
 

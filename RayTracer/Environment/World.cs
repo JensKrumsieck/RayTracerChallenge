@@ -38,7 +38,8 @@ namespace RayTracer.Environment
 
         public Color ShadeHit(ref IntersectionState comps, int limit = 0)
         {
-            var surfaceColor = comps.Object.Material.Shade(Lights[0], ref comps, InShadow(Lights[0], comps.OverPoint));
+            var intensity = IntensityAt(Lights[0], comps.OverPoint);
+            var surfaceColor = comps.Object.Material.Shade(Lights[0], ref comps, intensity);
             var reflectedColor = ReflectedColor(ref comps, limit);
             var refractedColor = RefractedColor(ref comps, limit);
 
@@ -48,6 +49,11 @@ namespace RayTracer.Environment
 
             var reflectance = comps.Schlick();
             return surfaceColor + reflectedColor * reflectance + refractedColor * (1 - reflectance);
+        }
+
+        public float IntensityAt(PointLight l, Vector4 item1)
+        {
+            return InShadow(l.Position, item1) ? 0f : 1f;
         }
 
         public Color ColorAt(ref Ray ray, int limit = 0)
@@ -61,10 +67,10 @@ namespace RayTracer.Environment
             return ShadeHit(ref comp, limit);
         }
 
-        public bool InShadow(PointLight l, Vector4 point)
+        public bool InShadow(Vector4 lightPosition, Vector4 point)
         {
             var xs = new List<Intersection>();
-            var v = l.Position - point;
+            var v = lightPosition - point;
             var dir = Vector4.Normalize(v);
             var dis = v.LengthSquared();
             var r = new Ray(point, dir);

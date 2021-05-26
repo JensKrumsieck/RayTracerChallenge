@@ -5,8 +5,10 @@ using RayTracer.Shapes;
 using RayTracer.Tests.TestObjects;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using static RayTracer.Extension.MatrixExtension;
 using static RayTracer.Extension.VectorExtension;
+using Plane = RayTracer.Shapes.Plane;
 
 namespace RayTracer.Tests.Environment
 {
@@ -116,7 +118,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(0f, 10f, 0f);
-            Assert.IsFalse(w.InShadow(w.Lights[0], p));
+            Assert.IsFalse(w.InShadow(w.Lights[0].Position, p));
         }
 
         [TestMethod]
@@ -124,7 +126,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(10f, -10f, 10f);
-            Assert.IsTrue(w.InShadow(w.Lights[0], p));
+            Assert.IsTrue(w.InShadow(w.Lights[0].Position, p));
         }
 
         [TestMethod]
@@ -132,7 +134,7 @@ namespace RayTracer.Tests.Environment
         {
             var w = World.Default;
             var p = Point(-2f, 2f, -2f);
-            Assert.IsFalse(w.InShadow(w.Lights[0], p));
+            Assert.IsFalse(w.InShadow(w.Lights[0].Position, p));
         }
 
         [TestMethod]
@@ -332,6 +334,24 @@ namespace RayTracer.Tests.Environment
             var comps = IntersectionState.Prepare(ref xs, ref r);
             var color = w.ShadeHit(ref comps, 5);
             Assert.That.VectorsAreEqual(color, new Color(.93391f, .69643f, .69243f), 1e-4f);
+        }
+
+        [TestMethod]
+        public void IsShadowOcclusionTest()
+        {
+            var w = World.Default;
+            var lPos = Point(-10, -10, -10);
+            var points = new (Vector4, bool)[]
+            {
+                (Point(-10, -10, 10), false),
+                (Point(10, 10, 10), true),
+                (Point(-20, -20, -20), false),
+                (Point(-5, -5, -5), false)
+            };
+            foreach (var p in points)
+            {
+                Assert.AreEqual(w.InShadow(lPos, p.Item1), p.Item2);
+            }
         }
     }
 }
