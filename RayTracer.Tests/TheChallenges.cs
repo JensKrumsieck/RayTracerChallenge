@@ -473,5 +473,29 @@ namespace RayTracer.Tests
             };
             cam.Render(w);
         }
+
+        [TestMethod]
+        public void SuzanneAreaLight()
+        {
+            //Smooth Suzanne :)
+            const string monkeySmooth = "files/suzanne_smooth.obj";
+            var parser = new ObjParser(monkeySmooth);
+            parser.Parse();
+            parser.Group.Divide();
+            parser.Group.Transform = Translation(0, 1, 0) * RotationY(MathF.PI / 180 * 120);
+            parser.Group.Fill(new PhongMaterial(Util.FromHex("#30e3ca")));
+            var w = new World();
+            w.Objects.Clear();
+            w.Objects.Add(parser.Group);
+            var floor = new Plane { Material = new PhongMaterial(Util.FromHex("#f0f0f0")) { Reflectivity = .4f } };
+            w.Objects.Add(floor);
+            var l = new AreaLight(Point(-1, 2, 4), Direction(4, 0, 4), 4, Direction(0, 4, 0), 4, Color.White);
+            w.Lights.Add(l);
+            var cam = new Camera(10, 10, MathF.PI / 180 * 75)
+            {
+                Transform = Camera.ViewTransform(Point(-3, 1, 2.5f), Point(0, .5f, 0), Vector4.UnitY)
+            };
+            cam.Render(w);
+        }
     }
 }
