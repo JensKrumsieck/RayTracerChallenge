@@ -16,6 +16,6 @@ namespace RayTracer.Materials.Patterns
         }
 
         public override Color At(Vector4 point) =>
-            (MathF.Floor(point.X) + MathF.Floor(point.Y) + MathF.Floor(point.Z)) % 2 == 0 ? A : B;
+            MathF.Abs((MathF.Floor(point.X) + MathF.Floor(point.Y) + MathF.Floor(point.Z)) % 2) <= Constants.EpsilonLow ? A : B;
     }
 }

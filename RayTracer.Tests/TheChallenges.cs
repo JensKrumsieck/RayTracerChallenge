@@ -489,7 +489,7 @@ namespace RayTracer.Tests
             w.Objects.Add(parser.Group);
             var floor = new Plane { Material = new PhongMaterial(Util.FromHex("#f0f0f0")) { Reflectivity = .4f } };
             w.Objects.Add(floor);
-            var l = new AreaLight(Point(-1, 2, 4), Direction(4, 0, 4), 4, Direction(0, 4, 0), 4, Color.White);
+            var l = new AreaLight(Point(-1, 2, 4), Direction(4, 0, 4), 2, Direction(0, 4, 0), 2, Color.White);
             w.Lights.Add(l);
             var cam = new Camera(10, 10, MathF.PI / 180 * 75)
             {

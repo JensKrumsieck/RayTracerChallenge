@@ -40,9 +40,10 @@ namespace RayTracer.Tests
         public void StripePatternAlternatesInZ()
         {
             var p = new StripePattern(Color.White, Color.Black);
-            Assert.That.VectorsAreEqual(p.At(Point(1f, 0f, 0f)), Color.Black);
-            Assert.That.VectorsAreEqual(p.At(Point(.9f, 0f, 0f)), Color.White);
             Assert.That.VectorsAreEqual(p.At(Point(0f, 0f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(.9f, 0f, 0f)), Color.White);
+            Assert.That.VectorsAreEqual(p.At(Point(1f, 0f, 0f)), Color.Black);
+            Assert.That.VectorsAreEqual(p.At(Point(-1f, 0f, 0f)), Color.Black);
             Assert.That.VectorsAreEqual(p.At(Point(-.1f, 0f, 0f)), Color.Black);
             Assert.That.VectorsAreEqual(p.At(Point(-1.1f, 0f, 0f)), Color.White);
         }

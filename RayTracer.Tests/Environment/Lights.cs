@@ -57,7 +57,7 @@ namespace RayTracer.Tests.Environment
             var c = PointZero;
             var v1 = Vector4.UnitX * 2f;
             var v2 = Vector4.UnitZ;
-            var l = new AreaLight(c, v1, 4, v2, 2, Color.White);
+            var l = new AreaLight(c, v1, 4, v2, 2, Color.White) { Jitter = false }; ;
             var pts = new[]
             {
                 (0, 0, Point(.25f, 0, .25f)),
@@ -80,7 +80,7 @@ namespace RayTracer.Tests.Environment
             var corner = Point(-.5f, -.5f, -5);
             var v1 = Vector4.UnitX;
             var v2 = Vector4.UnitY;
-            var l = new AreaLight(corner, v1, 2, v2, 2, Color.White);
+            var l = new AreaLight(corner, v1, 2, v2, 2, Color.White) {Jitter = false};
             w.Lights[0] = l;
             var pts = new[]
             {

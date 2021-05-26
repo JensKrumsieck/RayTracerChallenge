@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace RayTracer.Environment
 {
@@ -13,6 +14,8 @@ namespace RayTracer.Environment
         public Vector4 Position { get; set; }
         public Color Intensity { get; set; }
         public float Samples;
+        public bool Jitter;
+        private readonly Random rnd;
 
         public AreaLight(Vector4 corner, Vector4 uVec, int uSteps, Vector4 vVec, int vSteps, Color intensity) : this()
         {
@@ -23,12 +26,19 @@ namespace RayTracer.Environment
             VSteps = vSteps;
             Intensity = intensity;
             Samples = USteps * VSteps;
-            Position = (uVec / 2f + vVec / 2f);
+            Position = uVec / 2f + vVec / 2f;
+            Jitter = true;
+            rnd = new Random(int.MaxValue/2);
         }
 
-        public readonly Vector4 PointAt(int u, int v) => Corner + UVec * (u + .5f) + VVec * (v + .5f);
+        public readonly Vector4 PointAt(int u, int v)
+        {
+            var jit1 = (float)(Jitter ? rnd.NextDouble() : .5);
+            var jit2 = (float)(Jitter ? rnd.NextDouble() : .5);
+            return Corner + UVec * (u + jit1 ) + VVec * (v + jit2);
+        }
 
-        public float IntensityAt(Vector4 point, World w)
+        public readonly float IntensityAt(Vector4 point, World w)
         {
             var total = 0f;
             for (var v = 0; v < VSteps; v++)
@@ -39,7 +49,6 @@ namespace RayTracer.Environment
                     if (!w.InShadow(pos, point)) total += 1f;
                 }
             }
-
             return total / Samples;
         }
 
